@@ -7968,6 +7968,11 @@ vue-loader@^15.9.1:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-router@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
+  integrity sha1-2jUZX/43/fC+yfX49yeB0qdxiBU=
+
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npm.taobao.org/vue-style-loader/download/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
@@ -8005,6 +8010,11 @@ vuetify@^2.2.11:
   version "2.2.29"
   resolved "https://registry.npm.taobao.org/vuetify/download/vuetify-2.2.29.tgz?cache=0&sync_timestamp=1589940115717&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuetify%2Fdownload%2Fvuetify-2.2.29.tgz#77fd26d8d143251445bed69d3fa0e5d418f25fd0"
   integrity sha1-d/0m2NFDJRRFvtadP6Dl1BjyX9A=
+
+vuex@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.npm.taobao.org/vuex/download/vuex-3.4.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuex%2Fdownload%2Fvuex-3.4.0.tgz#20cc086062d750769fce1febb34e7fceeaebde45"
+  integrity sha1-IMwIYGLXUHafzh/rs05/zurr3kU=
 
 watchpack-chokidar2@^2.0.0:
   version "2.0.0"
