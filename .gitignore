@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+/public/cached
+/public/image
 
 # local env files
 .env.local
