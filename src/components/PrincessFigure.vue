@@ -1,17 +1,18 @@
 <template>
-  <router-link :to='link()'>
-    <span>
-      <img
-        :src="src()"
-        :alt="princessName()"
-        class=""
-        :style="style()"
-      >
-      <p
-        v-text="princessName()"
-      ></p>
-    </span>
-  </router-link>
+  <v-card
+    :href="link()"
+  >
+    <v-img
+      :src="src()"
+      :alt="princessName()"
+      class=""
+      :style="style()"
+    />
+    <v-card-text
+      v-text="princessName()"
+      align="center"
+    ></v-card-text>
+  </v-card>
 </template>
 
 <script>

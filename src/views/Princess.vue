@@ -1,15 +1,25 @@
 <template>
-  <div>
+  <v-container fluid>
     <h3>角色列表</h3>
-    <div>
-      <PrincessFigure
+    <v-row>
+      <v-col
+        cols="auto"
         v-for="chara of princess()"
         :key="chara.id"
-        :princess="chara"
-        zoomRatio="0.8"
-      />
-    </div>
-  </div>
+      >
+        <v-card
+          class="ma-1"
+          outlined
+          tile
+        >
+          <PrincessFigure
+            :princess="chara"
+            zoomRatio="0.8"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -26,9 +36,9 @@ export default {
     }
   },
   created () {
-    if (!Object.keys(this.princess()).length) {
-      this.$store.commit('loadObjects', 'chara')
-    }
+    // if (!Object.keys(this.princess()).length) {
+    //   this.$store.commit('loadObjects', 'chara')
+    // }
   }
 }
 </script>
