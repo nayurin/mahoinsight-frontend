@@ -1,14 +1,21 @@
 <template>
-  <span>
-    <img
-      :src="src()"
-      class=""
-      :style="style()"
+  <v-col
+    align-self="center"
+    cols="auto"
+    class="pa-0"
+  >
+    <v-row 
+      no-gutters
     >
-    <!-- <p
-      v-text="princessName()"
-    ></p> -->
-  </span>
+      <slot name="beforeImage" />
+      <v-img
+        contain
+        :src="src()"
+        :style="style()"
+      />
+      <slot name="afterImage" />
+    </v-row>
+  </v-col>
 </template>
 
 <script>
@@ -47,7 +54,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

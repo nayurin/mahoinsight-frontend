@@ -1,9 +1,9 @@
 <template>
-  <div id="quest-main">
+  <v-container id="quest-main">
     <div class="container">
       <div id="quest-normal">
         <h4>普通模式</h4>
-        <div class="quest--area-tabs-main">
+        <v-tab class="quest--area-tabs-main">
           <ul class="quest--area-tabs-list">
             <li
               :class="key==areaSelected ? 'active' : ''"
@@ -14,7 +14,7 @@
             >
             </li>
           </ul>
-        </div>
+        </v-tab>
         <div class="quest--mission-tabs-main">
           <ul class="quest--mission-tabs-list horizontal-tb">
             <li
@@ -35,22 +35,7 @@
         <h4>困难模式</h4>
       </div>
     </div>
-  </div>
-
-  <!-- <div class="row" id="tabemplyee">
-    <div class="col-md-2 e_tab">
-         <ul class="e_navbar">
-            <li class="e_navbar_item"
-                v-for="(tab, index) in tabs"
-                :class="{'active':index===selected}"
-                @click="choose(index)"><i :class="{'fa':index===selected}" style="float:right"></i>{{tab.tabName}}
-             </li>
-        </ul>
-    </div>
-    <div class="col-md-8 e_tab_bd">
-        <component :is="currentView" transition="fade" transition-mode="out-in"></component>
-    </div> -->
-
+  </v-container>
 </template>
 
 <script>

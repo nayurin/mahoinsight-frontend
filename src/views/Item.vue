@@ -1,21 +1,23 @@
 <template>
-  <div class="item-main">
-    <div>
-      <h3>装备列表</h3>
+  <v-container>
+    <div class="item-main">
       <div>
-        <ItemFigure
-          v-for='item of Object.values(this.$store.state.item)'
-          :key='item.id'
-          :item='item'
-          zoomRatio='0.7'
-        />
+        <h3>装备列表</h3>
+        <div>
+          <ItemFigure
+            v-for='item of Object.values(this.$store.state.item)'
+            :key='item.id'
+            :item='item'
+            zoomRatio='0.7'
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import ItemFigure from '@/components/ItemFigure'
+import ItemFigure from '@/components/global/ItemFigure'
 
 export default {
   name: 'Item',

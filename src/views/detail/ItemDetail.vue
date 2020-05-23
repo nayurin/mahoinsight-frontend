@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import ItemFigure from '@/components/ItemFigure'
+import ItemFigure from '@/components/global/ItemFigure'
 
 export default {
   name: 'ItemDetail',

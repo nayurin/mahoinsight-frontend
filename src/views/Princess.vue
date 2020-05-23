@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import PrincessFigure from '@/components/PrincessFigure'
+import PrincessFigure from '@/components/global/PrincessFigure'
 
 export default {
   name: 'Princess',

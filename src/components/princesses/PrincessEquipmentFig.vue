@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import ItemFigure from '@/components/ItemFigure'
+import ItemFigure from '@/components/global/ItemFigure'
 
 export default {
   name: 'PrincessFigure',
@@ -61,11 +61,6 @@ export default {
         }
       }
       return { id: id }
-    }
-  },
-  created () {
-    if (!Object.keys(this.$store.state.item).length) {
-      this.$store.commit('loadObjects', 'item')
     }
   }
 }

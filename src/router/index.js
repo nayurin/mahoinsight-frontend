@@ -18,7 +18,13 @@ const routes = [
   {
     path: '/item',
     name: 'Item',
-    component: Item
+    component: Item,
+    // children: [{
+    //   path: 'item/detail/:itemName',
+    //   name: 'ItemDetail',
+    //   component: ItemDetail,
+    //   props: true
+    // }]
   },
   {
     path: '/item/detail/:itemName',
@@ -29,13 +35,22 @@ const routes = [
   {
     path: '/princess',
     name: 'Princess',
-    component: Princess
+    component: Princess,
+    // children: [{
+    //   path: 'princess/detail/:princessName',
+    //   name: 'PrincessDetail',
+    //   component: PrincessDetail,
+    //   props: true
+    // }]
   },
   {
     path: '/princess/detail/:princessName',
     name: 'PrincessDetail',
     component: PrincessDetail,
-    props: true
+    props: true,
+    meta: {
+      hide: true
+    }
   },
   {
     path: '/quest',
