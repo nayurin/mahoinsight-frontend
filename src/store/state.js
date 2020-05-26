@@ -13,9 +13,10 @@ const state = {
     4: "grey darken-1",
     5: "grey darken-1",
     6: "grey darken-1",
-    7: "amber darken-1",
-    8: "amber darken-1"
-  }
+    7: "amber darken-2",
+    8: "amber darken-2"
+  },
+  difficulties: ["normal", "hard", "other"]
 }
 
 export default state

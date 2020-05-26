@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid>
+  <v-container
+    v-if="Object.keys(status()).length"
+    fluid
+  >
     <v-card
       class="pa-0"
       outlined

@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :href="item.id != 999999 ? link : ''"
+    :href="id != 999999 && String(id).length !== 5 ? link : ''"
   >
     <v-img
       :src="src"
@@ -15,8 +15,8 @@
 export default {
   name: 'ItemFigure',
   props: {
-    item: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     },
     zoomRatio: {
@@ -42,13 +42,13 @@ export default {
       }
     },
     link () {
-      return this.item.id === 999999 ? '.' : `/item/detail/${this.item.detail.equipment_name}`
+      return this.id === 999999 ? '.' : `/item/detail/${this.$store.getters.getItemNameById(this.id)}`
     },
     src () {
-      return `/image/equipments/icon_equipment_${this.item.id}.png`
+      return String(this.id).length === 6 ? `/image/equipments/icon_equipment_${this.id}.png` : `/image/items/icon_item_${this.id}.png`
     },
     alt () {
-      return this.item.id === 999999 ? null : this.item.detail.equipment_name
+      return this.id === 999999 ? null : this.$store.getters.getItemNameById(this.id)
     }
   }
 }

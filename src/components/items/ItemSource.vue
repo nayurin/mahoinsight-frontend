@@ -1,31 +1,41 @@
 <template>
   <v-container>
     <v-card-title>主要素材来源</v-card-title>
-    <v-row>
-      <v-col>
-        <v-card
-          v-for="(q, i) in findQuest()"
-          :key="i"
-        >
-          <v-card-text
-            v-for="(_q, j) in q.quest"
-            :key="j"
-          >
-            {{ q.odds }} - {{_q.quest_name}}
-          </v-card-text>
-        </v-card>
+    <v-row
+      v-for="(q, i) in findQuest()"
+      :key="i"
+    >
+      <v-col cols=12
+        v-for="(_q, j) in q.quest"
+        :key="j"
+      >
+        <QuestReward
+          :id="_q.quest_id"
+          :target="fragId"
+        />
+            <!-- {{ q.odds }} - {{ _q.quest_name }} - {{ _q.quest_id }} -->
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import QuestReward from '@/components/quests/QuestReward'
+
 export default {
   name: 'ItemSource',
+  components: {
+    QuestReward
+  },
   props: {
     item: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    fragId () {
+      return this.item.detail.craft_flg ? this.item.craft_by[0][0] : this.item.id
     }
   },
   methods: {
@@ -34,7 +44,9 @@ export default {
     }
   },
   mounted () {
-    console.log(this.findQuest())
+    this.findQuest().sort((x, y) => {
+      return y.odds - x.odds
+    })
   }
 }
 </script>

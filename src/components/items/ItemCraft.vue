@@ -8,7 +8,7 @@
         <ItemFigure
           v-for="i in craftBy"
           :key="i[0]"
-          :item="findItem(i[0])"
+          :id="i[0]"
           zoomRatio=0.625
           class="mr-2 mb-4"
         >

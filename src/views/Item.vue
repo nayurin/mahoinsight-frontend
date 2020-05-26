@@ -15,7 +15,7 @@
           max-width=96
         >
           <ItemFigure
-            :item="value"
+            :id="value.id"
             zoomRatio="0.75"
           >
             <template v-slot:under>

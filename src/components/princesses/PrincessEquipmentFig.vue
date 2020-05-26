@@ -2,37 +2,37 @@
   <div class="equip-main">
     <div class="equip-1st">
       <ItemFigure
-        :item="findItem(this.equips.equip_slot_1)"
+        :id="this.equips.equip_slot_1"
         zoomRatio="0.625"
       />
     </div>
     <div class="equip-2nd">
       <ItemFigure
-        :item="findItem(this.equips.equip_slot_2)"
+        :id="this.equips.equip_slot_2"
         zoomRatio="0.625"
       />
     </div>
     <div class="equip-3rd">
       <ItemFigure
-        :item="findItem(this.equips.equip_slot_3)"
+        :id="this.equips.equip_slot_3"
         zoomRatio="0.625"
       />
     </div>
     <div class="equip-4th">
       <ItemFigure
-        :item="findItem(this.equips.equip_slot_4)"
+        :id="this.equips.equip_slot_4"
         zoomRatio="0.625"
       />
     </div>
     <div class="equip-5th">
       <ItemFigure
-        :item="findItem(this.equips.equip_slot_5)"
+        :id="this.equips.equip_slot_5"
         zoomRatio="0.625"
       />
     </div>
     <div class="equip-6th">
       <ItemFigure
-        :item="findItem(this.equips.equip_slot_6)"
+        :id="this.equips.equip_slot_6"
         zoomRatio="0.625"
       />
     </div>
@@ -51,16 +51,6 @@ export default {
     equips: {
       type: Object,
       required: true
-    }
-  },
-  methods: {
-    findItem (id) {
-      for (const item of Object.values(this.$store.state.item)) {
-        if (item.id === id) {
-          return item
-        }
-      }
-      return { id: id }
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
-  <v-container>
+  <v-container
+    v-if="findPromote().length"
+  >
     <v-card-title>角色需求</v-card-title>
     <v-row>
       <v-col
