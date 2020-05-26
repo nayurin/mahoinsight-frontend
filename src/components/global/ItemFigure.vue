@@ -1,27 +1,14 @@
 <template>
-  <div v-if="item.id != 999999">
-    <router-link
-      :to='link'>
-      <span>
-        <img
-          :src="src"
-          :alt="alt"
-          class="known-equip"
-          :style="style"
-        >
-      </span>
-    </router-link>
-  </div>
-  <div v-else>
-    <span>
-      <img
-        :src="src"
-        :alt="alt"
-        class="unknown-equip"
-        :style="style"
-      >
-    </span>
-  </div>
+  <v-card
+    :href="item.id != 999999 ? link : ''"
+  >
+    <v-img
+      :src="src"
+      :alt="alt"
+      :style="style"
+    />
+    <slot name="under"/>
+  </v-card>
 </template>
 
 <script>

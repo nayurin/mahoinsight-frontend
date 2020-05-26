@@ -7,13 +7,13 @@
     <v-row 
       no-gutters
     >
-      <slot name="beforeImage" />
+      <slot name="beforeImage"/>
       <v-img
         contain
         :src="src()"
         :style="style()"
       />
-      <slot name="afterImage" />
+      <slot name="afterImage"/>
     </v-row>
   </v-col>
 </template>

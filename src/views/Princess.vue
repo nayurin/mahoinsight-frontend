@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <h3>角色列表</h3>
+    <v-card-title>角色列表</v-card-title>
     <v-row>
       <v-col
         cols="auto"
@@ -34,11 +34,6 @@ export default {
     princess () {
       return this.$store.state.chara
     }
-  },
-  created () {
-    // if (!Object.keys(this.princess()).length) {
-    //   this.$store.commit('loadObjects', 'chara')
-    // }
   }
 }
 </script>

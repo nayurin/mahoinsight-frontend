@@ -8,10 +8,17 @@
       class=""
       :style="style()"
     />
-    <v-card-text
-      v-text="princessName()"
-      align="center"
-    ></v-card-text>
+    <v-row
+      class="d-flex justify-center align-center"
+    >
+      <v-chip
+        v-text="princessName()"
+        label
+        color="white"
+        class="pa-0"
+      />
+      <slot name="add" />
+    </v-row>
   </v-card>
 </template>
 

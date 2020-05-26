@@ -28,8 +28,9 @@
           dense
           hover
           small
-          v-model="rarity">
-        </v-rating>
+          v-model="rarity"
+          color="yellow darken-2"
+        />
       </v-row>
       <v-row>
         <v-col
@@ -47,7 +48,7 @@
             small
             right
             v-text="value"
-          ></v-btn>
+          />
         </v-col>
       </v-row>
     </v-card-text>

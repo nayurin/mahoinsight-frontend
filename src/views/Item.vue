@@ -1,18 +1,33 @@
 <template>
-  <v-container>
-    <div class="item-main">
-      <div>
-        <h3>装备列表</h3>
-        <div>
+  <v-container fluid>
+    <h3>装备列表</h3>
+    <v-row>
+      <v-col
+        cols="auto"
+        v-for="(value, key) of items()"
+        :key="key"
+        class="pa-1"
+      >
+        <v-card
+          class="ma-1"
+          outlined
+          tile
+          max-width=96
+        >
           <ItemFigure
-            v-for='item of Object.values(this.$store.state.item)'
-            :key='item.id'
-            :item='item'
-            zoomRatio='0.7'
-          />
-        </div>
-      </div>
-    </div>
+            :item="value"
+            zoomRatio="0.75"
+          >
+            <template v-slot:under>
+              <v-card-text
+                v-text="value.detail.equipment_name"
+                class="pa-2 caption text-center"
+              />
+            </template>
+          </ItemFigure>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -27,10 +42,14 @@ export default {
   computed: {
   },
   methods: {
-  },
-  created () {
-    if (!Object.keys(this.$store.state.item).length) {
-      this.$store.commit('loadObjects', 'item')
+    items () {
+      const _item = {}
+      Object.values(this.$store.state.item).map(x=>{
+        if (x.id.toString().split('')[1] === '0' || x.id === 140000) {
+          _item[x.detail.equipment_name] = x
+        }
+      })
+      return _item
     }
   }
 }
