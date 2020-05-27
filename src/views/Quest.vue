@@ -1,45 +1,132 @@
 <template>
-  <v-container id="quest-main">
-    <div class="container">
-      <div id="quest-normal">
-        <h4>普通模式</h4>
-        <v-tab class="quest--area-tabs-main">
-          <ul class="quest--area-tabs-list">
-            <li
-              :class="key==areaSelected ? 'active' : ''"
-              v-for="(value, key) in this.normal"
-              :key="key"
-              @click="onAreaSelected(key)"
-              v-text="getAreaName(key)"
+  <v-container fluid>
+    <v-card>
+      <v-toolbar
+        color="gray"
+        flat
+      >
+        <v-text-field
+          v-model="searchbox"
+          class="mx-4"
+          flat
+          hide-details
+          label="可以使用如A-B的格式来查询"
+          prepend-inner-icon="mdi-magnify"
+          solo-inverted
+          clearable
+          @input="onSearchboxInputted()"
+          @focus="onSearchboxFocused()"
+          @blur="onSearchboxBlurred()"
+          @click:clear="onSearchboxClearred()"
+        >
+        </v-text-field>
+          <template v-slot:extension>
+            <v-overlay
+              absolute
+              :value="overlay"
+              opacity=0.47
+            />
+            <v-tabs
+              centered
             >
-            </li>
-          </ul>
-        </v-tab>
-        <div class="quest--mission-tabs-main">
-          <ul class="quest--mission-tabs-list horizontal-tb">
-            <li
-              v-for="(value, i) in normal[areaSelected]"
-              :key="i"
-              :class="value==questSelected ? 'active' : ''"
-              @click="onQuestSelected(value)"
-              v-text="parseInt(value)"
-            >
-            </li>
-          </ul>
-        </div>
-        <div class="quest--info-container div-inline">
+              <v-tab
+                v-text="`普通难度`"
+                @click="onClickOfDiff('normal')"
+              />
+              <v-tab
+                v-text="`困难难度`"
+                @click="onClickOfDiff('hard')"
+              />
+              <v-tab
+                v-text="`其他`"
+                @click="onClickOfDiff('other')"
+              />
+            </v-tabs>
+          </template>
+      </v-toolbar>
+    </v-card>
 
-        </div>
-      </div>
-      <div id="quest-hard">
-        <h4>困难模式</h4>
-      </div>
-    </div>
+    <v-card
+      v-show="diff"
+    >
+      <v-overlay
+        absolute
+        :value="overlay"
+        opacity=0.47
+      />
+      <v-tabs
+        dark
+        v-model="a"
+        show-arrows
+        background-color="primary"
+        slider-color="orange lighten-3"
+      >
+        <v-tab
+          v-for="(value, key) in this[diff]"
+          :key="key"
+          v-text="value.area_name"
+          @click="onClickOfArea(value.area_id)"
+        />
+      </v-tabs>
+      <v-tabs-items v-model="a">
+        <v-tab-item
+          v-for="(value, key) in this[diff]"
+          :key="key"
+        >
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card>
+
+    <v-row no-gutters>
+      <v-col cols="auto">
+        <v-card
+          v-show="x"
+        >
+          <v-overlay
+            absolute
+            :value="overlay"
+            opacity=0.47
+          />
+          <v-tabs
+            v-model="q"
+            slider-size=4
+            slider-color="purple"
+            vertical
+          >
+            <v-tab
+              v-for="value of listArea"
+              :key="value"
+              v-text="$store.getters.getQuestNameById(value)"
+              @click="onClickOfQuest(value)"
+            >
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="q">
+            <v-tab-item
+              v-for="value of listArea"
+              :key="value"
+            >
+            </v-tab-item>
+          </v-tabs-items>
+        </v-card>
+      </v-col>
+      <v-col cols="auto">
+        <v-card
+          v-show="y"
+        >
+          <v-card-title>{{ $store.getters.getQuestNameById(y) }}</v-card-title>
+          <v-card-text>{{ searchbox }} -- {{ search() }} --</v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    
+
+    
+      
   </v-container>
 </template>
 
 <script>
-// import ObjectBox from '@/util/ObjectBox'
 // import ItemFigure from '@/components/ItemFigure'
 
 export default {
@@ -49,247 +136,107 @@ export default {
   },
   data () {
     return {
-      normal: {},
-      hard: {},
-      other: {},
-      areaSelected: 0,
-      questSelected: 0
-    }
-  },
-  computed: {
-  },
-  methods: {
-    onAreaSelected (area) {
-      this.areaSelected = area
-    },
-    onQuestSelected (quest) {
-      this.questSelected = quest
-    },
-    allQuest () {
-      return this.$store.state.quest
-    },
-    listQuest () {
-      if (Object.prototype.hasOwnProperty.call(this.normal, this.areaSelected)) return this.normal[this.areaSelected]
-      else if (Object.prototype.hasOwnProperty.call(this.hard, this.areaSelected)) return this.hard[this.areaSelected]
-      else if (Object.prototype.hasOwnProperty.call(this.other, this.areaSelected)) return this.other[this.areaSelected]
-      else return null
-    },
-    listArea (dif) {
-      Object.keys(this.$store.state.quest[dif]).map(quest => {
-        const areaId = String(quest).substr(0, 5)
-        const questSeq = String(quest).substr(-3)
-        if (!this[dif][areaId]) {
-          this[dif][areaId] = [questSeq]
-        } else {
-          this[dif][areaId].push(questSeq)
-        }
-      })
-    },
-    getAreaName (areaid) {
-      for (const i in this.allQuest().area) {
-        if (this.allQuest().area[i].area_id === parseInt(areaid)) return this.allQuest().area[i].area_name
+      a: null,
+      q: null,
+      x: 0,
+      y: 0,
+      diff: 'normal',
+      searchbox: '',
+      overlay: false,
+      axis: {
+        x: 0,
+        y: 0
       }
     }
   },
+  watch: {
+  },
+  computed: {
+    normal () {
+      return this.$store.getters.getQuestArea().normal
+    },
+    hard () {
+      return this.$store.getters.getQuestArea().hard
+    },
+    other () {
+      return this.$store.getters.getQuestArea().other
+    },
+    listArea () {
+      // console.log(this.x)
+      return this.$store.getters.getQuestListByArea(this.x)
+    }
+  },
+  methods: {
+    onClickOfDiff (diff) {
+      this.x = 0
+      this.y = 0
+      this.diff = diff
+    },
+    onClickOfArea (area) {
+      this.x = area
+      this.y = 0
+    },
+    onClickOfQuest (quest) {
+      this.y = quest
+      // console.log(this.$store.getters.getQuestRewardById(quest))
+    },
+    onSearchboxFocused () {
+      this.overlay = true
+      this.axis = {
+        x: this.x,
+        y: this.y
+      }
+    },
+    onSearchboxBlurred () {
+      this.overlay = false
+    },
+    onSearchboxClearred () {
+      this.x = this.axis.x
+      this.y = this.axis.y
+    },
+    onSearchboxInputted () {
+      if (this.search()) {
+        this.x = Number(this.search().x),
+        this.y = Number(this.search().y),
+        this.diff = this.search().diff
+      }
+    },
+    search () {
+      const regexpQuest = /([1-9]\d{0,})-([1-9]\d{0,})/
+      const regexpDiff = /([a-z]{1,})/
+      let area = "",
+          quest = "",
+          id = "",
+          diff = this.diff
+      if (this.searchbox && this.searchbox.match(regexpQuest) && this.searchbox.match(regexpQuest)[1].length <= 2 && this.searchbox.match(regexpQuest)[2].length <= 2) {
+        area = this.searchbox.match(regexpQuest)[1]
+        quest = this.searchbox.match(regexpQuest)[2]
+      }
+      if (this.searchbox && this.searchbox.match(regexpDiff) && this.$store.state.difficulties.includes(this.searchbox.match(regexpDiff)[1])) {
+        diff = this.searchbox.match(regexpDiff)[1]
+      }
+      if (area && quest){
+        switch (diff) {
+          case "normal":
+            id = String(Number(area) * 1000 + Number(quest) + 11000000)
+            break
+          case "hard":
+            id = String(Number(area) * 1000 + Number(quest) + 12000000)
+            break
+          default:
+            id = String(Number(area) * 1000 + Number(quest) + 18000000)
+        }
+      }
+      return this.$store.getters.getQuestNameById(Number(id)) ? {
+        diff: diff,
+        x: id.substring(0, 5),
+        y: id
+      } : null
+    }
+  },
   created () {
-    if (!Object.keys(this.$store.state.item).length) {
-      this.$store.commit('loadObjects', 'item')
-    }
-    // if (!Object.keys(this.$store.state.chara).length) {
-    //   this.$store.commit('loadObjects', 'chara')
-    // }
-    if (!Object.keys(this.$store.state.quest).length) {
-      this.$store.commit('loadObjects', 'quest')
-    }
-    this.listArea('normal')
-    this.listArea('hard')
-    this.listArea('other')
-    console.log(this.allQuest())
-    console.log(this.normal)
+    // console.log(this.listArea)
+    // console.log(this.$store.getters.getQuestArea())
   }
 }
-
 </script>
-
-<style scoped>
-  .roundedRectangle {
-    height: 30px;
-    width: 100px;
-    margin-top: 100px;
-    background: rgb(88, 221, 214);
-    border-width: 3px;
-    /*边缘的宽度，如果要分别设置可以这样：border-width: 15px 5px 15px 5px;依次为上、右、下、左 */
-    border-style: solid;
-    border-radius: 5px;
-    /*圆角的大小*/
-    border-color: #000 #000 #000 #000;
-    /*边框颜色，依次为上、右、下、左 */
-  }
-
-  .roundedRectangle span {
-    margin: 5px;
-    padding: 20px;
-    text-align: center;
-    font-size: 16px;
-    letter-spacing: 8px;
-    float: left;
-  }
-
-  .container {
-    margin-left: 100px;
-    margin-right: 100px;
-  }
-
-  .div-inline {
-    display: inline-block;
-  }
-
-  .quest--area-tabs-main {
-    border: 1px solid #dcdfe6;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
-    margin: 0;
-  }
-
-  .quest--area-tabs-main>div {
-    padding: 10px;
-  }
-
-  .quest--area-tabs-list {
-    width: 98.3%;
-    background: #f5f7fa;
-    overflow: hidden;
-    padding-inline-start: 20px;
-  }
-
-  .quest--area-tabs-list li {
-    float: left;
-    padding: 0 20px;
-    height: 40px;
-    box-sizing: border-box;
-    line-height: 40px;
-    list-style: none;
-    font-size: 14px;
-    font-weight: 500;
-    color: #303133;
-    transition: all .3s cubic-bezier(.645, .045, .355, 1);
-    border: 1px solid transparent;
-    margin-bottom: -1px;
-    cursor: pointer;
-  }
-
-  .quest--area-tabs-list li.active {
-    color: #409eff;
-    background-color: #fff;
-    border-right-color: #dcdfe6;
-    border-left-color: #dcdfe6;
-    white-space: nowrap;
-    position: relative;
-    transition: transform .3s;
-    z-index: 2;
-  }
-
-  .quest--area-tabs-list li:first-child {
-    margin-left: -1px;
-  }
-
-  .quest--area-tabs-list li:last-child {
-    margin-right: -1px;
-  }
-
-  .quest--mission-tabs-main {
-    width: 60px;
-    border: 1px solid #dcdfe6;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
-    margin: 0;
-  }
-
-  .quest--mission-tabs-list {
-    width: 60px;
-    background: #f5f7fa;
-    overflow: hidden;
-    padding-inline-start: 0px;
-  }
-
-  .quest--mission-tabs-list li {
-    /* float: top; */
-    /* padding: 0 20px; */
-    height: 40px;
-    box-sizing: border-box;
-    line-height: 40px;
-    list-style: none;
-    font-size: 14px;
-    font-weight: 500;
-    color: #303133;
-    transition: all .3s cubic-bezier(.645, .045, .355, 1);
-    border: 1px solid transparent;
-    margin-bottom: -1px;
-    cursor: pointer;
-    text-align: center;
-    writing-mode: horizontal-tb;
-  }
-
-  .quest--mission-tabs-list li:hover {
-    font-weight: 600;
-    background-color: #fff;
-  }
-
-  .quest--mission-tabs-list li.active {
-    color: #409eff;
-    background-color: #fff;
-    border-right-color: #dcdfe6;
-    border-left-color: #dcdfe6;
-    white-space: nowrap;
-    position: relative;
-    transition: transform .3s;
-    z-index: 2;
-  }
-  /* .vertical-lr li{
-    writing-mode: lr-tb;
-  } */
-  /* #quest-mission {
-    width: 40px;
-    height: 300px;
-    margin: 0 auto;
-    background-color: #ddd;
-  }
-
-  .quest--mission-tabs-main {
-    height: 100%;
-    line-height: 50px;
-    background-color: #999;
-    padding: 0;
-  }
-
-  .quest--mission-tabs-main ul li{ display:block;margin:10px 0; width:100%;text-align: center;color: #fff; cursor: pointer;}
-  .quest--mission-tabs-main ul li a{text-decoration: none;color: #fff;}
-  .e_tab_bd{ margin: 3%;}
-
-  .quest--mission-tabs-list li.active{
-    background-color: #337ab7;
-    border-radius: 1px;
-  } */
-
-  /* .fade-transition {
-    transition: opacity 0.3s ease;
-  }
-
-  .fade-enter,
-  .fade-leave {
-    opacity: 0;
-  }
-
-  .fa{
-    width: 0;
-    height: 0;
-    border-top: 25px solid transparent;
-    border-right: 25px solid #fff;
-    border-bottom: 25px solid transparent;
-  }
-
-  .fa2{
-    display:block;
-    border-color: transparent #fff transparent transparent;
-    border-style: dashed solid dashed dashed;
-    border-width: 25px;
-  } */
-</style>

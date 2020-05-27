@@ -68,8 +68,8 @@ const getters = {
   getQuestNameById: (state) => (id) => {
     for (const diff of state.difficulties) {
       if (state.quest[diff][id] && state.quest[diff][id].id === id) {
-        switch (String(id).substring(0,2)) {
-          case '12':
+        switch (String(id).substring(0, 2)) {
+          case "12":
             return `${state.quest[diff][id].quest_info.quest_name} (H)`
           default:
             return state.quest[diff][id].quest_info.quest_name
@@ -84,7 +84,47 @@ const getters = {
     }
   },
 
-  
+  getQuestArea: (state) => () => {
+    const obj = {
+      normal: [],
+      hard: [],
+      other: []
+    }
+    for (const area of state.quest.area) {
+      switch (String(area.area_id).substring(0, 2)) {
+        case "11":
+          obj.normal.push({
+            area_id: area.area_id,
+            area_name: area.area_name
+          })
+          break
+        case "12":
+          obj.hard.push({
+            area_id: area.area_id,
+            area_name: `${area.area_name} (H)`
+          })
+          break
+        default:
+          obj.other.push({
+            area_id: area.area_id,
+            area_name: area.area_name
+          })
+      }
+    }
+    return obj
+  },
+
+  getQuestListByArea: (state) => (areaid) => {
+    const arr = []
+    for (const diff of state.difficulties) {
+      for (const quest of Object.values(state.quest[diff])) {
+        if (quest.quest_info.area_id === areaid) {
+          arr.push(quest.id)
+        }
+      }
+    }
+    return arr
+  }
 }
 
 export default getters
