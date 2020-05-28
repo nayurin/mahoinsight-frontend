@@ -10,7 +10,7 @@
           class="mx-4"
           flat
           hide-details
-          label="可以使用如A-B的格式来查询"
+          label="举例: A-B [ normal | hard ]"
           prepend-inner-icon="mdi-magnify"
           solo-inverted
           clearable
@@ -56,7 +56,7 @@
       />
       <v-tabs
         dark
-        v-model="a"
+        v-model="area"
         show-arrows
         background-color="primary"
         slider-color="orange lighten-3"
@@ -68,7 +68,7 @@
           @click="onClickOfArea(value.area_id)"
         />
       </v-tabs>
-      <v-tabs-items v-model="a">
+      <v-tabs-items v-model="area">
         <v-tab-item
           v-for="(value, key) in this[diff]"
           :key="key"
@@ -88,7 +88,7 @@
             opacity=0.47
           />
           <v-tabs
-            v-model="q"
+            v-model="quest"
             slider-size=4
             slider-color="purple"
             vertical
@@ -96,12 +96,13 @@
             <v-tab
               v-for="value of listArea"
               :key="value"
+              class="pl-2 pr-2"
               v-text="$store.getters.getQuestNameById(value)"
               @click="onClickOfQuest(value)"
             >
             </v-tab>
           </v-tabs>
-          <v-tabs-items v-model="q">
+          <v-tabs-items v-model="quest">
             <v-tab-item
               v-for="value of listArea"
               :key="value"
@@ -115,34 +116,88 @@
           v-show="y"
         >
           <v-card-title>{{ $store.getters.getQuestNameById(y) }}</v-card-title>
-          <v-card-text>{{ searchbox }} -- {{ search() }} --</v-card-text>
+          <v-expansion-panels
+            v-model="panel"
+            hover
+            focusable
+            accordion
+            multiple
+          >
+            <v-expansion-panel>
+              <v-expansion-panel-header>基本信息</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-card
+                  outlined
+                >
+                  <v-list-item
+                    dense
+                    v-for="(value, key) in info"
+                    :key="key"
+                    class="ml-4 pa-0"
+                  >
+                    <v-btn
+                      small
+                      color="primary"
+                      v-text="key"
+                    />
+                    <v-btn
+                      text
+                      small
+                      v-text="value"
+                    />
+                  </v-list-item>
+                </v-card>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>魔物数据</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-card
+                  v-for="(value, key) in enemy"
+                  :key="key"
+                >
+                  <v-card-subtitle v-text="key"/>
+                  <v-card-text
+                    v-for="id in value"
+                    :key="id"
+                  >{{id}}</v-card-text>
+                </v-card>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>道具掉落</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <QuestReward
+                  v-if="this.y"
+                  :id="this.y"
+                />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-card>
       </v-col>
     </v-row>
-    
-
-    
-      
   </v-container>
 </template>
 
 <script>
-// import ItemFigure from '@/components/ItemFigure'
+import QuestReward from '@/components/quests/QuestReward'
 
 export default {
   name: 'Quest',
   components: {
-    // ItemFigure
+    QuestReward
   },
   data () {
     return {
-      a: null,
-      q: null,
+      area: null,
+      quest: null,
       x: 0,
       y: 0,
       diff: 'normal',
       searchbox: '',
       overlay: false,
+      panel: [2],
       axis: {
         x: 0,
         y: 0
@@ -162,8 +217,33 @@ export default {
       return this.$store.getters.getQuestArea().other
     },
     listArea () {
-      // console.log(this.x)
       return this.$store.getters.getQuestListByArea(this.x)
+    },
+    info () {
+      return this.y ? {
+        体力消耗: this.$store.getters.getQuestInfoById(this.y).stamina,
+        每波限时: `${this.$store.getters.getQuestInfoById(this.y).limit_time}s`,
+        好感度获得: this.$store.getters.getQuestInfoById(this.y).love,
+        主角等级限制: this.$store.getters.getQuestInfoById(this.y).limit_team_level || "不限制",
+        角色经验获得: this.$store.getters.getQuestInfoById(this.y).unit_exp,
+        主角经验获得: this.$store.getters.getQuestInfoById(this.y).team_exp,
+        每日挑战次数: this.$store.getters.getQuestInfoById(this.y).daily_limit || "不限制"
+      } : null
+    },
+    enemy () {
+      const enemies = {}
+      const re = /^enemy_id_(\d)_in_wave_(\d)$/
+      for (const i in this.$store.getters.getQuestEnemyIdById(this.y)) {
+        const enemy = this.$store.getters.getQuestEnemyIdById(this.y)[i]
+        if (Object.keys(enemy)[0].match(re) && Object.keys(enemy)[0].match(re).length === 3) {
+          if (Object.prototype.hasOwnProperty.call(enemies, `第${Object.keys(enemy)[0].match(re)[2]}波`)) {
+            enemies[`第${Object.keys(enemy)[0].match(re)[2]}波`].push(Object.values(enemy)[0])
+          } else {
+            enemies[`第${Object.keys(enemy)[0].match(re)[2]}波`] = [Object.values(enemy)[0]]
+          }
+        }
+      }
+      return enemies
     }
   },
   methods: {
@@ -178,7 +258,6 @@ export default {
     },
     onClickOfQuest (quest) {
       this.y = quest
-      // console.log(this.$store.getters.getQuestRewardById(quest))
     },
     onSearchboxFocused () {
       this.overlay = true
@@ -196,8 +275,8 @@ export default {
     },
     onSearchboxInputted () {
       if (this.search()) {
-        this.x = Number(this.search().x),
-        this.y = Number(this.search().y),
+        this.x = this.search().x,
+        this.y = this.search().y,
         this.diff = this.search().diff
       }
     },
@@ -229,14 +308,10 @@ export default {
       }
       return this.$store.getters.getQuestNameById(Number(id)) ? {
         diff: diff,
-        x: id.substring(0, 5),
-        y: id
+        x: Number(id.substring(0, 5)),
+        y: Number(id)
       } : null
     }
-  },
-  created () {
-    // console.log(this.listArea)
-    // console.log(this.$store.getters.getQuestArea())
   }
 }
 </script>
