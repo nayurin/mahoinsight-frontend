@@ -22,10 +22,6 @@ export default {
     zoomRatio: {
       type: String,
       default: '1'
-    },
-    enableHover: {
-      type: Boolean,
-      default: true
     }
   },
   data () {

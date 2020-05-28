@@ -12,6 +12,7 @@
         <v-card>
           <PrincessFigure
             :princess="$store.getters.getPrincessByName(value[0])"
+            zoomRatio="0.7"
           >
             <template v-slot:add>
               <v-chip

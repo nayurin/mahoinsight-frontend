@@ -14,7 +14,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.8"
+            zoomRatio="0.6"
           />
         </v-card>
       </v-col>

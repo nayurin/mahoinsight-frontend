@@ -1,18 +1,17 @@
 <template>
   <v-card
-    :href="link()"
+    :href="link"
   >
     <v-img
-      :src="src()"
-      :alt="princessName()"
-      class=""
-      :style="style()"
+      :src="src"
+      :alt="princessName"
+      :style="style"
     />
     <v-row
       class="d-flex justify-center align-center"
     >
       <v-chip
-        v-text="princessName()"
+        v-text="princessName"
         label
         color="white"
         class="pa-0"
@@ -33,19 +32,15 @@ export default {
     zoomRatio: {
       type: String,
       default: '1'
-    },
-    enableHover: {
-      type: Boolean,
-      default: true
     }
   },
   data () {
     return {
-      origHeight: 128,
-      origWidth: 128
+      origHeight: 180,
+      origWidth: 180
     }
   },
-  methods: {
+  computed: {
     princessName () {
       return this.princess.status.unit_name
     },
@@ -53,10 +48,10 @@ export default {
       return this.princess.id
     },
     link () {
-      return `/princess/detail/${this.princessName()}`
+      return `/princess/detail/${this.princessName}`
     },
     src () {
-      return `/image/character_favicons/fav_push_notif_${this.princessId()}.png`
+      return `/image/character_favicons/fav_push_notif_${this.princessId}.png`
     },
     style () {
       return {

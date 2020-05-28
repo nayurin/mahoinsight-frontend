@@ -10,8 +10,8 @@
       <slot name="beforeImage"/>
       <v-img
         contain
-        :src="src()"
-        :style="style()"
+        :src="src"
+        :style="style"
       />
       <slot name="afterImage"/>
     </v-row>
@@ -29,10 +29,6 @@ export default {
     zoomRatio: {
       type: String,
       default: '1'
-    },
-    enableHover: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
@@ -41,7 +37,7 @@ export default {
       origWidth: 128
     }
   },
-  methods: {
+  computed: {
     src () {
       return `/image/skills/icon_skill_${this.id}.png`
     },

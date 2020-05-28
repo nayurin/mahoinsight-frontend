@@ -112,6 +112,18 @@ const getters = {
     return enemy_id
   },
 
+  getQuestEnemyInfoByEnemyId: (state) => (id) => {
+    for (const diff of state.difficulties) {
+      for (const quest of Object.values(state.quest[diff])) {
+        for (const wave of Object.values(quest.enemy_info)) {
+          for (const enemy of Object.values(wave)) {
+            if (enemy.enemy_id === id) return enemy
+          }
+        }
+      }
+    }
+  },
+
   getQuestEnemyResistanceByEnemyId: (state) => (id) => {
     for (const diff of state.difficulties) {
       for (const quest of Object.values(state.quest[diff])) {
@@ -126,8 +138,8 @@ const getters = {
               睡眠: enemy.resist_status[5],
               眩晕: enemy.resist_status[6],
               石化: enemy.resist_status[7],
-              拘留: enemy.resist_status[8],
-              "拘留(造成伤害)": enemy.resist_status[9],
+              拘留α: enemy.resist_status[8], //拘留
+              拘留β: enemy.resist_status[9], //拘留(造成伤害)
               毒: enemy.resist_status[10],
               烧伤: enemy.resist_status[11],
               诅咒: enemy.resist_status[12],
@@ -151,6 +163,18 @@ const getters = {
         for (const wave of Object.values(quest.enemy_info)) {
           for (const enemy of Object.values(wave)) {
             if (enemy.enemy_id === id) return enemy.unit_id
+          }
+        }
+      }
+    }
+  },
+
+  getQuestEnemyNameByEnemyId: (state) => (id) => {
+    for (const diff of state.difficulties) {
+      for (const quest of Object.values(state.quest[diff])) {
+        for (const wave of Object.values(quest.enemy_info)) {
+          for (const enemy of Object.values(wave)) {
+            if (enemy.enemy_id === id) return enemy.name
           }
         }
       }

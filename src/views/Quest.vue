@@ -77,7 +77,10 @@
       </v-tabs-items>
     </v-card>
 
-    <v-row no-gutters>
+    <v-row 
+      no-gutters
+      class="d-flex flex-nowrap"
+    >
       <v-col cols="auto">
         <v-card
           v-show="x"
@@ -125,7 +128,7 @@
           >
             <v-expansion-panel>
               <v-expansion-panel-header>基本信息</v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content class="pt-4">
                 <v-card
                   outlined
                 >
@@ -151,22 +154,26 @@
             </v-expansion-panel>
             <v-expansion-panel>
               <v-expansion-panel-header>魔物数据</v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content class="pt-4">
                 <v-card
                   v-for="(value, key) in enemy"
                   :key="key"
+                  class="d-flex flex-row align-center"
                 >
-                  <v-card-subtitle v-text="key"/>
-                  <v-card-text
-                    v-for="id in value"
-                    :key="id"
-                  >{{id}}</v-card-text>
+                  <v-card-subtitle v-text="key" />
+                  <EnemyFigure
+                    v-for="(id, i) of value"
+                    :key="i"
+                    :enemyid="id"
+                    zoomRatio="0.6"
+                    class="ml-1 mr-1"
+                  ></EnemyFigure>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
               <v-expansion-panel-header>道具掉落</v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content class="pt-4">
                 <QuestReward
                   v-if="this.y"
                   :id="this.y"
@@ -182,11 +189,13 @@
 
 <script>
 import QuestReward from '@/components/quests/QuestReward'
+import EnemyFigure from '@/components/global/EnemyFigure'
 
 export default {
   name: 'Quest',
   components: {
-    QuestReward
+    QuestReward,
+    EnemyFigure
   },
   data () {
     return {
