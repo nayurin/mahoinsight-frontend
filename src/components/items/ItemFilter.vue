@@ -40,6 +40,10 @@ export default {
     filter: {
       type: Array,
       required: true
+    },
+    search: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -48,7 +52,9 @@ export default {
       this.filter.forEach(cond => {
         res = this.filtedByCondition(res, cond)
       })
-      return res
+      return this.search === '' ? res : res.filter(x => {
+        return x.detail.equipment_name.match(this.search)
+      })
     },
     items () {
       const _item = []
