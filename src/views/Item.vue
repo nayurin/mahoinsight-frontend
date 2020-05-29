@@ -3,58 +3,57 @@
     <v-card-title>装备列表</v-card-title>
     <v-row>
       <v-col
-        cols="auto"
-        v-for="(value, key) of items()"
-        :key="key"
-        class="pa-1"
+        cols="12"
+        class="py-2"
       >
-        <v-card
-          class="ma-1"
-          outlined
+        <v-btn
+          color="primary"
+          @click="onClick2Cancel()"
+          v-text="`清除筛选`"
+        />
+        <v-btn-toggle
+          v-model="filter"
           tile
-          max-width=96
+          color="deep-purple accent-3"
+          group
+          multiple
         >
-          <ItemFigure
-            :id="value.id"
-            zoomRatio="0.75"
-          >
-            <template v-slot:under>
-              <v-card-text
-                v-text="value.detail.equipment_name"
-                class="pa-2 caption text-center"
-              />
-            </template>
-          </ItemFigure>
-        </v-card>
+          <v-btn value="physical_critical">物理暴击</v-btn>
+          <v-btn value="magic_critical">魔法暴击</v-btn>
+          <v-btn value="dodge">回避</v-btn>
+          <v-btn value="accuracy">命中</v-btn>
+          <v-btn value="life_steal">生命值吸收</v-btn>
+          <v-btn value="hp_recovery_rate">回复量上升</v-btn>
+          <v-btn value="energy_recovery_rate">技能值上升</v-btn>
+          <v-btn value="energy_reduce_rate">技能值消耗降低</v-btn>
+          <v-btn value="wave_hp_recovery">生命值自动回复</v-btn>
+          <v-btn value="wave_energy_recovery">技能值自动回复</v-btn>
+          <v-btn value="physical_penetrate">物理穿透</v-btn>
+          <v-btn value="magic_penetrate">魔法穿透</v-btn>
+        </v-btn-toggle>
       </v-col>
     </v-row>
+    <ItemFilter :filter="filter" />
   </v-container>
 </template>
 
 <script>
-import ItemFigure from '@/components/global/ItemFigure'
+import ItemFilter from '@/components/items/ItemFilter'
 
 export default {
   name: 'Item',
   components: {
-    ItemFigure
+    ItemFilter
   },
-  computed: {
+  data () {
+    return {
+      filter: []
+    }
   },
   methods: {
-    items () {
-      const _item = {}
-      Object.values(this.$store.state.item).map(x=>{
-        if (x.id.toString().split('')[1] === '0' || x.id === 140000) {
-          _item[x.detail.equipment_name] = x
-        }
-      })
-      return _item
+    onClick2Cancel () {
+      this.filter = []
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
