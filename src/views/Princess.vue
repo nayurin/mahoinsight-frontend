@@ -52,24 +52,24 @@
     </v-row>
     <ListByRarity v-show="selected === '稀有度'" />
     <ListByPos v-show="selected === '位置'" />
-    <SortBy v-show="selected === '年龄'" sortby="age" :sort="age" />
-    <SortBy v-show="selected === '身高'" sortby="height" :sort="height" />
-    <SortBy v-show="selected === '体重'" sortby="weight" :sort="weight" />
-    <SortBy v-show="selected === '索敌半径'" sortby="saw" :sort="saw" />
+    <SortPrincess v-show="selected === '年龄'" sortby="age" :sort="age" />
+    <SortPrincess v-show="selected === '身高'" sortby="height" :sort="height" />
+    <SortPrincess v-show="selected === '体重'" sortby="weight" :sort="weight" />
+    <SortPrincess v-show="selected === '索敌半径'" sortby="saw" :sort="saw" />
   </v-container>
 </template>
 
 <script>
 import ListByRarity from '@/components/princesses/ListByRarity'
 import ListByPos from '@/components/princesses/ListByPos'
-import SortBy from '@/components/princesses/SortBy'
+import SortPrincess from '@/components/princesses/SortPrincess'
 
 export default {
   name: 'Princess',
   components: {
     ListByRarity,
     ListByPos,
-    SortBy
+    SortPrincess
   },
   data: () => ({
     selected: '稀有度',

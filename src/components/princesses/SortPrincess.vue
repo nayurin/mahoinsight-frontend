@@ -33,7 +33,7 @@
 import PrincessFigure from '@/components/global/PrincessFigure'
 
 export default {
-  name: 'ListByAge',
+  name: 'SortPrincess',
   components: {
     PrincessFigure
   },
