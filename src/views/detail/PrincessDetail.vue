@@ -1,17 +1,17 @@
 <template>
   <v-container fluid>
     <PrincessBanner
-      :princess="thisPrincess()"
+      :princess="princess"
     />
     <v-row>
       <v-col cols="10">
         <PrincessCard
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
       <v-col cols="2">
         <PrincessProfile
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
     </v-row>
@@ -20,7 +20,7 @@
         cols="12"
       >
         <PrincessAP
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
     </v-row>
@@ -29,30 +29,30 @@
         col=6
       >
         <PrincessEquipment
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
       <v-col
         col=6
       >
         <PrincessStatus
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
     </v-row>
     <v-row
-      v-if="Object.prototype.hasOwnProperty.call(thisPrincess(), 'unique_equipment')"
+      v-if="Object.prototype.hasOwnProperty.call(princess, 'unique_equipment')"
     >
       <v-col>
         <PrincessUniqueEquipment
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <PrincessSkill
-          :princess="thisPrincess()"
+          :princess="princess"
         />
       </v-col>
     </v-row>
@@ -81,19 +81,16 @@ export default {
     PrincessUniqueEquipment,
     PrincessSkill
   },
-  methods: {
-    thisPrincess () {
-      return this.$store.getters.getPrincessByName(this.princessName())
+  computed: {
+    princess () {
+      return this.$store.getters.getPrincessByName(this.name)
     },
-    princessId () {
-      return this.thisPrincess().id
-    },
-    princessName () {
+    name () {
       return this.$route.params.princessName
     }
   },
-  created () {
-    // console.log(this.thisPrincess().skill)
-  }
+  // created () {
+  //   console.log(this.princess)
+  // }
 }
 </script>

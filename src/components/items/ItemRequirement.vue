@@ -15,19 +15,21 @@
             zoomRatio="0.7"
           >
             <template v-slot:add>
-              <v-chip
-                class="ml-1 pa-2"
-                :color="rankColor(value[1])"
-                label
-                small
-                text-color="white"
-              >
-                Rank {{ value[1] }}
-                <v-icon
-                  v-if="value[2] != 1"
-                  right
-                >mdi-numeric-{{ value[2] }}-box-multiple-outline</v-icon>
-              </v-chip>
+              <v-col>
+                <v-chip
+                  class="ml-1 pa-2"
+                  :color="rankColor(value[1])"
+                  label
+                  small
+                  text-color="white"
+                >
+                  Rank {{ value[1] }}
+                  <v-icon
+                    v-if="value[2] != 1"
+                    right
+                  >mdi-numeric-{{ value[2] }}-box-multiple-outline</v-icon>
+                </v-chip>
+              </v-col>
             </template>
           </PrincessFigure>
         </v-card>

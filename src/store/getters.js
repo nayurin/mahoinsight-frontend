@@ -25,6 +25,13 @@ const getters = {
     return Object.values(state.chara).filter(chara => chara.status.rarity === rarity)
   },
 
+  getPrincessPositionByName: (state) => (name) => {
+    const saw = state.chara[name].status.search_area_width
+    if (saw < state.widthThreshold[0]) return 1
+    else if (saw >= state.widthThreshold[1]) return 3
+    else return 2
+  },
+
   getItemByName: (state) => (name) => {
     return state.item[name]
   },

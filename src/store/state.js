@@ -16,7 +16,8 @@ const state = {
     7: "amber darken-2",
     8: "amber darken-2"
   },
-  difficulties: ["normal", "hard", "other"]
+  difficulties: ["normal", "hard", "other"],
+  widthThreshold: [300, 600]
 }
 
 export default state

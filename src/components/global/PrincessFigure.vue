@@ -4,18 +4,22 @@
   >
     <v-img
       :src="src"
-      :alt="princessName"
+      :alt="name"
       :style="style"
     />
     <v-row
       class="d-flex justify-center align-center"
+      no-gutters
     >
-      <v-chip
-        v-text="princessName"
-        label
-        color="white"
-        class="pa-0"
+      <v-col>
+        <v-btn
+        v-text="name"
+        small
+        block
+        :color="this.princess.status.atk_type === 1 ? 'pink' : 'indigo'"
+        class="pa-0 font-weight-light white--text"
       />
+      </v-col>
       <slot name="add" />
     </v-row>
   </v-card>
@@ -41,17 +45,14 @@ export default {
     }
   },
   computed: {
-    princessName () {
+    name () {
       return this.princess.status.unit_name
     },
-    princessId () {
-      return this.princess.id
-    },
     link () {
-      return `/princess/detail/${this.princessName}`
+      return `/princess/detail/${this.name}`
     },
     src () {
-      return `/image/character_favicons/fav_push_notif_${this.princessId}.png`
+      return `/image/character_favicons/fav_push_notif_${this.princess.id}.png`
     },
     style () {
       return {

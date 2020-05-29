@@ -17,11 +17,13 @@
           />
           <v-row
             class="d-flex justify-center align-center"
+            no-gutters
           >
             <v-btn
               v-text="name"
               :color="info.atk_type === 1 ? 'pink' : 'indigo'"
               small
+              block
               class="pa-0 white--text"
             />
           </v-row>

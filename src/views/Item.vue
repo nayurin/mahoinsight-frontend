@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <h3>装备列表</h3>
+    <v-card-title>装备列表</v-card-title>
     <v-row>
       <v-col
         cols="auto"
