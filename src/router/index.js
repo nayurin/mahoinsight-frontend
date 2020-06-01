@@ -13,35 +13,40 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HelloWorld
+    component: HelloWorld,
+    meta: {
+      title: '首页',
+      breadcrumb: ['Home']
+    }
   },
   {
     path: '/item',
     name: 'Item',
     component: Item,
-    // children: [{
-    //   path: 'item/detail/:itemName',
-    //   name: 'ItemDetail',
-    //   component: ItemDetail,
-    //   props: true
-    // }]
+    meta: {
+      title: '道具',
+      breadcrumb: ['Item']
+    }
   },
   {
     path: '/item/detail/:itemName',
     name: 'ItemDetail',
     component: ItemDetail,
-    props: true
+    props: true,
+    meta: {
+      title: '道具详情',
+      hidden: true,
+      breadcrumb: ['Item', ':itemName']
+    }
   },
   {
     path: '/princess',
     name: 'Princess',
     component: Princess,
-    // children: [{
-    //   path: 'princess/detail/:princessName',
-    //   name: 'PrincessDetail',
-    //   component: PrincessDetail,
-    //   props: true
-    // }]
+    meta: {
+      title: '角色',
+      breadcrumb: ['Princess']
+    }
   },
   {
     path: '/princess/detail/:princessName',
@@ -49,13 +54,19 @@ const routes = [
     component: PrincessDetail,
     props: true,
     meta: {
-      hide: true
+      title: '角色详情',
+      hidden: true,
+      breadcrumb: ['Princess', ':princessName']
     }
   },
   {
     path: '/quest',
     name: 'Quest',
-    component: () => import('../views/Quest.vue')
+    component: () => import('../views/Quest.vue'),
+    meta: {
+      title: '关卡',
+      breadcrumb: ['Quest']
+    }
   }
 ]
 

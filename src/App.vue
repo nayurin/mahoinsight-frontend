@@ -1,16 +1,22 @@
 <template>
   <v-app>
-    <!-- <v-app-bar
+    <v-app-bar
       app
-      color="primary"
-      dark
+      clipped-left
     >
-    </v-app-bar> -->
+      <v-img
+        src="/image/bg/favicon.png"
+        contain
+        max-width="48"
+      />
+      <Breadcrumbs />
+    </v-app-bar>
     <v-card
       class="overflow-hidden"
     >
       <v-navigation-drawer
         app
+        clipped
       >
         <Navigation
           v-for="route in routes"
@@ -21,33 +27,36 @@
     </v-card>
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <router-view />
       </v-container>
     </v-content>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import Footer from '@/components/Footer'
 
 export default {
   name: 'App',
 
   components: {
-    Navigation
+    Navigation,
+    Breadcrumbs,
+    Footer
   },
 
   data: () => ({
     routes: []
   }),
   created () {
-    // this.routes = this.$router.options.routes.filter(el => !el.meta.hide);
-    this.routes = this.$router.options.routes;
-    // console.log(this.routes)
-    // this.$store.dispatch("data/fetch", false);
+    this.routes = this.$router.options.routes.filter(x => !x.meta || !x.meta.hidden);
     this.$store.commit('loadObjects', 'chara')
     this.$store.commit('loadObjects', 'item')
     this.$store.commit('loadObjects', 'quest')
+    this.$store.commit('loadGitCommit', GIT_COMMIT)
   }
 };
 </script>

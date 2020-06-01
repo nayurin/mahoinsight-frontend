@@ -79,7 +79,7 @@
           </v-list-item-icon> -->
 
           <v-list-item-content>
-            <v-list-item-title>{{ route.name }}</v-list-item-title>
+            <v-list-item-title>{{ route.meta.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -94,43 +94,40 @@
 </template>
 
 <script>
-  export default {
-    name: "Navigation",
-    props: {
-      route: {
-        type: Object,
-        required: true
-      }
-    },
-    data () {
+export default {
+  name: "Navigation",
+  props: {
+    route: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+    //   items: [
+    //     { title: 'Dashboard', icon: 'dashboard' },
+    //     { title: 'Account', icon: 'account_box' },
+    //     { title: 'Admin', icon: 'gavel' },
+    //   ],
+    }
+  },
+  computed: {
+    activeClass() {
       return {
-      //   items: [
-      //     { title: 'Dashboard', icon: 'dashboard' },
-      //     { title: 'Account', icon: 'account_box' },
-      //     { title: 'Admin', icon: 'gavel' },
-      //   ],
+        "v-list-item--active": true,
       }
-    },
-    computed: {
-      activeClass() {
-        return {
-          "v-list-item--active": true,
-          // "white--text": this.$vuetify.theme.dark
-        }
-      }
-    },
-    methods: {
-      navigate (route) {
-        if (route.path !== this.$router.currentRoute.path){
-          this.$router.push({
-            name: route.name
-          })
-        }
-        // console.log(route)
-        // console.log(this.$router)
+    }
+  },
+  methods: {
+    navigate (route) {
+      if (route.path !== this.$router.currentRoute.path){
+        this.$router.push({
+          name: route.name
+        })
       }
     }
   }
+}
 </script>
 
 

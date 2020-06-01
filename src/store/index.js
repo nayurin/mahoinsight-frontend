@@ -16,6 +16,9 @@ export default new Vuex.Store({
       box.load()
       state[type] = box.objects
     },
+    loadGitCommit (state, hash) {
+      state['gitcommit'] = hash
+    },
     updateCurrentRank (state, rank) {
       if (parseInt(Number(rank)) > 0 && parseInt(Number(rank)) <= state.maxRank) {
         state.curRank = parseInt(Number(rank))

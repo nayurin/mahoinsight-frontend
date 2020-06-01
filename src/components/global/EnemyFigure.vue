@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="dialogEnemyDetail"
-      width=600
+      width="600"
     >
       <template v-slot:activator="{ on }">
         <v-card
@@ -20,11 +20,11 @@
             no-gutters
           >
             <v-btn
-              v-text="name"
               :color="info.atk_type === 1 ? 'pink' : 'indigo'"
               small
               block
               class="pa-0 white--text"
+              v-text="name"
             />
           </v-row>
         </v-card>
@@ -39,11 +39,11 @@
             v-text="info.name"
           />
           <v-chip
-            v-text="info.atk_type === 1 ? '物理' : '魔法'"
             :color="info.atk_type === 1 ? 'pink' : 'indigo'"
             label
             small
             class="white--text"
+            v-text="info.atk_type === 1 ? '物理' : '魔法'"
           />
         </v-row>
         <v-row no-gutters>
@@ -54,22 +54,22 @@
               :src="src"
               :alt="name"
               contain
-              width=128
+              width="128"
             />
             <v-card-text 
-              v-html="comment"
               class="font-weight-thin"
+              v-html="comment"
             />
             <v-dialog
               v-model="dialogEnemyResistance"
-              width=400
+              width="400"
             >
               <template v-slot:activator="{ on }">
                 <v-btn
-                  v-text="`异常状态抗性`"
                   color="purple darken-3"
                   class="white--text mr-8"
                   v-on="on"
+                  v-text="`异常状态抗性`"
                 />
               </template>
               <v-card
@@ -79,7 +79,7 @@
                   <v-col
                     v-for="(value, key) in resistance"
                     :key="key"
-                    cols=4
+                    cols="4"
                   >
                     <v-list-item dense>
                       <v-chip
@@ -92,8 +92,8 @@
                         label
                         outlined
                         small
-                        v-html="value"
                         :color="value !== 0 ? 'red' : ''"
+                        v-text="value"
                       />
                     </v-list-item>
                   </v-col>
@@ -107,10 +107,10 @@
           class="pb-4"
         >
           <v-col
-            class="d-flex flex-row flex-wrap pa-0"
-            cols="4"
             v-for="(value, key) in status"
             :key="key"
+            class="d-flex flex-row flex-wrap pa-0"
+            cols="4"
           >
             <v-list-item
               class="ml-4 mr-4 pa-0"
@@ -126,7 +126,7 @@
                 label
                 outlined
                 small
-                v-html="value"
+                v-text="value"
               />
             </v-list-item>
           </v-col>

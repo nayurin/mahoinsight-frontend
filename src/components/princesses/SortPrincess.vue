@@ -1,9 +1,9 @@
 <template>
   <v-row>
     <v-col
-      cols="auto"
       v-for="(chara, key) of sorted"
       :key="key"
+      cols="auto"
     >
       <v-card
         class="ma-1"
@@ -12,7 +12,7 @@
       >
         <PrincessFigure
           :princess="chara"
-          zoomRatio="0.6"
+          zoom-ratio="0.6"
         >
           <template v-slot:add>
             <v-chip
@@ -21,7 +21,7 @@
               outlined
               class="px-2"
               v-text="profile(chara)"
-            ></v-chip>
+            />
           </template>
         </PrincessFigure>
       </v-card>

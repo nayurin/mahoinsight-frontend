@@ -41,16 +41,24 @@ export default {
   computed: {
     craftBy () {
       const craft_by = this._craft(this.item.craft_by).flat(Infinity)
-      const ret = []
+      const item = [], amount = [], combined = []
       for (let i = 0; i < craft_by.length; i = i + 2) {
-        ret.push([craft_by[i], craft_by[i + 1]])
+        if (item.indexOf(craft_by[i]) !== -1) {
+          amount[item.indexOf(craft_by[i])] += craft_by[i + 1]
+        } else {
+          item.push(craft_by[i])
+          amount.push(craft_by[i + 1])
+        }
       }
-      return ret
+      for (let i = 0; i < item.length; i++) {
+        combined.push([item[i], amount[i]])
+      }
+      return combined
     }
   },
   methods: {
     isCraft (id) {
-      return this.findItem(id).detail.craft_flg === 1 ? true : false 
+      return this.findItem(id) && this.findItem(id).detail.craft_flg === 1 ? true : false 
     },
     _craft (arr) {
       for (let i = 0; i < arr.length; i++) {

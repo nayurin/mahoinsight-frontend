@@ -3,7 +3,7 @@
     <v-card-title>角色属性</v-card-title>
     <v-card-text>
       <v-row>
-        <v-col cols=6>
+        <v-col cols="6">
           <v-text-field
             v-model="level"
             label="等级"
@@ -11,7 +11,7 @@
             hide-details="auto"
           />
         </v-col>
-        <v-col cols=6>
+        <v-col cols="6">
           <v-text-field
             v-model="rank"
             label="RANK"
@@ -25,18 +25,18 @@
       >
         ★数
         <v-rating
+          v-model="rarity"
           dense
           hover
           small
-          v-model="rarity"
           color="yellow darken-2"
         />
       </v-row>
       <v-row>
         <v-col
-          cols=6
           v-for="(value, key) in princessStatus(...status)"
           :key="key"
+          cols="6"
         >
           <v-btn
             small

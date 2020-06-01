@@ -18,31 +18,30 @@
           @focus="onSearchboxFocused()"
           @blur="onSearchboxBlurred()"
           @click:clear="onSearchboxClearred()"
-        >
-        </v-text-field>
-          <template v-slot:extension>
-            <v-overlay
-              absolute
-              :value="overlay"
-              opacity=0.47
+        />
+        <template v-slot:extension>
+          <v-overlay
+            absolute
+            :value="overlay"
+            opacity="0.47"
+          />
+          <v-tabs
+            centered
+          >
+            <v-tab
+              @click="onClickOfDiff('normal')"
+              v-text="`普通难度`"
             />
-            <v-tabs
-              centered
-            >
-              <v-tab
-                v-text="`普通难度`"
-                @click="onClickOfDiff('normal')"
-              />
-              <v-tab
-                v-text="`困难难度`"
-                @click="onClickOfDiff('hard')"
-              />
-              <v-tab
-                v-text="`其他`"
-                @click="onClickOfDiff('other')"
-              />
-            </v-tabs>
-          </template>
+            <v-tab
+              @click="onClickOfDiff('hard')"
+              v-text="`困难难度`"
+            />
+            <v-tab
+              @click="onClickOfDiff('other')"
+              v-text="`其他`"
+            />
+          </v-tabs>
+        </template>
       </v-toolbar>
     </v-card>
 
@@ -52,11 +51,11 @@
       <v-overlay
         absolute
         :value="overlay"
-        opacity=0.47
+        opacity="0.47"
       />
       <v-tabs
-        dark
         v-model="area"
+        dark
         show-arrows
         background-color="primary"
         slider-color="orange lighten-3"
@@ -64,16 +63,15 @@
         <v-tab
           v-for="(value, key) in this[diff]"
           :key="key"
-          v-text="value.area_name"
           @click="onClickOfArea(value.area_id)"
+          v-text="value.area_name"
         />
       </v-tabs>
       <v-tabs-items v-model="area">
         <v-tab-item
           v-for="(value, key) in this[diff]"
           :key="key"
-        >
-        </v-tab-item>
+        />
       </v-tabs-items>
     </v-card>
 
@@ -88,11 +86,11 @@
           <v-overlay
             absolute
             :value="overlay"
-            opacity=0.47
+            opacity="0.47"
           />
           <v-tabs
             v-model="quest"
-            slider-size=4
+            slider-size="4"
             slider-color="purple"
             vertical
           >
@@ -100,17 +98,15 @@
               v-for="value of listArea"
               :key="value"
               class="pl-2 pr-2"
-              v-text="$store.getters.getQuestNameById(value)"
               @click="onClickOfQuest(value)"
-            >
-            </v-tab>
+              v-text="$store.getters.getQuestNameById(value)"
+            />
           </v-tabs>
           <v-tabs-items v-model="quest">
             <v-tab-item
               v-for="value of listArea"
               :key="value"
-            >
-            </v-tab-item>
+            />
           </v-tabs-items>
         </v-card>
       </v-col>
@@ -133,10 +129,10 @@
                   outlined
                 >
                   <v-list-item
-                    dense
                     v-for="(value, key) in info"
                     :key="key"
                     class="ml-4 pa-0"
+                    dense
                   >
                     <v-btn
                       small
@@ -165,9 +161,9 @@
                     v-for="(id, i) of value"
                     :key="i"
                     :enemyid="id"
-                    zoomRatio="0.6"
+                    zoom-ratio="0.6"
                     class="ml-1 mr-1"
-                  ></EnemyFigure>
+                  />
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -175,8 +171,8 @@
               <v-expansion-panel-header>道具掉落</v-expansion-panel-header>
               <v-expansion-panel-content class="pt-4">
                 <QuestReward
-                  v-if="this.y"
-                  :id="this.y"
+                  v-if="y"
+                  :id="y"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -212,8 +208,6 @@ export default {
         y: 0
       }
     }
-  },
-  watch: {
   },
   computed: {
     normal () {

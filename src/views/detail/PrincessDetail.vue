@@ -26,14 +26,14 @@
     </v-row>
     <v-row>
       <v-col
-        col=6
+        cols="6"
       >
         <PrincessEquipment
           :princess="princess"
         />
       </v-col>
       <v-col
-        col=6
+        cols="6"
       >
         <PrincessStatus
           :princess="princess"

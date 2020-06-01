@@ -14,16 +14,16 @@
       />
       <ItemFigure
         v-for="(value, i) of sortRewards()"
-        :key="i"
         :id="value.itemid"
-        zoomRatio=0.5
+        :key="i"
+        zoom-ratio="0.5"
       >
         <template v-slot:under>
           <v-card-text
             class="pa-1"
             :class="value.itemid === target ? 'font-weight-black primary--text' : ''"
-            v-text="`${value.odds}%`"
             align="center"
+            v-text="`${value.odds}%`"
           />
         </template>
       </ItemFigure>
@@ -45,7 +45,8 @@ export default {
       required: true
     },
     target: {
-      type: Number
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -89,8 +90,7 @@ export default {
         arr_2_main.push(item)
       }
       return arr_0_target.concat(arr_1_frag).concat(arr_2_main.sort((x, y) => { return y.odds - x.odds })).concat(arr_3_other)
-    },
-    
+    }
   }
 }
 </script>

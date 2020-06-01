@@ -17,7 +17,8 @@ const state = {
     8: "amber darken-2"
   },
   difficulties: ["normal", "hard", "other"],
-  widthThreshold: [300, 600]
+  widthThreshold: [300, 600],
+  gitcommit: "unknown"
 }
 
 export default state

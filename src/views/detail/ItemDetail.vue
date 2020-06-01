@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col
-        cols=6
+        cols="6"
         class="pa-0"
       >
         <ItemCard
@@ -10,9 +10,9 @@
         />
       </v-col>
       <v-col
-        cols=6
-        class="pa-2"
         v-if="thisItem().detail.craft_flg === 1"
+        cols="6"
+        class="pa-2"
       >
         <ItemCraft
           :item="thisItem()"
