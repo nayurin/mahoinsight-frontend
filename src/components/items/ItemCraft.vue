@@ -1,15 +1,17 @@
 <template>
   <v-container>
     <v-card>
-      <v-card-title>合成所需的素材</v-card-title>
+      <v-card-title id="item-craft">
+        合成所需的素材
+      </v-card-title>
       <v-row
         class="ml-4"
       >
         <ItemFigure
           v-for="i in craftBy"
-          :key="i[0]"
           :id="i[0]"
-          zoomRatio=0.625
+          :key="i[0]"
+          zoom-ratio="0.625"
           class="mr-2 mb-4"
         >
           <template v-slot:under>
@@ -17,7 +19,7 @@
               class="pa-1"
               align="center"
               v-text="`×${i[1]}`"
-            ></v-card-text>
+            />
           </template>
         </ItemFigure>
       </v-row>

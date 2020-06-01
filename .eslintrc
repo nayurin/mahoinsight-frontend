@@ -12,9 +12,11 @@
   ],
   "rules": {
     "no-console": "off",
+    "vue/html-quotes": "off",
     "vuetify/no-deprecated-classes": "error",
     "vuetify/grid-unknown-attributes": "error",
-    "vuetify/no-legacy-grid": "error"
+    "vuetify/no-legacy-grid": "error",
+    "vue/this-in-template": "off"
   },
   "parserOptions": {
     "parser": "babel-eslint"

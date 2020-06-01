@@ -1,8 +1,10 @@
 <template>
   <v-footer
+    app
     absolute
     padless
     dark
+    color="pink darken-1"
     class="font-weight-medium"
   >
     <v-col
@@ -13,7 +15,3 @@
     </v-col>
   </v-footer>
 </template>
-
-<script>
-
-</script>

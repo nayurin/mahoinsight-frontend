@@ -128,23 +128,27 @@
                 <v-card
                   outlined
                 >
-                  <v-list-item
-                    v-for="(value, key) in info"
-                    :key="key"
-                    class="ml-4 pa-0"
-                    dense
-                  >
-                    <v-btn
-                      small
-                      color="primary"
-                      v-text="key"
-                    />
-                    <v-btn
-                      text
-                      small
-                      v-text="value"
-                    />
-                  </v-list-item>
+                  <v-row>
+                    <v-col cols="auto">
+                      <v-list-item
+                        v-for="(value, key) in info"
+                        :key="key"
+                        class="ml-4 pa-0"
+                        dense
+                      >
+                        <v-btn
+                          small
+                          color="primary"
+                          v-text="key"
+                        />
+                        <v-btn
+                          text
+                          small
+                          v-text="value"
+                        />
+                      </v-list-item>
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -154,16 +158,22 @@
                 <v-card
                   v-for="(value, key) in enemy"
                   :key="key"
-                  class="d-flex flex-row align-center"
                 >
-                  <v-card-subtitle v-text="key" />
-                  <EnemyFigure
-                    v-for="(id, i) of value"
-                    :key="i"
-                    :enemyid="id"
-                    zoom-ratio="0.6"
-                    class="ml-1 mr-1"
-                  />
+                  <v-row>
+                    <v-col
+                      cols="auto"
+                      class="d-flex flex-row align-center"
+                    >
+                      <v-card-subtitle v-text="key" />
+                      <EnemyFigure
+                        v-for="(id, i) of value"
+                        :key="i"
+                        :enemyid="id"
+                        zoom-ratio="0.6"
+                        class="ml-1 mr-1"
+                      />
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -192,6 +202,12 @@ export default {
   components: {
     QuestReward,
     EnemyFigure
+  },
+  props: {
+    // questid: {
+    //   type: String,
+    //   default: ''
+    // }
   },
   data () {
     return {
@@ -248,6 +264,9 @@ export default {
       }
       return enemies
     }
+  },
+  created () {
+    if (this.$route.query) this.resolveQuest(this.$route.query.questid)
   },
   methods: {
     onClickOfDiff (diff) {
@@ -314,6 +333,15 @@ export default {
         x: Number(id.substring(0, 5)),
         y: Number(id)
       } : null
+    },
+    resolveQuest (id) {
+      if (this.$store.getters.getQuestNameById(Number(id))) {
+        this.x = Number(String(id).substring(0, 5))
+        this.y = Number(String(id))
+      } else {
+        this.x = 0
+        this.y = 0
+      }
     }
   }
 }

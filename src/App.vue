@@ -31,6 +31,7 @@
       </v-container>
     </v-content>
     <Footer />
+    <Button2Top />
   </v-app>
 </template>
 
@@ -38,6 +39,7 @@
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer'
+import Button2Top from '@/components/Button2Top'
 
 export default {
   name: 'App',
@@ -45,7 +47,8 @@ export default {
   components: {
     Navigation,
     Breadcrumbs,
-    Footer
+    Footer,
+    Button2Top
   },
 
   data: () => ({

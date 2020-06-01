@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title>角色介绍</v-card-title>
+    <v-card-title id="princess-profile">
+      角色介绍
+    </v-card-title>
     <v-simple-table
       dark
     >
@@ -9,12 +11,12 @@
           v-for="(value, key) in profile()"
           :key="key"
         >
-        <td>
-          {{ key }}
-        </td>
-        <td>
-          {{ value }}
-        </td>
+          <td>
+            {{ key }}
+          </td>
+          <td>
+            {{ value }}
+          </td>
         </tr>
       </tbody>
     </v-simple-table>

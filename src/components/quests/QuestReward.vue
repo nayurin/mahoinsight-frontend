@@ -10,6 +10,8 @@
         label
         class="ma-4"
         color="primary"
+        :link="link"
+        :to="link ? {'path': '/quest', 'query': {'questid': id}} : ''"
         v-text="name"
       />
       <ItemFigure
@@ -47,6 +49,10 @@ export default {
     target: {
       type: Number,
       default: 0
+    },
+    link: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

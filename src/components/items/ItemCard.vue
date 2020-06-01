@@ -2,8 +2,11 @@
   <v-container>
     <v-card>
       <v-card-title
+        id="item-card"
         class="pa-4 pb-0"
-      >{{ itemName() }}</v-card-title>
+      >
+        {{ itemName }}
+      </v-card-title>
       <v-row
         dense
         class="d-flex align-center justify-start"
@@ -13,7 +16,7 @@
         >
           <v-card
             outlined
-            max-width=300
+            max-width="300"
             class="ml-3 d-flex align-center justify-center"
           >
             <v-avatar
@@ -22,17 +25,17 @@
               class="ml-4 pa-0"
             >
               <v-img
-                :src="src()"
+                :src="src"
               />
             </v-avatar>
             <v-card-text
               class="pa-2"
-              v-html="desc()"
               align="center"
+              v-html="desc"
             />
           </v-card>
         </v-col>
-        <v-col lg=6>
+        <v-col>
           <ItemStatus
             :item="item"
           />
@@ -40,7 +43,6 @@
       </v-row>
     </v-card>
   </v-container>
-  
 </template>
 
 <script>
@@ -56,7 +58,7 @@ export default {
       required: true
     }
   },
-  methods: {
+  computed: {
     itemName () {
       return this.item.detail.equipment_name
     },

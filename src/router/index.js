@@ -16,6 +16,7 @@ const routes = [
     component: HelloWorld,
     meta: {
       title: '首页',
+      icon: 'mdi-home',
       breadcrumb: ['Home']
     }
   },
@@ -25,6 +26,7 @@ const routes = [
     component: Item,
     meta: {
       title: '道具',
+      icon: 'mdi-sack',
       breadcrumb: ['Item']
     }
   },
@@ -36,7 +38,8 @@ const routes = [
     meta: {
       title: '道具详情',
       hidden: true,
-      breadcrumb: ['Item', ':itemName']
+      breadcrumb: ['Item', ':itemName'],
+      parent: 'Item'
     }
   },
   {
@@ -45,6 +48,7 @@ const routes = [
     component: Princess,
     meta: {
       title: '角色',
+      icon: 'mdi-heart',
       breadcrumb: ['Princess']
     }
   },
@@ -56,15 +60,18 @@ const routes = [
     meta: {
       title: '角色详情',
       hidden: true,
-      breadcrumb: ['Princess', ':princessName']
+      breadcrumb: ['Princess', ':princessName'],
+      parent: 'Princess'
     }
   },
   {
     path: '/quest',
     name: 'Quest',
     component: () => import('../views/Quest.vue'),
+    props: true,
     meta: {
       title: '关卡',
+      icon: 'mdi-sword-cross',
       breadcrumb: ['Quest']
     }
   }

@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title>{{ ueName() }}</v-card-title>
+    <v-card-title id="princess-ue">
+      {{ ueName() }}
+    </v-card-title>
     <v-card-subtitle>专用装备</v-card-subtitle>
     <v-card-text
       v-html="ueDesc()"

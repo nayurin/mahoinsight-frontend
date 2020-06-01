@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title>角色立绘</v-card-title>
+    <v-card-title id="princess-card">
+      角色立绘
+    </v-card-title>
     <v-img
       :src="sourceURL"
     />
@@ -37,7 +39,7 @@
           />
           <v-img
             :src="pos"
-            max-width=36
+            max-width="36"
             class="ml-3"
           />
         </v-list-item>

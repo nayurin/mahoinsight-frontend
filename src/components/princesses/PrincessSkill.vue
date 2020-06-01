@@ -2,7 +2,9 @@
   <v-container
     class="pa-0"
   >
-    <v-card-title>角色技能</v-card-title>
+    <v-card-title id="princess-skill">
+      角色技能
+    </v-card-title>
     <v-card
       v-for="(value, key) in skill()"
       :key="key"
@@ -19,11 +21,11 @@
           >
             <SkillFigure
               :id="String(value.icon)"
-              zoomRatio=0.625
+              zoom-ratio="0.625"
             />
           </v-avatar>
         </v-col>
-        <v-col cols=5>
+        <v-col cols="5">
           <v-btn
             small
             rounded
@@ -31,18 +33,16 @@
             v-text="key"
           />
           <v-card-text
-            v-text="value.name"
             class="title pa-1"
+            v-text="value.name"
           />
-          <v-divider></v-divider>
+          <v-divider />
           <v-card-text
-            v-text="value.description"
             class="body-2 pa-1"
+            v-text="value.description"
           />
         </v-col>
-        <v-col cols=5>
-          
-        </v-col>
+        <v-col cols="5" />
       </v-row>
     </v-card>
   </v-container>

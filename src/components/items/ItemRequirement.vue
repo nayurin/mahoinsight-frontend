@@ -2,17 +2,19 @@
   <v-container
     v-if="findPromote().length"
   >
-    <v-card-title>角色需求</v-card-title>
+    <v-card-title id="item-requirement">
+      角色需求
+    </v-card-title>
     <v-row>
       <v-col
-        cols="auto"
         v-for="(value, key) in findPromote()"
         :key="key"
+        cols="auto"        
       >
         <v-card>
           <PrincessFigure
             :princess="$store.getters.getPrincessByName(value[0])"
-            zoomRatio="0.7"
+            zoom-ratio="0.7"
           >
             <template v-slot:add>
               <v-col>
@@ -27,7 +29,9 @@
                   <v-icon
                     v-if="value[2] != 1"
                     right
-                  >mdi-numeric-{{ value[2] }}-box-multiple-outline</v-icon>
+                  >
+                    mdi-numeric-{{ value[2] }}-box-multiple-outline
+                  </v-icon>
                 </v-chip>
               </v-col>
             </template>

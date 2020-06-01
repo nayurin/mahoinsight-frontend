@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title>角色属性</v-card-title>
+    <v-card-title id="princess-status">
+      角色属性
+    </v-card-title>
     <v-card-text>
       <v-row>
         <v-col cols="6">

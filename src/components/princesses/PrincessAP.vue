@@ -1,54 +1,58 @@
 <template>
   <v-card>
-    <v-card-title>行动模式</v-card-title>
-      <v-row>
-        <v-col cols="6">
-          <v-card outlined>
-            <v-card-text
-              class="pa-2"
-              v-text="`入场`"
-            />
-            <v-row
-              class="pa-2 mx-auto"
+    <v-card-title id="princess-ap">
+      行动模式
+    </v-card-title>
+    <v-row>
+      <v-col cols="6">
+        <v-card outlined>
+          <v-card-text
+            class="pa-2"
+            v-text="`入场`"
+          />
+          <v-row
+            class="pa-2 mx-auto"
+          >
+            <SkillFigure
+              v-for="(value, i) in AP()[0]"
+              :id="APSkillSuffix()[value]"
+              :key="i"
+              zoom-ratio="0.45"
             >
-              <SkillFigure
-                v-for="(value, i) in AP()[0]"
-                :key="i"
-                :id="APSkillSuffix()[value]"
-                zoomRatio="0.45"
-              >
-                <template v-slot:afterImage>
-                  <v-icon>mdi-chevron-double-right</v-icon>
-                </template>
-              </SkillFigure>
-            </v-row>
-          </v-card>
-        </v-col>
-        <v-col
-          cols="6"
-        >
-          <v-card outlined>
-            <v-card-text 
-              class="pa-2"
-            >循环</v-card-text>
-            <v-row
-              class="pa-2 mx-auto"
+              <template v-slot:afterImage>
+                <v-icon>mdi-chevron-double-right</v-icon>
+              </template>
+            </SkillFigure>
+          </v-row>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="6"
+      >
+        <v-card outlined>
+          <v-card-text 
+            class="pa-2"
+          >
+            循环
+          </v-card-text>
+          <v-row
+            class="pa-2 mx-auto"
+          >
+            <SkillFigure
+              v-for="(value, i) in AP()[1]"
+              :id="APSkillSuffix()[value]"
+              :key="i"
+              zoom-ratio="0.45"
             >
-              <SkillFigure
-                v-for="(value, i) in AP()[1]"
-                :key="i"
-                :id="APSkillSuffix()[value]"
-                zoomRatio="0.45"
-              >
-                <template v-slot:beforeImage>
-                  <v-icon>mdi-chevron-double-right</v-icon>
-                </template>
-              </SkillFigure>
-              <v-icon>mdi-rotate-right</v-icon>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
+              <template v-slot:beforeImage>
+                <v-icon>mdi-chevron-double-right</v-icon>
+              </template>
+            </SkillFigure>
+            <v-icon>mdi-rotate-right</v-icon>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 

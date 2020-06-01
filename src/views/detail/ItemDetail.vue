@@ -6,27 +6,27 @@
         class="pa-0"
       >
         <ItemCard
-          :item="thisItem()"
+          :item="thisItem"
         />
       </v-col>
       <v-col
-        v-if="thisItem().detail.craft_flg === 1"
+        v-if="thisItem.detail.craft_flg === 1"
         cols="6"
         class="pa-2"
       >
         <ItemCraft
-          :item="thisItem()"
+          :item="thisItem"
         />
       </v-col>
     </v-row>
     <v-row>
       <ItemRequirement
-        :item="thisItem()"
+        :item="thisItem"
       />
     </v-row>
     <v-row>
       <ItemSource
-        :item="thisItem()"
+        :item="thisItem"
       />
     </v-row>
   </v-container>
@@ -47,10 +47,8 @@ export default {
     ItemSource
   },
   computed: {
-  },
-  methods: {
     thisItem () {
-      return this.$store.getters.getItemByName(this.itemName())
+      return this.$store.getters.getItemByName(this.itemName)
     },
     itemName () {
       return this.$route.params.itemName

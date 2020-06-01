@@ -1,16 +1,18 @@
 <template>
   <v-card>
-    <v-card-title>角色装备 [Rank {{ curRank }}]</v-card-title>
+    <v-card-title id="princess-equipment">
+      角色装备 [Rank {{ curRank }}]
+    </v-card-title>
     <v-card-text>
       <v-btn
+        v-for="(value, key) in promotion()"
+        :key="key"
         text
         small
         color="primary"
-        v-for="(value, key) in promotion()"
-        :key="key"
         @click="onClick(key)"
       >
-      Rank {{ key }}
+        Rank {{ key }}
       </v-btn>
       <v-row>
         <PrincessEquipmentFig
