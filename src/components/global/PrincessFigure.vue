@@ -13,12 +13,12 @@
     >
       <v-col>
         <v-btn
-        v-text="name"
-        small
-        block
-        :color="this.princess.status.atk_type === 1 ? 'pink' : 'indigo'"
-        class="pa-0 font-weight-light white--text"
-      />
+          small
+          block
+          :color="this.princess.status.atk_type === 1 ? 'pink' : 'indigo'"
+          class="pa-0 font-weight-light white--text"
+          v-text="name"
+        />
       </v-col>
       <slot name="add" />
     </v-row>

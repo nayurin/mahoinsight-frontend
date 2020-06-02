@@ -7,7 +7,7 @@
       :alt="alt"
       :style="style"
     />
-    <slot name="under"/>
+    <slot name="under" />
   </v-card>
 </template>
 

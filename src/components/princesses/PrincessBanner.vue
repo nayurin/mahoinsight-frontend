@@ -1,10 +1,10 @@
 <template>
   <v-banner
     v-if="intro()"
+    single-line
     elevation=3
     class="pa-3 font-italic font-weight-bold"
-    v-html="intro()"
-    single-line
+    v-text="intro()"
   />
 </template>
 

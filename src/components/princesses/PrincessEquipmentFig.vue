@@ -3,37 +3,37 @@
     <div class="equip-1st">
       <ItemFigure
         :id="this.equips.equip_slot_1"
-        zoomRatio="0.625"
+        zoom-ratio="0.625"
       />
     </div>
     <div class="equip-2nd">
       <ItemFigure
         :id="this.equips.equip_slot_2"
-        zoomRatio="0.625"
+        zoom-ratio="0.625"
       />
     </div>
     <div class="equip-3rd">
       <ItemFigure
         :id="this.equips.equip_slot_3"
-        zoomRatio="0.625"
+        zoom-ratio="0.625"
       />
     </div>
     <div class="equip-4th">
       <ItemFigure
         :id="this.equips.equip_slot_4"
-        zoomRatio="0.625"
+        zoom-ratio="0.625"
       />
     </div>
     <div class="equip-5th">
       <ItemFigure
         :id="this.equips.equip_slot_5"
-        zoomRatio="0.625"
+        zoom-ratio="0.625"
       />
     </div>
     <div class="equip-6th">
       <ItemFigure
         :id="this.equips.equip_slot_6"
-        zoomRatio="0.625"
+        zoom-ratio="0.625"
       />
     </div>
   </div>

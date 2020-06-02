@@ -1,9 +1,9 @@
 <template>
   <v-row>
     <v-col
-      cols="auto"
       v-for="(value, key) of filtedItem"
       :key="key"
+      cols="auto"
       class="pa-1"
     >
       <v-card
@@ -14,12 +14,12 @@
       >
         <ItemFigure
           :id="value.id"
-          zoomRatio="0.75"
+          zoom-ratio="0.75"
         >
           <template v-slot:under>
             <v-card-text
-              v-text="value.detail.equipment_name"
               class="pa-2 caption text-center"
+              v-text="value.detail.equipment_name"
             />
           </template>
         </ItemFigure>

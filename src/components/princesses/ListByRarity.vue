@@ -3,9 +3,9 @@
     <v-card-title>★3</v-card-title>
     <v-row no-gutters>
       <v-col
-        cols="auto"
         v-for="chara of star(3)"
         :key="chara.id"
+        cols="auto"
       >
         <v-card
           class="ma-1"
@@ -14,7 +14,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.6"
+            zoom-ratio="0.6"
           />
         </v-card>
       </v-col>
@@ -22,9 +22,9 @@
     <v-card-title>★2</v-card-title>
     <v-row dense>
       <v-col
-        cols="auto"
         v-for="chara of star(2)"
         :key="chara.id"
+        cols="auto"
       >
         <v-card
           class="ma-1"
@@ -33,7 +33,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.6"
+            zoom-ratio="0.6"
           />
         </v-card>
       </v-col>
@@ -41,9 +41,9 @@
     <v-card-title>★1</v-card-title>
     <v-row dense>
       <v-col
-        cols="auto"
         v-for="chara of star(1)"
         :key="chara.id"
+        cols="auto"
       >
         <v-card
           class="ma-1"
@@ -52,7 +52,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.6"
+            zoom-ratio="0.6"
           />
         </v-card>
       </v-col>

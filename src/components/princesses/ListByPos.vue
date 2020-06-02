@@ -11,9 +11,9 @@
     </v-row>
     <v-row no-gutters>
       <v-col
-        cols="auto"
         v-for="chara of front"
         :key="chara.id"
+        cols="auto"
       >
         <v-card
           class="ma-1"
@@ -22,7 +22,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.6"
+            zoom-ratio="0.6"
           />
         </v-card>
       </v-col>
@@ -38,9 +38,9 @@
     </v-row>
     <v-row dense>
       <v-col
-        cols="auto"
         v-for="chara of middle"
         :key="chara.id"
+        cols="auto"
       >
         <v-card
           class="ma-1"
@@ -49,7 +49,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.6"
+            zoom-ratio="0.6"
           />
         </v-card>
       </v-col>
@@ -65,9 +65,9 @@
     </v-row>
     <v-row dense>
       <v-col
-        cols="auto"
         v-for="chara of behind"
         :key="chara.id"
+        cols="auto"
       >
         <v-card
           class="ma-1"
@@ -76,7 +76,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoomRatio="0.6"
+            zoom-ratio="0.6"
           />
         </v-card>
       </v-col>
