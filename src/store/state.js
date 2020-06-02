@@ -1,3 +1,5 @@
+import events from '@/store/gameevents'
+
 const state = {
   item: {},
   chara: {},
@@ -18,7 +20,8 @@ const state = {
   },
   difficulties: ["normal", "hard", "other"],
   widthThreshold: [300, 600],
-  gitcommit: "unknown"
+  gitcommit: "unknown",
+  events
 }
 
 export default state

@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import HelloWorld from '@/components/HelloWorld';
+import Home from '@/views/Home'
 import Item from '@/views/Item.vue'
 import Princess from '@/views/Princess.vue'
+import Quest from '@/views/Quest.vue'
 import ItemDetail from '@/views/detail/ItemDetail.vue'
 import PrincessDetail from '@/views/detail/PrincessDetail.vue'
 
@@ -13,9 +14,9 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HelloWorld,
+    component: Home,
     meta: {
-      title: '首页',
+      title: '主页',
       icon: 'mdi-home',
       breadcrumb: ['Home']
     }
@@ -67,7 +68,7 @@ const routes = [
   {
     path: '/quest',
     name: 'Quest',
-    component: () => import('../views/Quest.vue'),
+    component: Quest,
     props: true,
     meta: {
       title: '关卡',
