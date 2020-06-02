@@ -10,7 +10,6 @@
         class="ma-1"
         outlined
         tile
-        max-width=96
       >
         <ItemFigure
           :id="value.id"

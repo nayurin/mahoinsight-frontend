@@ -1,6 +1,7 @@
 <template>
   <v-card
     :href="id != 999999 && String(id).length !== 5 ? link : ''"
+    :max-width="origWidth * parseFloat(zoomRatio)"
   >
     <v-img
       :src="src"

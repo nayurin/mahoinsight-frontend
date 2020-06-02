@@ -10,7 +10,6 @@
         />
       </v-col>
       <v-col
-        v-if="thisItem.detail.craft_flg === 1"
         cols="6"
         class="pa-2"
       >

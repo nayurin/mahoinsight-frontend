@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-2">
     <v-card>
       <v-card-title
         id="item-card"
@@ -17,7 +17,7 @@
           <v-card
             outlined
             max-width="300"
-            class="ml-3 d-flex align-center justify-center"
+            class="ml-3 mb-2 d-flex align-center justify-center"
           >
             <v-avatar
               tile
