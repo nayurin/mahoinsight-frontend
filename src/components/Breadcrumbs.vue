@@ -4,15 +4,6 @@
     class="pa-1"
     :items="items"
   >
-    <!-- <template v-slot:item="{ item }">
-      <v-breadcrumbs-item
-        class="white--text font-weight-light"
-        :to="item.href"
-        v-text="item.text"
-        
-      >
-      </v-breadcrumbs-item>
-    </template> -->
     <template v-slot:divider>
       <v-icon>mdi-chevron-right</v-icon>
     </template>
@@ -47,7 +38,6 @@ export default {
   },
   created () {
     this.addBreadcrumbs()
-    // console.log(this.$route)
   },
   methods: {
     addBreadcrumbs () {
@@ -59,9 +49,18 @@ export default {
             href = this.$route.path
           } else {
             for (const route of Object.values(this.$router.options.routes)) {
-              if (route.name === x) {
-                text = route.meta.title
-                href = route.path
+              if (route.children) {
+                for (const child of Object.values(route.children)) {
+                  if (child.name === x) {
+                    text = child.meta.title
+                    href = child.path
+                  }
+                }
+              } else {
+                if (route.name === x) {
+                  text = route.meta.title
+                  href = route.path
+                }
               }
             }
           }

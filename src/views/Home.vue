@@ -35,15 +35,17 @@
             v-if="event.difftime && status === 'current'"
             label
             dark
+            :color="event.difftime < 86400000 ? 'pink darken-1' : ''"
             class="d-flex justify-center align-center"
-            v-text="`结束于${formatTime(event.difftime)}`"
+            v-text="`结束于 ${formatTime(event.difftime)}`"
           />
           <v-chip
             v-if="event.difftime && status === 'incoming'"
             label
             dark
+            :color="event.difftime < 86400000 ? 'green darken-2' : ''"
             class="d-flex justify-center align-center"
-            v-text="`开始于${formatTime(event.difftime)}`"
+            v-text="`开始于 ${formatTime(event.difftime)}`"
           />
         </v-card>
       </v-col>

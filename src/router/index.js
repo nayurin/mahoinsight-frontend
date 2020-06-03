@@ -2,11 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '@/views/Home'
+import About from '@/views/About'
 import Item from '@/views/Item.vue'
 import Princess from '@/views/Princess.vue'
 import Quest from '@/views/Quest.vue'
 import ItemDetail from '@/views/detail/ItemDetail.vue'
 import PrincessDetail from '@/views/detail/PrincessDetail.vue'
+import Joinus from '@/views/Joinus'
+import Issue from '@/views/Issue'
+import Link from '@/views/Link'
 
 Vue.use(VueRouter)
 
@@ -75,6 +79,47 @@ const routes = [
       icon: 'mdi-sword-cross',
       breadcrumb: ['Quest']
     }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
+    meta: {
+      title: '关于',
+      icon: 'mdi-badge-account-horizontal'
+    },
+    children: [
+      {
+        path: 'joinus',
+        name: 'Joinus',
+        component: Joinus,
+        meta: {
+          title: '加入我们',
+          icon: 'mdi-account-multiple',
+          breadcrumb: ['Joinus'],
+        }
+      },
+      {
+        path: 'issues',
+        name: 'Issues',
+        component: Issue,
+        meta: {
+          title: '提交Issue',
+          icon: 'mdi-bug-outline',
+          breadcrumb: ['Issues']
+        }
+      },
+      {
+        path: 'links',
+        name: 'Links',
+        component: Link,
+        meta: {
+          title: '友情链接',
+          icon: 'mdi-link-variant',
+          breadcrumb: ['Links']
+        }
+      }
+    ]
   }
 ]
 

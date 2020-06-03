@@ -6,7 +6,10 @@
       value="true"
     >
       <template v-slot:activator>
-        <v-list-item dense>
+        <v-list-item
+          class="pa-0"
+          dense
+        >
           <v-list-item-title>{{ parent.meta.title }}</v-list-item-title>
         </v-list-item>
       </template>
@@ -26,11 +29,41 @@
       </v-list-item>
     </v-list-group>
 
+    <v-list-group
+      v-else-if="route.children"
+      :prepend-icon="route.meta.icon"
+      value="true"
+    >
+      <template v-slot:activator>
+        <v-list-item
+          class="pa-0"
+          dense
+        >
+          <v-list-item-title>{{ route.meta.title }}</v-list-item-title>
+        </v-list-item>
+      </template>
+      <v-list-item
+        v-for="(child, i) in route.children"
+        :key="i"
+        dense
+        :class="isActive(child.name)"
+        @click="navigate(child)"
+      >
+        <v-list-item-title
+          class="text-center"
+          v-text="child.meta.title"
+        />
+        <v-list-item-icon>
+          <v-icon v-text="child.meta.icon" />
+        </v-list-item-icon>
+      </v-list-item>
+    </v-list-group>
+
     <v-list-item
       v-else
       :key="route.name"
       dense
-      :class="isActive"
+      :class="isActive(route.name)"
       @click="navigate(route)"
     >
       <v-list-item-icon>
@@ -72,11 +105,6 @@ export default {
     }
   },
   computed: {
-    isActive() {
-      return this.route.path === this.$route.path ? {
-        "v-list-item--active": true,
-      } : ''
-    },
     isDetailPage () {
       return this.parent && this.route.name === this.parent.name ? true : false
     },
@@ -96,11 +124,25 @@ export default {
     }
   },
   methods: {
+    isActive (name) {
+      return name === this.$route.name ? {
+        "v-list-item--active": true
+      } : ''
+    },
     navigate (route) {
-      if (route.path !== this.$router.currentRoute.path){
-        this.$router.push({
-          name: route.name
-        })
+      const fullpath = route.path.substring(0, 1) === '/' ? true : false
+      if (fullpath) {
+        if (route.path !== this.$router.currentRoute.path){
+          this.$router.push({
+            name: route.name
+          })
+        }
+      } else {
+        if (route.path !== this.$router.currentRoute.path.split('/').pop()) {
+          this.$router.push({
+            name: route.name
+          })
+        }
       }
     },
     scroll (selector) {

@@ -18,7 +18,7 @@
         app
         clipped
       >
-        <Navigation
+        <Navigator
           v-for="route in routes"
           :key="route.name"
           :route="route"
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import Navigation from '@/components/Navigation';
+import Navigator from '@/components/Navigator';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer'
 import Button2Top from '@/components/Button2Top'
@@ -45,7 +45,7 @@ export default {
   name: 'App',
 
   components: {
-    Navigation,
+    Navigator,
     Breadcrumbs,
     Footer,
     Button2Top
