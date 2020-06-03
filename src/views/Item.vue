@@ -23,81 +23,34 @@
       </v-row>
       <v-row no-gutters>
         <v-col
-          cols="12"
+          cols="auto"
           class="px-4 py-2"
         >
           <v-btn
             color="primary"
-            class="mr-2"
+            class="ma-2"
             @click="onClick2Cancel()"
             v-text="`清除筛选`"
           />
+        </v-col>
+        <v-col cols="auto">
           <v-btn-toggle
             v-model="filter"
             tile
-            color="deep-purple accent-3"
             group
+            dense
             multiple
+            color="red"
+            class="d-flex flex-wrap py-4"
           >
             <v-btn
-              value="physical_critical"
-              class="ma-0"
-              v-text="`物理暴击`"
-            />
-            <v-btn
-              value="magic_critical"
-              class="ma-0"
-              v-text="`魔法暴击`"
-            />
-            <v-btn
-              value="dodge"
-              class="ma-0"
-              v-text="`回避`"
-            />
-            <v-btn
-              value="accuracy"
-              class="ma-0"
-              v-text="`命中`"
-            />
-            <v-btn
-              value="life_steal"
-              class="ma-0"
-              v-text="`生命值吸收`"
-            />
-            <v-btn
-              value="hp_recovery_rate"
-              class="ma-0"
-              v-text="`回复量上升`"
-            />
-            <v-btn
-              value="energy_recovery_rate"
-              class="ma-0"
-              v-text="`技能值上升`"
-            />
-            <v-btn
-              value="energy_reduce_rate"
-              class="ma-0"
-              v-text="`技能值消耗降低`"
-            />
-            <v-btn
-              value="wave_hp_recovery"
-              class="ma-0"
-              v-text="`生命值自动回复`"
-            />
-            <v-btn
-              value="wave_energy_recovery"
-              class="ma-0"
-              v-text="`技能值自动回复`"
-            />
-            <v-btn
-              value="physical_penetrate"
-              class="ma-0"
-              v-text="`物理穿透`"
-            />
-            <v-btn
-              value="magic_penetrate"
-              class="ma-0"
-              v-text="`魔法穿透`"
+              v-for="(desc, name) in btns"
+              :key="name"
+              small
+              color="blue-gray darken-1"
+              :value="name"
+              class="ma-2"
+              v-text="desc"
             />
           </v-btn-toggle>
         </v-col>
@@ -121,6 +74,20 @@ export default {
   data () {
     return {
       filter: [],
+      btns: {
+        physical_critical: '物理暴击',
+        magic_critical: '魔法暴击',
+        dodge: '回避',
+        accuracy: '命中',
+        life_steal: '生命值吸收',
+        hp_recovery_rate: '回复量上升',
+        energy_recovery_rate: '技能值上升',
+        energy_reduce_rate: '技能值消耗降低',
+        wave_hp_recovery: '生命值自动回复',
+        wave_energy_recovery: '技能值自动回复',
+        physical_penetrate: '物理穿透',
+        magic_penetrate: '魔法穿透'
+      },
       searchbox: ''
     }
   },

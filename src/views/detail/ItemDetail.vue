@@ -2,7 +2,8 @@
   <v-container fluid>
     <v-row>
       <v-col
-        cols="6"
+        cols="12"
+        lg="6"
         class="pa-0"
       >
         <ItemCard
@@ -10,7 +11,8 @@
         />
       </v-col>
       <v-col
-        cols="6"
+        cols="12"
+        lg="6"
         class="pa-2"
       >
         <ItemCraft

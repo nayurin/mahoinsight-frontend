@@ -25,7 +25,10 @@
             />
           </v-avatar>
         </v-col>
-        <v-col cols="5">
+        <v-col
+          cols="6"
+          lg="5"
+        >
           <v-btn
             small
             rounded
@@ -42,7 +45,10 @@
             v-text="value.description"
           />
         </v-col>
-        <v-col cols="5" />
+        <v-col
+          cols="auto"
+          lg="5"
+        />
       </v-row>
     </v-card>
   </v-container>

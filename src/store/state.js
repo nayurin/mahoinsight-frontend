@@ -5,7 +5,7 @@ const state = {
   chara: {},
   quest: {},
   maxRank: 8,
-  maxLevel: 88,
+  maxLevel: 90,
   curRank: 0,
   curLevel: 0,
   rankColor: {
@@ -21,7 +21,8 @@ const state = {
   difficulties: ["normal", "hard", "other"],
   widthThreshold: [300, 600],
   gitcommit: "unknown",
-  events
+  events,
+  mobile: false
 }
 
 export default state

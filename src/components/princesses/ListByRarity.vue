@@ -14,13 +14,13 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoom-ratio="0.6"
+            :zoom-ratio="zoom"
           />
         </v-card>
       </v-col>
     </v-row>
     <v-card-title>★2</v-card-title>
-    <v-row dense>
+    <v-row no-gutters>
       <v-col
         v-for="chara of star(2)"
         :key="chara.id"
@@ -33,13 +33,13 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoom-ratio="0.6"
+            :zoom-ratio="zoom"
           />
         </v-card>
       </v-col>
     </v-row>
     <v-card-title>★1</v-card-title>
-    <v-row dense>
+    <v-row no-gutters>
       <v-col
         v-for="chara of star(1)"
         :key="chara.id"
@@ -52,7 +52,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoom-ratio="0.6"
+            :zoom-ratio="zoom"
           />
         </v-card>
       </v-col>
@@ -67,6 +67,11 @@ export default {
   name: 'ListByRarity',
   components: {
     PrincessFigure
+  },
+  computed: {
+    zoom () {
+      return this.$store.state.mobile ? "0.35" : "0.6"
+    }
   },
   methods: {
     star (stars) {

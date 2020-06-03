@@ -35,7 +35,7 @@ export default {
   methods: {
     profile () {
       return {
-        角色名: this.princess.profile.fullname,
+        全名: this.princess.profile.fullname,
         年龄: this.princess.profile.age,
         生日: `${this.princess.profile.birth_month}月${this.princess.profile.birth_day}日`,
         身高: this.princess.profile.height,

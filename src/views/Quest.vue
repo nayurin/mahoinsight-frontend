@@ -159,17 +159,20 @@
                   v-for="(value, key) in enemy"
                   :key="key"
                 >
-                  <v-row>
+                  <v-row dense>
                     <v-col
                       cols="auto"
-                      class="d-flex flex-row align-center"
+                      class="d-flex flex-row flex-wrap align-center"
                     >
-                      <v-card-subtitle v-text="key" />
+                      <v-card-subtitle
+                        class="pa-2"
+                        v-text="key"
+                      />
                       <EnemyFigure
                         v-for="(id, i) of value"
                         :key="i"
                         :enemyid="id"
-                        zoom-ratio="0.6"
+                        :zoom-ratio="zoom"
                         class="ml-1 mr-1"
                       />
                     </v-col>
@@ -202,12 +205,6 @@ export default {
   components: {
     QuestReward,
     EnemyFigure
-  },
-  props: {
-    // questid: {
-    //   type: String,
-    //   default: ''
-    // }
   },
   data () {
     return {
@@ -263,6 +260,9 @@ export default {
         }
       }
       return enemies
+    },
+    zoom () {
+      return this.$store.state.mobile ? "0.45" : "0.6"
     }
   },
   created () {

@@ -3,7 +3,7 @@
     <v-card-title>角色列表</v-card-title>
     <v-row>
       <v-col
-        cols="12"
+        cols="auto"
         class="py-2"
       >
         <v-btn-toggle
@@ -11,7 +11,9 @@
           tile
           color="deep-purple accent-3"
           group
+          dense
           mandatory
+          class="d-flex flex-wrap"
         >
           <v-btn value="稀有度">
             稀有度

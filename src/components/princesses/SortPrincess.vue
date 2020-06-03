@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col
       v-for="(chara, key) of sorted"
       :key="key"
@@ -12,7 +12,7 @@
       >
         <PrincessFigure
           :princess="chara"
-          zoom-ratio="0.6"
+          :zoom-ratio="zoom"
         >
           <template v-slot:add>
             <v-chip
@@ -69,6 +69,9 @@ export default {
         default:
           return this.sort ? this.down2up : this.up2down
       }
+    },
+    zoom () {
+      return this.$store.state.mobile ? "0.55" : "0.6"
     }
   },
   methods: {

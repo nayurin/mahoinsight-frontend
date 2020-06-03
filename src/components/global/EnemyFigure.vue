@@ -2,7 +2,8 @@
   <div class="text-center">
     <v-dialog
       v-model="dialogEnemyDetail"
-      width="600"
+      :width="$store.state.mobile ? '300' : '600'"
+      :scrollable="$store.state.mobile ? true : false"
     >
       <template v-slot:activator="{ on }">
         <v-card
@@ -48,17 +49,17 @@
         </v-row>
         <v-row no-gutters>
           <v-col
-            class="d-flex flex-row mb-4 ml-4 mt-0 pa-0 align-center"
+            class="d-flex flex-row flex-wrap ma-0 pa-4 align-center col-12 col-lg-auto"
           >
             <v-img
               :src="src"
               :alt="name"
               contain
-              width="128"
+              max-width="128"
             />
             <v-card-text 
-              class="font-weight-thin"
-              v-html="comment"
+              class="font-weight-thin px-0"
+              v-text="comment"
             />
             <v-dialog
               v-model="dialogEnemyResistance"
@@ -110,7 +111,8 @@
             v-for="(value, key) in status"
             :key="key"
             class="d-flex flex-row flex-wrap pa-0"
-            cols="4"
+            cols="6"
+            lg="4"
           >
             <v-list-item
               class="ml-4 mr-4 pa-0"
@@ -177,7 +179,7 @@ export default {
       return this.$store.getters.getQuestEnemyInfoByEnemyId(this.enemyid)
     },
     comment () {
-      return this.info.comment.replace(/\\n/g, '<br/>')
+      return this.info.comment.replace(/\\n/g, '')
     },
     resistance () {
       return this.$store.getters.getQuestEnemyResistanceByEnemyId(this.enemyid)

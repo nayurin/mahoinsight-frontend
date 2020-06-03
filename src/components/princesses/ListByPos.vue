@@ -22,7 +22,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoom-ratio="0.6"
+            :zoom-ratio="zoom"
           />
         </v-card>
       </v-col>
@@ -36,7 +36,7 @@
         contain
       />
     </v-row>
-    <v-row dense>
+    <v-row no-gutters>
       <v-col
         v-for="chara of middle"
         :key="chara.id"
@@ -49,7 +49,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoom-ratio="0.6"
+            :zoom-ratio="zoom"
           />
         </v-card>
       </v-col>
@@ -63,7 +63,7 @@
         contain
       />
     </v-row>
-    <v-row dense>
+    <v-row no-gutters>
       <v-col
         v-for="chara of behind"
         :key="chara.id"
@@ -76,7 +76,7 @@
         >
           <PrincessFigure
             :princess="chara"
-            zoom-ratio="0.6"
+            :zoom-ratio="zoom"
           />
         </v-card>
       </v-col>
@@ -114,6 +114,9 @@ export default {
       return Object.values(this.$store.state.chara).filter(x => {
         return x.status.search_area_width >= this.$store.state.widthThreshold[1]
       })
+    },
+    zoom () {
+      return this.$store.state.mobile ? "0.35" : "0.6"
     }
   }
 }

@@ -10,6 +10,7 @@
               </v-card-title>
               <v-btn
                 rounded
+                class="mx-2"
                 @click="onClick(projecturl)"
               >
                 <v-icon>mdi-github</v-icon>

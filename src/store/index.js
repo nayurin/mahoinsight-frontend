@@ -28,6 +28,9 @@ export default new Vuex.Store({
       if (parseInt(Number(level)) > 0 && parseInt(Number(level)) <= state.maxLevel) {
         state.curLevel = parseInt(Number(level))
       }
+    },
+    change2MobileMode (state) {
+      state['mobile'] = true
     }
   },
   actions: {

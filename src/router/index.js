@@ -104,7 +104,7 @@ const routes = [
         name: 'Issues',
         component: Issue,
         meta: {
-          title: '提交Issue',
+          title: '问题报告',
           icon: 'mdi-bug-outline',
           breadcrumb: ['Issues']
         }

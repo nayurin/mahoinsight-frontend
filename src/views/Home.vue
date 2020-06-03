@@ -19,7 +19,9 @@
       <v-col
         v-for="event in events[status]"
         :key="event.title"
-        cols="6"
+        cols="12"
+        lg="6"
+        class="align-self-stretch"
       >
         <v-card>
           <v-chip
@@ -59,14 +61,14 @@ export default {
   data () {
     return {
       tags: {
+        outdated: ['gray darken-3', '已经结束的活动'],
         current: ['green darken-2', '正在进行的活动'],
-        incoming: ['primary', '即将到来的活动'],
-        outdated: ['gray darken-3', '已经结束的活动']
+        incoming: ['primary', '即将到来的活动']
       },
       events: {
+        outdated: [],
         current: [],
-        incoming: [],
-        outdated: []
+        incoming: []
       }
     }
   },
