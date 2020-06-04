@@ -4,6 +4,7 @@ const state = {
   item: {},
   chara: {},
   quest: {},
+  backendBaseURL: 'http://127.0.0.1:23333',
   maxRank: 8,
   maxLevel: 90,
   curRank: 0,

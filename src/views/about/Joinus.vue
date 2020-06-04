@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="6">
+      <v-col class="col-12 col-lg-6">
         <v-card>
           <v-row>
             <v-col class="d-flex flex-row align-center">
@@ -31,7 +31,7 @@
           </v-list>
         </v-card>
       </v-col>
-      <v-col cols="6">
+      <v-col class="col-12 col-lg-6">
         <v-card>
           <v-card-title>
             联系我们

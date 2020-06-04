@@ -46,6 +46,17 @@
             class="white--text"
             v-text="info.atk_type === 1 ? '物理' : '魔法'"
           />
+          <v-card-actions
+            v-if="$store.state.mobile"
+            class="ml-auto"
+          >
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="dialogEnemyDetail = false"
+              v-text="`关闭`"
+            />
+          </v-card-actions>
         </v-row>
         <v-row no-gutters>
           <v-col
@@ -57,18 +68,15 @@
               contain
               max-width="128"
             />
-            <v-card-text 
-              class="font-weight-thin px-0"
-              v-text="comment"
-            />
             <v-dialog
               v-model="dialogEnemyResistance"
               width="400"
             >
               <template v-slot:activator="{ on }">
                 <v-btn
-                  color="purple darken-3"
+                  color="purple darken-3 ma-4"
                   class="white--text mr-8"
+                  :small="$store.state.mobile ? true : false"
                   v-on="on"
                   v-text="`异常状态抗性`"
                 />
@@ -99,9 +107,23 @@
                     </v-list-item>
                   </v-col>
                 </v-row>
+                <v-card-actions v-if="$store.state.mobile">
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="dialogEnemyResistance = false"
+                    v-text="`关闭`"
+                  />
+                </v-card-actions>
               </v-card>
             </v-dialog>
           </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-card-text 
+            class="font-weight-thin pa-0 ma-4"
+            v-text="comment"
+          />
         </v-row>
         <v-row
           no-gutters

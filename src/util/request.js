@@ -1,26 +1,31 @@
 import axios from 'axios'
+import state from '@/store/state'
 
 const request = axios.create({
-  baseURL: 'http://127.0.0.1:23333',
+  baseURL: state.backendBaseURL,
   withCredentials: true
 })
 
 export default {
-  GetData (data = {}) {
-    return request.post('/api/data', data)
-  },
+  // GetData (data = {}) {
+  //   return request.post('/api/data', data)
+  // },
 
-  GetList (type) {
-    return request.post('/api/data', {
-      type: type
-    })
-  },
+  // GetList (type) {
+  //   return request.post('/api/data', {
+  //     type: type
+  //   })
+  // },
 
-  GetDetail (type, id, key = '') {
-    return request.post('/api/data', {
-      type: type,
-      id: id,
-      key: key
-    })
+  // GetDetail (type, id, key = '') {
+  //   return request.post('/api/data', {
+  //     type: type,
+  //     id: id,
+  //     key: key
+  //   })
+  // },
+
+  PostNewIssue (data) {
+    return request.post('/api/newissue', data)
   }
 }
