@@ -2,15 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '@/views/Home'
-import About from '@/views/About'
+import About from '@/views/about/About'
 import Item from '@/views/Item.vue'
 import Princess from '@/views/Princess.vue'
 import Quest from '@/views/Quest.vue'
 import ItemDetail from '@/views/detail/ItemDetail.vue'
 import PrincessDetail from '@/views/detail/PrincessDetail.vue'
-import Joinus from '@/views/Joinus'
-import Issue from '@/views/Issue'
-import Link from '@/views/Link'
+import Joinus from '@/views/about/Joinus'
+import Issue from '@/views/about/Issue'
+import Link from '@/views/about/Link'
 
 Vue.use(VueRouter)
 
