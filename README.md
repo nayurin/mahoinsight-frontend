@@ -8,15 +8,18 @@
 ## 项目构建与使用
 ### 项目环境准备
 1.安装[Node.js](https://nodejs.org/zh-cn/) (版本要求10或更高)
+
 2.使用以下命令安装nrm (可选)
 ```
 npm install -g nrm
 ```
-3.修改包管理器的下载源为淘宝镜像 (可选)
+3.修改包管理器的下载源为淘宝镜像或cnpm (可选)
 ```
 nrm use taobao
+或
+nrm use cnpm
 ```
-4.使用以下命令安装yarn
+4.使用以下命令安装[yarn](https://classic.yarnpkg.com/zh-Hans/)
 ```
 npm install -g yarn
 ```
