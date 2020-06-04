@@ -45,3 +45,6 @@ yarn build
 
 ## 项目协作
 待更新
+
+## 许可
+本项目使用 MIT 许可，更多详情请参考 [LICENSE](https://github.com/nayurin/mahoinsight-frontend/blob/master/LICENSE)
