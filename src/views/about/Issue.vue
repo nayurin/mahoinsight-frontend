@@ -152,11 +152,12 @@
         color="error"
         class="ma-5"
       >
-        请完成填写必填项
+        请完成填写必要内容
       </v-chip>
     </v-row>
     <v-dialog
       v-model="preview.bug"
+      persistant
       :width="$store.state.mobile ? '400' : '800'"
     >
       <v-card
@@ -179,7 +180,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="preview.bug = false"
+                @click="onPreviewClosed('bug')"
                 v-text="`关闭`"
               />
             </v-card-actions>
@@ -236,6 +237,19 @@
             >
               提交
             </v-btn>
+            <v-chip
+              v-if="result"
+              outlined
+              label
+              :color="result === 'success' ? 'success' : 'error'"
+            >
+              <v-icon v-if="result === 'success'">
+                mdi-check
+              </v-icon>
+              <v-icon v-if="result === 'error'">
+                mdi-close
+              </v-icon>
+            </v-chip>
           </v-card-actions>
         </v-row>
       </v-card>
@@ -243,6 +257,7 @@
 
     <v-dialog
       v-model="preview.feature"
+      persistent
       :width="$store.state.mobile ? '400' : '800'"
     >
       <v-card
@@ -265,7 +280,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="preview.feature = false"
+                @click="onPreviewClosed('feature')"
                 v-text="`关闭`"
               />
             </v-card-actions>
@@ -321,6 +336,19 @@
             >
               提交
             </v-btn>
+            <v-chip
+              v-if="result"
+              outlined
+              label
+              :color="result === 'success' ? 'success' : 'error'"
+            >
+              <v-icon v-if="result === 'success'">
+                mdi-check
+              </v-icon>
+              <v-icon v-if="result === 'error'">
+                mdi-close
+              </v-icon>
+            </v-chip>
           </v-card-actions>
         </v-row>
       </v-card>
@@ -366,7 +394,8 @@ export default {
         feature: false
       },
       checkflag: false,
-      submitting: false
+      submitting: false,
+      result: null
     }
   },
   computed: {
@@ -420,6 +449,10 @@ export default {
           break
       }
     },
+    onPreviewClosed (val) {
+      this.preview[val] = false
+      this.result = null
+    },
     submit (object) {
       const data = JSON.parse(JSON.stringify(object))
       Object.keys(data).forEach(x => {
@@ -432,8 +465,10 @@ export default {
       this.submitting = true
       setTimeout(() => {
         this.submitting = false
-        request.PostNewIssue(data).then(resp => {
-          console.log(resp.data)
+        request.PostNewIssue(data).then(() => {
+          this.result = 'success'
+        }).catch(() => {
+          this.result = 'error'
         })
       }, 3000)
     }
