@@ -3,6 +3,7 @@ import state from '@/store/state'
 
 const request = axios.create({
   baseURL: state.backendBaseURL,
+  timeout: 2000,
   withCredentials: true
 })
 

@@ -1,5 +1,5 @@
 # MahoMaho INSIGHT!!
-这里是**公主连结 Re:Dive 简体中文服**资讯站 *MahoMaho INSIGHT!! 真步真步视界术* 前端工程的代码仓库。
+这里是**公主连结 Re:Dive 简体中文服**资讯站 [MahoMaho INSIGHT!! 真步真步视界术](https://mahomahoinsight.info) 前端工程的代码仓库。
 
 ## 技术栈
 - [Vue.js](https://vuejs.org/)
@@ -47,4 +47,4 @@ yarn build
 待更新
 
 ## 许可
-本项目使用 MIT 许可，更多详情请参考 [LICENSE](https://github.com/nayurin/mahoinsight-frontend/blob/master/LICENSE)
+本项目使用 MIT 许可，详情请参考 [LICENSE](https://github.com/nayurin/mahoinsight-frontend/blob/master/LICENSE)
