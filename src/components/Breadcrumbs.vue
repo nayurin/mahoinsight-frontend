@@ -7,6 +7,15 @@
     <template v-slot:divider>
       <v-icon>mdi-chevron-right</v-icon>
     </template>
+    <template v-slot:item="{ item }">
+      <v-breadcrumbs-item
+        :href="item.href"
+        :disabled="item.disabled"
+        :class="$store.state.mobile ? 'caption' : ''"
+      >
+        {{ item.text }}
+      </v-breadcrumbs-item>
+    </template>
   </v-breadcrumbs>
 </template>
 
@@ -33,11 +42,11 @@ export default {
           href: '/'
         }
       ]
-      this.addBreadcrumbs()
+      if (!this.$store.state.mobile) this.addBreadcrumbs()
     }
   },
   created () {
-    this.addBreadcrumbs()
+    if (!this.$store.state.mobile) this.addBreadcrumbs()
   },
   methods: {
     addBreadcrumbs () {

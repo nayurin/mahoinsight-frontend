@@ -3,6 +3,9 @@
     <v-card-title class="font-weight-bold">
       MahoMaho INSIGHT!!
     </v-card-title>
+    <v-card-text>
+      欢迎访问<strong>公主连结Re:Dive 简体中文服</strong>资讯站  MahoMaho INSIGHT!! 真步真步视界术
+    </v-card-text>
     <v-chip
       v-for="(value, key) in tags"
       :key="key"
