@@ -8,12 +8,429 @@
     <title>MahoMaho INSIGHT!! 真步真步视界术 公主连结Re:Dive资料库</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <script src="lib/spine-webgl.min.js"></script>
+    <style>
+      #app,
+      body,
+      html {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        transition: background .3s cubic-bezier(.25, .8, .5, 1) !important
+      }
+
+      body {
+        background: #ffe6f7
+      }
+
+      #preload-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background: #ffe6f7;
+        background: linear-gradient(to top left, #ffe6f7 30%, #d84d93);
+      }
+
+      canvas {
+        display: block;
+        z-index: 1;
+        width: 50%;
+        height: 50%;
+        margin: 20px auto;
+      }
+
+      #preload-container .preload-text {
+        font-family: Open Sans, sans-serif;
+        color: #121212;
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+        z-index: 20;
+        position: absolute;
+        opacity: 1;
+        line-height: 30px
+      }
+
+      #preload-container .preload-title {
+        top: 55%
+      }
+
+      #preload-container .preload-footer {
+        bottom: 15%;
+        opacity: .7;
+        font-size: 13px
+      }
+
+      #preload-container .preload-text span.preload-text-caption {
+        line-height: 16px;
+        font-weight: 400;
+        font-size: 13px;
+        color: #121212;
+        opacity: .5
+      }
+    </style>
+    <script async>
+      var lastFrameTime = Date.now() / 1000;
+      var canvas;
+      var shader;
+      var batcher;
+      var gl;
+      var mvp = new spine.webgl.Matrix4();
+      var skeletonRenderer;
+      var debugRenderer;
+      var shapes;
+      window.skeleton = {};
+      var classMap = {
+        "101001": {
+          // "hasRarity6": true,
+          "name": "マホ",
+          "type": "7"
+        }
+      };
+      var pendingAnimation = '';
+      var animationQueue = [];
+      var skeletonList = {};
+      var classList = {};
+      var animationProgressBar = '';
+      var speedFactor = 0.75;
+      // var bgColor = [.3, .3, .3, 1];
+  
+      var container = document.getElementById('preload-container');
+      var canvas = document.getElementById("canvas");
+  
+      function _(e, t, n) { var r = null; if ("text" === e) return document.createTextNode(t); r = document.createElement(e); for (var l in t) if ("style" === l) for (var a in t.style) r.style[a] = t.style[a]; else if ("className" === l) r.className = t[l]; else if ("event" === l) for (var a in t[l]) r.addEventListener(a, t[l][a]); else r.setAttribute(l, t[l]); if (n) for (var s = 0; s < n.length; s++)null != n[s] && r.appendChild(n[s]); return r }
+      
+      function getClass(i){
+        return (i < 10 ? '0' : '') + i;
+      }
+  
+      function loadData(url, cb, loadType) {
+        var xhr = new XMLHttpRequest;
+        xhr.open('GET', url, true);
+        if (loadType) xhr.responseType = loadType;
+        xhr.onload = function () {
+          if (xhr.status == 200)
+            cb(true, xhr.response);
+          else
+            cb(false);
+        }
+        xhr.onerror = function () {
+          cb(false);
+        }
+        xhr.send();
+      }
+  
+      function sliceCyspAnimation(buf) {
+        var view = new DataView(buf), count = view.getInt32(12, true);
+        return {
+          count: count,
+          data: buf.slice((count + 1) * 32)};
+      }
+  
+      function init() {
+        canvas = document.getElementById("canvas");
+
+        var config = {
+          alpha: true,
+        };
+        gl = canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
+        if (!gl) {
+          alert('WebGL is unavailable.');
+          return;
+        }
+  
+        // Create a simple shader, mesh, model-view-projection matrix and SkeletonRenderer.
+        shader = spine.webgl.Shader.newTwoColoredTextured(gl);
+        batcher = new spine.webgl.PolygonBatcher(gl);
+        mvp.ortho2d(0, 0, canvas.width - 1, canvas.height - 1);
+        skeletonRenderer = new spine.webgl.SkeletonRenderer(gl);
+        debugRenderer = new spine.webgl.SkeletonDebugRenderer(gl);
+        debugRenderer.drawRegionAttachments = true;
+        debugRenderer.drawBoundingBoxes = true;
+        debugRenderer.drawMeshHull = true;
+        debugRenderer.drawMeshTriangles = true;
+        debugRenderer.drawPaths = true;
+        debugShader = spine.webgl.Shader.newColored(gl);
+        shapes = new spine.webgl.ShapeRenderer(gl);
+  
+        classList.value = "7";
+        skeletonList.value = "101031";
+        load(skeletonList.value, classList.value);
+      }
+  
+      var loading = false;
+      var loadingSkeleton;
+      var generalBattleSkeletonData = {};
+      var generalAdditionAnimations = {};
+      var currentTexture;
+      var currentClassAnimData = {
+        type: 0,
+        data: {}
+      };
+      var currentCharaAnimData = {
+        id: 0,
+        data: {}
+      };
+      var currentClass = '1';
+  
+      function load(unit_id, class_id) {
+        if (loading) return;
+        loading = true;
+        currentClass = class_id;
+        var baseUnitId = unit_id | 0;
+        baseUnitId -= baseUnitId % 100 - 1;
+        loadingSkeleton = { id: unit_id | 0, info: classMap[baseUnitId], baseId: '000000' };
+        if (loadingSkeleton.info.hasSpecialBase) loadingSkeleton.baseId = baseUnitId, currentClass = baseUnitId;
+        var baseId = loadingSkeleton.baseId;
+  
+        loadData('preload/' + baseId + '_CHARA_BASE.cysp', function (success, data) {
+          if (!success || data === null) return loading = false;
+          generalBattleSkeletonData[baseId] = data;
+          loadClassAnimation();
+        }, 'arraybuffer');
+      }
+  
+      function loadClassAnimation() {
+        if (currentClassAnimData.type == currentClass)
+          loadCharaSkillAnimation();
+        else
+          loadData('preload/' + getClass(currentClass) + '_COMMON_BATTLE.cysp', function (success, data) {
+            if (!success || data === null) return loading = false;
+            currentClassAnimData = {
+              type: currentClass,
+              data: sliceCyspAnimation(data)
+            }
+            loadCharaSkillAnimation();
+          }, 'arraybuffer');
+      }
+  
+      function loadCharaSkillAnimation() {
+        var baseUnitId = loadingSkeleton.id;
+        baseUnitId -= baseUnitId % 100 - 1;
+  
+        loadData('preload/' + baseUnitId + '_BATTLE.cysp', function (success, data) {
+          if (!success || data === null) return loading = false;
+          currentCharaAnimData = {
+            id: baseUnitId,
+            data: sliceCyspAnimation(data)
+          }
+          loadTexture();
+        }, 'arraybuffer');
+      }
+  
+      function loadTexture() {
+        loadData('preload/' + loadingSkeleton.id + '.atlas', function (success, atlasText) {
+          if (!success) return loading = false;
+          loadData('preload/' + loadingSkeleton.id + '.png', function (success, blob) {
+            if (!success) return loading = false;
+            var img = new Image();
+            img.onload = function () {
+              var created = !!window.skeleton.skeleton;
+              if (created) {
+                window.skeleton.state.clearTracks();
+                window.skeleton.state.clearListeners();
+                gl.deleteTexture(currentTexture.texture)
+              }
+  
+              var imgTexture = new spine.webgl.GLTexture(gl, img);
+              URL.revokeObjectURL(img.src);
+              atlas = new spine.TextureAtlas(atlasText, function (path) {
+                return imgTexture;
+              });
+              currentTexture = imgTexture;
+              atlasLoader = new spine.AtlasAttachmentLoader(atlas);
+  
+              var baseId = loadingSkeleton.baseId;
+              var animationCount = 0;
+              var classAnimCount = currentClassAnimData.data.count;
+              animationCount += classAnimCount;
+              var unitAnimCount = currentCharaAnimData.data.count;
+              animationCount += unitAnimCount;
+  
+              //assume always no more than 128 animations
+              var newBuffSize = generalBattleSkeletonData[baseId].byteLength - 64 + 1 +
+                currentClassAnimData.data.data.byteLength +
+                currentCharaAnimData.data.data.byteLength;
+              var newBuff = new Uint8Array(newBuffSize);
+              var offset = 0;
+              newBuff.set(new Uint8Array(generalBattleSkeletonData[baseId].slice(64)), 0);
+              offset += generalBattleSkeletonData[baseId].byteLength - 64;
+              newBuff[offset] = animationCount;
+              offset++;
+              newBuff.set(new Uint8Array(currentClassAnimData.data.data), offset);
+              offset += currentClassAnimData.data.data.byteLength;
+              newBuff.set(new Uint8Array(currentCharaAnimData.data.data), offset);
+              offset += currentCharaAnimData.data.data.byteLength;
+  
+              var skeletonBinary = new spine.SkeletonBinary(atlasLoader);
+              var skeletonData = skeletonBinary.readSkeletonData(newBuff.buffer);
+              var skeleton = new spine.Skeleton(skeletonData);
+              skeleton.setSkinByName('default');
+              var bounds = calculateBounds(skeleton);
+  
+              animationStateData = new spine.AnimationStateData(skeleton.data);
+              var animationState = new spine.AnimationState(animationStateData);
+              animationState.setAnimation(0, getClass(currentClass) + '_idle', true);
+              animationState.addListener({
+                complete: function tick(track) {
+                  if (animationQueue.length) {
+                    var nextAnim = animationQueue.shift();
+                    if (nextAnim == 'stop') return;
+                    if (nextAnim == 'hold') return setTimeout(tick, 1e3);
+                    if (nextAnim.substr(0, 1) != '1') nextAnim = getClass(currentClassAnimData.type) + '_' + nextAnim;
+                    console.log(nextAnim);
+                    animationState.setAnimation(0, nextAnim, !animationQueue.length);
+                  }
+                },
+              });
+  
+              window.skeleton = { skeleton: skeleton, state: animationState, bounds: bounds, premultipliedAlpha: true }
+              loading = false;
+              (window.updateUI || setupUI)();
+              if (!created) {
+                canvas.style.width = '99%';
+                requestAnimationFrame(render);
+                setTimeout(function () {
+                  canvas.style.width = '';
+                }, 0)
+              }
+              activeSkeleton = loadingSkeleton.id;
+            }
+            img.src = URL.createObjectURL(blob);
+          }, 'blob');
+        })
+      }
+  
+      function calculateBounds(skeleton) {
+        skeleton.setToSetupPose();
+        skeleton.updateWorldTransform();
+        var offset = new spine.Vector2();
+        var size = new spine.Vector2();
+        skeleton.getBounds(offset, size, []);
+        offset.y = 0
+        return { offset: offset, size: size };
+      }
+  
+      function setupUI() {
+        var setupAnimationUI = function () {
+          var skeleton = window.skeleton.skeleton;
+          var state = window.skeleton.state;
+          var activeAnimation = state.tracks[0].animation.name;
+          skeleton.data.animations.forEach(function (i) {
+            i = i.name;
+            if (!/^\d{6}_/.test(i)) return;
+            var val = i;
+            if (!/skill/.test(i)) val = i + ',stop';
+          })
+        }
+  
+        var animationState = skeleton.state, forceNoLoop = false;
+        animationQueue.push('run');
+        var nextAnim = animationQueue.shift();
+        if (!/^\d{6}/.test(nextAnim)) nextAnim = getClass(currentClassAnimData.type) + '_' + nextAnim;
+        animationState.setAnimation(0, nextAnim, !animationQueue.length && !forceNoLoop);
+  
+  
+        window.updateUI = function () {
+          setupAnimationUI();
+        };
+        setupAnimationUI();
+      }
+  
+      function render() {
+        var now = Date.now() / 1000;
+        var delta = now - lastFrameTime;
+        lastFrameTime = now;
+        delta *= speedFactor;
+  
+        // Update the MVP matrix to adjust for canvas size changes
+        resize();
+  
+        // gl.clearColor(...bgColor);
+        // gl.clear(gl.COLOR_BUFFER_BIT);
+  
+        // Apply the animation state based on the delta time.
+        var state = window.skeleton.state;
+        var skeleton = window.skeleton.skeleton;
+        var bounds = window.skeleton.bounds;
+        var premultipliedAlpha = window.skeleton.premultipliedAlpha;
+        state.update(delta);
+        state.apply(skeleton);
+        skeleton.updateWorldTransform();
+  
+        // Bind the shader and set the texture and model-view-projection matrix.
+        shader.bind();
+        shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
+        shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, mvp.values);
+  
+        // Start the batch and tell the SkeletonRenderer to render the active skeleton.
+        batcher.begin(shader);
+  
+        skeletonRenderer.premultipliedAlpha = premultipliedAlpha;
+        skeletonRenderer.draw(batcher, skeleton);
+        batcher.end();
+  
+        shader.unbind();
+  
+        requestAnimationFrame(render);
+      }
+  
+      function resize() {
+        var useBig = screen.width * devicePixelRatio > 1280;
+        //var w = useBig ? 1920 : 1280;
+        //var h = useBig ? 1080 : 720;
+        var w = canvas.clientWidth * devicePixelRatio;
+        var h = canvas.clientHeight * devicePixelRatio;
+        var bounds = window.skeleton.bounds;
+        if (canvas.width != w || canvas.height != h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
+  
+        // magic
+        var centerX = bounds.offset.x + bounds.size.x / 2;
+        var centerY = bounds.offset.y + bounds.size.y / 2;
+        var scaleX = bounds.size.x / canvas.width;
+        var scaleY = bounds.size.y / canvas.height;
+        var scale = Math.max(scaleX, scaleY) * 1.2;
+        if (scale < 1) scale = 1;
+        var width = canvas.width * scale;
+        var height = canvas.height * scale;
+  
+        mvp.ortho2d(centerX - width / 2, centerY - height / 2, width, height);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+
+      (function () {
+        var timer = setInterval(() => {
+          if (document.getElementById('canvas')) {
+            clearInterval(timer);
+            init();
+          }
+        }, 5);
+      })();
+    </script>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <main id="app">
+      <div id="preload-container">
+        <canvas id="canvas" width="1296" height="969" class="preload-container" style=""></canvas>
+        <div class="preload-text preload-title">
+          <span>正在加载</span>
+          <br>
+          <span class="preload-text-caption">首次加载资源可能较慢，请耐心等待</span>
+        </div>
+        <div class="preload-text preload-footer">
+          <span>MahoMaho INSIGHT!!</span>
+        </div>
+      </div>
+    </main>
     <!-- built files will be auto injected -->
   </body>
 </html>
