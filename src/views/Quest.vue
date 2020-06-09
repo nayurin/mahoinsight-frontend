@@ -10,7 +10,7 @@
           class="mx-4"
           flat
           hide-details
-          label="举例: A-B [ normal | hard ]"
+          label="用法: A-B [ normal | hard ]"
           prepend-inner-icon="mdi-magnify"
           solo-inverted
           clearable
@@ -75,14 +75,16 @@
       </v-tabs-items>
     </v-card>
 
-    <v-row 
+    <v-row
       no-gutters
       class="d-flex flex-nowrap"
     >
-      <v-col cols="auto">
-        <v-card
-          v-show="x"
-        >
+      <v-col
+        v-show="showQuestTabs"
+        cols="12"
+        lg="auto"
+      >
+        <v-card>
           <v-overlay
             absolute
             :value="overlay"
@@ -93,6 +95,7 @@
             slider-size="4"
             slider-color="purple"
             vertical
+            :grow="$store.state.mobile ? true : false"
           >
             <v-tab
               v-for="value of listArea"
@@ -110,11 +113,25 @@
           </v-tabs-items>
         </v-card>
       </v-col>
-      <v-col cols="auto">
-        <v-card
-          v-show="y"
-        >
-          <v-card-title>{{ $store.getters.getQuestNameById(y) }}</v-card-title>
+      <v-col
+        v-show="showQuestDetails"
+        cols="12"
+        lg="auto"
+      >
+        <v-card>
+          <v-card-title>
+            <v-btn
+              v-if="$store.state.mobile"
+              color="success"
+              small
+              rounded
+              class="mx-2"
+              @click="y = 0"
+            >
+              <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
+            </v-btn>
+            {{ $store.getters.getQuestNameById(y) }}
+          </v-card-title>
           <v-expansion-panels
             v-model="panel"
             hover
@@ -263,6 +280,14 @@ export default {
     },
     zoom () {
       return this.$store.state.mobile ? "0.45" : "0.6"
+    },
+    showQuestTabs () {
+      if (this.$store.state.mobile && !this.x) return false
+      if (this.$store.state.mobile && this.x && this.y) return false
+      return true
+    },
+    showQuestDetails () {
+      return this.y ? true : false
     }
   },
   created () {

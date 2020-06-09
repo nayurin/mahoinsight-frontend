@@ -23,7 +23,7 @@
               v-text="label"
             />
           </v-card-text>
-          <v-card-action>
+          <v-card-actions>
             <v-row
               no-gutters
               justify="center"
@@ -38,7 +38,7 @@
                 <v-icon>mdi-exit-to-app</v-icon>
               </v-btn>
             </v-row>
-          </v-card-action>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
