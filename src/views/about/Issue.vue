@@ -53,13 +53,24 @@
       fluid
       class="py-0"
     >
-      <v-text-field
-        v-model="title"
-        clearable
-        label="故障标题"
-        hint="简要概括故障性质和故障表现"
-        :rules="rules"
-      />
+      <v-row no-gutters>
+        <v-col class="col-12 col-lg-9">
+          <v-text-field
+            v-model="title"
+            clearable
+            label="故障标题"
+            hint="简要概括故障性质和故障表现"
+            :rules="rules"
+          />
+        </v-col>
+        <v-col class="col-12 col-lg-3">
+          <v-text-field
+            v-model="commit"
+            disabled
+            label="当前版本"
+          />
+        </v-col>
+      </v-row>
       <v-text-field
         v-model="bug.useragent[0]"
         disabled
@@ -119,13 +130,24 @@
       fluid
       class="py-0"
     >
-      <v-text-field
-        v-model="title"
-        clearable
-        label="需求标题"
-        hint="简要概括这个新功能或新需求"
-        :rules="rules"
-      />
+      <v-row no-gutters>
+        <v-col class="col-12 col-lg-9">
+          <v-text-field
+            v-model="title"
+            clearable
+            label="需求标题"
+            hint="简要概括这个新功能或新需求"
+            :rules="rules"
+          />
+        </v-col>
+        <v-col class="col-12 col-lg-3">
+          <v-text-field
+            v-model="commit"
+            disabled
+            label="当前版本"
+          />
+        </v-col>
+      </v-row>
       <v-textarea
         v-model="feature.conditions[0]"
         clearable
@@ -169,7 +191,7 @@
     </v-row>
     <v-dialog
       v-model="preview.bug"
-      persistant
+      persistent
       :width="$store.state.mobile ? '400' : '800'"
     >
       <v-card
@@ -204,6 +226,26 @@
             >
               {{ title }}
             </v-card-text>
+          </v-col>
+          <v-col
+            cols="12"
+          >
+            <v-chip 
+              label
+              outlined
+              color="primary"
+              class="mx-4 my-2"
+              v-text="`当前版本`"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+          >
+            <v-card-text 
+              class="mx-6 my-2 pa-0"
+              :style="style"
+              v-text="commit"
+            />
           </v-col>
         </v-row>
         <v-row
@@ -305,6 +347,26 @@
               {{ title }}
             </v-card-text>
           </v-col>
+          <v-col
+            cols="12"
+          >
+            <v-chip 
+              label
+              outlined
+              color="primary"
+              class="mx-4 my-2"
+              v-text="`当前版本`"
+            />
+          </v-col>
+          <v-col
+            cols="12"
+          >
+            <v-card-text 
+              class="mx-6 my-2 pa-0"
+              :style="style"
+              v-text="commit"
+            />
+          </v-col>
         </v-row>
         <v-row
           v-for="(value, key) in feature"
@@ -390,6 +452,7 @@ export default {
       ],
       purpose: 'bug',
       title: '',
+      commit: this.$store.state.gitcommit.toUpperCase(),
       bug: {
         useragent: [navigator.userAgent, '浏览器和操作系统信息'],
         locate: ['', '故障发生的位置'],
@@ -478,7 +541,7 @@ export default {
         }
       })
       data.title = this.title
-
+      data.commit = this.commit
       this.submitting = true
       setTimeout(() => {
         this.submitting = false
