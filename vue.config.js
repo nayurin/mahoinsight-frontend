@@ -16,7 +16,7 @@ module.exports = {
     config
       .plugin('define')
       .tap(args => {
-        args[0].GIT_COMMIT = JSON.stringify(commit).trim()
+        args[0].GIT_COMMIT = JSON.stringify(commit)
         return args
       })
   }

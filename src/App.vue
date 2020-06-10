@@ -62,7 +62,7 @@ export default {
     this.$store.commit('loadObjects', 'chara')
     this.$store.commit('loadObjects', 'item')
     this.$store.commit('loadObjects', 'quest')
-    this.$store.commit('loadGitCommit', GIT_COMMIT)
+    this.$store.commit('loadGitCommit', GIT_COMMIT.trim())
     if (/Android|webOS|iPhone|iPod|BlackBerry|MuMu/i.test(navigator.userAgent)) this.$store.commit('change2MobileMode')
     this.nav = this.$store.state.mobile ? false : true
   }
