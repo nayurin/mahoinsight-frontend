@@ -96,9 +96,6 @@ export default {
     name () {
       return this.$route.params.princessName
     }
-  },
-  // created () {
-  //   console.log(this.princess)
-  // }
+  }
 }
 </script>
