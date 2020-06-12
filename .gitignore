@@ -3,6 +3,7 @@ node_modules
 /dist
 /public/cached
 /public/image
+src/store/gameevents.js
 
 # local env files
 .env.local
