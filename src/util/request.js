@@ -27,6 +27,6 @@ export default {
   // },
 
   PostNewIssue (data) {
-    return request.post('/api/newissue', data)
+    return request.post('/newissue', data)
   }
 }
