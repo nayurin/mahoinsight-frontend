@@ -8,7 +8,7 @@
     >
       <v-app-bar-nav-icon @click="nav = !nav" />
       <v-img
-        src="/image/bg/favicon.png"
+        :src="`${$store.state.CDNBaseURL}/image/bg/favicon.png`"
         contain
         max-width="48"
       />
