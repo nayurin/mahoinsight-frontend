@@ -42,7 +42,9 @@ export default {
       return this.id === 999999 ? '.' : `/item/detail/${this.$store.getters.getItemNameById(this.id)}`
     },
     src () {
-      return String(this.id).length === 6 ? `/image/equipments/icon_equipment_${this.id}.png` : `/image/items/icon_item_${this.id}.png`
+      return String(this.id).length === 6 ? 
+        `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${this.id}.png` :
+        `${this.$store.state.CDNBaseURL}/image/items/icon_item_${this.id}.png`
     },
     alt () {
       return this.id === 999999 ? null : this.$store.getters.getItemNameById(this.id)

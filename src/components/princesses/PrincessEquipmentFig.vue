@@ -80,7 +80,7 @@ export default {
 <style scoped>
   .equip-main {
     position: relative;
-    background-image: url(/image/bg/bg_530011_front.png);
+    background-image: url(https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com/image/bg/bg_530011_front.png);
     background-size: cover;
     background-repeat: no-repeat;
     width: 512px;

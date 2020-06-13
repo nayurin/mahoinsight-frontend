@@ -189,7 +189,7 @@ export default {
       return this.$store.getters.getQuestEnemyNameByEnemyId(this.enemyid)
     },
     src () {
-      return `/image/enemies/icon_unit_${this.unitid}.png`
+      return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${this.unitid}.png`
     },
     style () {
       return {

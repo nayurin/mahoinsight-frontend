@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     sourceURL () {
-      return `/image/character_stills/still_unit_${this.princess.id.toString().replace(/01$/, '31')}.png`
+      return `${this.$store.state.CDNBaseURL}/image/character_stills/still_unit_${this.princess.id.toString().replace(/01$/, '31')}.png`
     },
     comment () {
       return this.princess.status.comment.replace(/\\n/g, '<br/>')
@@ -69,9 +69,9 @@ export default {
     },
     pos () {
       return {
-        1: "/image/bg/front.png",
-        2: "/image/bg/middle.png",
-        3: "/image/bg/behind.png"
+        1: `${this.$store.state.CDNBaseURL}/image/bg/front.png`,
+        2: `${this.$store.state.CDNBaseURL}/image/bg/middle.png`,
+        3: `${this.$store.state.CDNBaseURL}/image/bg/behind.png`
       }[this.$store.getters.getPrincessPositionByName(this.princess.status.unit_name)]
     }
   }

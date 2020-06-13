@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     src () {
-      return `/image/skills/icon_skill_${this.id}.png`
+      return `${this.$store.state.CDNBaseURL}/image/skills/icon_skill_${this.id}.png`
     },
     style () {
       return {

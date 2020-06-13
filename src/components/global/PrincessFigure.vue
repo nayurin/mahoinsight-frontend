@@ -52,7 +52,7 @@ export default {
       return `/princess/detail/${this.name}`
     },
     src () {
-      return `/image/character_favicons/fav_push_notif_${this.princess.id}.png`
+      return `${this.$store.state.CDNBaseURL}/image/character_favicons/fav_push_notif_${this.princess.id}.png`
     },
     style () {
       return {
