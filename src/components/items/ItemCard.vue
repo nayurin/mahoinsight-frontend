@@ -63,7 +63,7 @@ export default {
       return this.item.detail.equipment_name
     },
     src () {
-      return `/image/equipments/icon_equipment_${this.item.id}.png`
+      return `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${this.item.id}.png`
     },
     desc () {
       return this.item.detail.description.replace(/\\n/g, '')
