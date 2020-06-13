@@ -56,7 +56,7 @@
                 label
                 dark
                 class="ma-3"
-                @click="onClick()"
+                @click="onClick(topicurl)"
               >
                 <v-icon left>
                   mdi-chat-processing
@@ -77,7 +77,7 @@ export default {
   data () {
     return {
       projecturl: "https://github.com/nayurin/mahoinsight-frontend",
-      topicurl: "",
+      topicurl: "https://nga.178.com/read.php?tid=22164632",
       skill: ['Vue.js', 'Vuetify @ Vue.js', 'Node.js', 'UI/UX 设计']
     }
   },
