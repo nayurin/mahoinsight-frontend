@@ -1,9 +1,8 @@
-import events from '@/store/gameevents'
-
 const state = {
   item: {},
   chara: {},
   quest: {},
+  events: {},
   backendBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight.info/api' : 'http://127.0.0.1:23333/api',
   CDNBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com' : '',
   maxRank: 8,
@@ -23,7 +22,6 @@ const state = {
   difficulties: ["normal", "hard", "other"],
   widthThreshold: [300, 600],
   gitcommit: "unknown",
-  events,
   mobile: false
 }
 
