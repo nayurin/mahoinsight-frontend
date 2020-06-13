@@ -1,7 +1,6 @@
 <template>
   <v-breadcrumbs
-    large
-    class="pa-1"
+    class="pa-1 v-breadcrumbs--large"
     :items="items"
   >
     <template v-slot:divider>
@@ -11,9 +10,10 @@
       <v-breadcrumbs-item
         :href="item.href"
         :disabled="item.disabled"
-        :class="$store.state.mobile ? 'caption' : ''"
       >
-        {{ item.text }}
+        <span class="breadcrumbs--items">
+          {{ item.text }}
+        </span>
       </v-breadcrumbs-item>
     </template>
   </v-breadcrumbs>
@@ -85,3 +85,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+a:not(.v-breadcrumbs__item--disabled)>span.breadcrumbs--items {
+  color: white;
+}
+
+span.breadcrumbs--items {
+  font-size: 0.95em;
+}
+</style>

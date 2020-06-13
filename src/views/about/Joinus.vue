@@ -50,7 +50,7 @@
                 <v-icon left>
                   mdi-qqchat
                 </v-icon>
-                QQ群 xxxx
+                Group 863491954
               </v-chip>
               <v-chip
                 label
