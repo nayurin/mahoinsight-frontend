@@ -104,6 +104,7 @@ export default {
     },
     skillDetail (skill) {
       const detail = []
+      let desc = ''
       if (!skill) {
         return null
       }
@@ -111,11 +112,11 @@ export default {
         const action = skill.actions.action_list[i]
         if (action && action.description) {
           if (/\{0\}/.test(action.description)) {
-            detail.push(action.description.replace(/\{0\}/, this.skillActionDetail(action)))
+            desc = action.description.replace(/\{0\}/, this.skillActionDetail(action).detail)
           } else {
-            detail.push(`${action.description}${this.skillActionDetail(action)}`)
+            desc = `${action.description}${this.skillActionDetail(action).detail}`
           }
-          
+          detail.push(this.skillActionDetail(action).range ? `${desc} 范围【 ${action.target_range} 】` : desc)
         }
       }
       return detail.join('<br>')
@@ -123,52 +124,67 @@ export default {
     skillActionDetail (action) {
       const level = this.$store.getters.curLevel
       const atk = this.$store.state.curAtk
-      let total = 0
+      let total = 0, detail = ''
+      const range = action.target_range > 0 ? action.target_range : 0
       switch (action.action_type) {
         case 1: // 造成伤害
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level) + (Number(action.action_value_3) * atk)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk >`
+          detail = action.target_range === -1 ?
+          ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk 】` :
+          ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk 】`
+          break
         // case 2: // ?
         // case 3: // ?
         case 4: // 回复HP
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level) + (Number(action.action_value_4) * atk)
-          return ` ${Math.round(total)} < ${action.action_value_2} + ${action.action_value_3}*技能等级 + ${action.action_value_4}*atk >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 + ${action.action_value_4}*atk 】`
+          break
         case 6: // 改变护盾值
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】`
+          break
         // case 7: // ?
         case 8: // 改变行动速度
           if (action.action_value_1 === 0) {
-            return ` 持续< ${action.action_value_3} >秒`
+            detail = ` 持续【 ${action.action_value_3} 】秒`
           } else if (action.action_value_1 > 0 && action.action_value < 1) {
-            return ` 行动速度降低至< ${action.action_value_1} >倍 持续< ${action.action_value_3} >秒`
+            detail = ` 行动速度降低至【 ${action.action_value_1} 】倍 持续【 ${action.action_value_3} 】秒`
           } else {
-            return ` 行动速度提高至< ${action.action_value_1} >倍 持续< ${action.action_value_3} >秒`
+            detail = ` 行动速度提高至【 ${action.action_value_1} 】倍 持续【 ${action.action_value_3} 】秒`
           }
+          break
         case 9: // 持续伤害
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】`
+          break
         case 10: // 改变属性值
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          return `${Math.round(total)} < ${action.action_value_2} + ${action.action_value_3}*技能等级 >`
+          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          break
         case 11: // 赋予混乱
-          return ` 持续< ${action.action_value_1} >秒` // 还有个action_value_3不知道是做什么的 推测为命中几率
+          detail = ` 持续【 ${action.action_value_1} 】秒` // 还有个action_value_3不知道是做什么的 推测为命中几率
+          break
         case 12: // 赋予黑暗
-          return ` 持续< ${action.action_value_1} >秒` // 还有个action_value_3不知道是做什么的 推测为命中几率
+          detail = ` 持续【 ${action.action_value_1} 】秒` // 还有个action_value_3不知道是做什么的 推测为命中几率
+          break
         // case 14: // ??
         case 15: // 召唤
-          return '' // action_value_3 action_value_5 action_value_6 action_value_7都不知道是做什么的
+          detail = '' // action_value_3 action_value_5 action_value_6 action_value_7都不知道是做什么的
+          break
         case 16: // 改变TP
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】`
+          break
         // case 17: // ???
         // case 18: // ???
         case 20: // 挑衅
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` 持续 ${total} < ${action.action_value_1} + ${action.action_value_2}*技能等级 >秒`
+          detail = ` 持续 ${total} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】秒`
+          break
         case 21: // 赋予自身无敌
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` 持续 ${total} < ${action.action_value_1} + ${action.action_value_2}*技能等级 >秒`
+          detail = ` 持续 ${total} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】秒`
+          break
         // case 23: // ???
         // case 26: // ???
         // case 27: // ???
@@ -177,43 +193,49 @@ export default {
         // case 32: // ?
         case 33: // 召唤??
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】`
+          break
         case 34: // 每次攻击时伤害增加
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          return `${Math.round(total)} < ${action.action_value_2} + ${action.action_value_3}*技能等级 >`
+          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          break
         // case 35: // 英灵的加护?? 安2技能
         case 36: // 每秒伤害
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level) + (Number(action.action_value_3) * atk)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk 】`
+          break
         case 37: // 区域HP持续回复
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level) + (Number(action.action_value_3) * atk)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk > 持续< ${action.action_value_5} >秒 范围< ${action.action_value_7} >`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk 】 持续【 ${action.action_value_5} 】秒 范围【 ${action.action_value_7} 】`
+          break
         case 38: // 改变区域属性值
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 > 持续< ${action.action_value_3} >秒` // 还有个action_value_5不知道是做什么的 推测是范围
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 】 持续【 ${action.action_value_3} 】秒` // 还有个action_value_5不知道是做什么的 推测是范围
+          break
         // case 42: // ???
         // case 44: // ???
         // case 45: // ???
         case 48: // 每秒回复HP或TP
           total = Number(action.action_value_1) + (Number(action.action_value_2) * level) + (Number(action.action_value_3) * atk)
-          return ` ${Math.round(total)} < ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk > 持续< ${action.action_value_5} >秒`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_1} + ${action.action_value_2}*技能等级 + ${action.action_value_3} *atk 】 持续【 ${action.action_value_5} 】秒`
+          break
         case 50: // 范围防御上升
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          return `${Math.round(total)} < ${action.action_value_2} + ${action.action_value_3}*技能等级 >`
+          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          break
         // case 53: // ???
         case 90: // EX技能:自身属性值提升
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          return `${Math.round(total)} < ${action.action_value_2} + ${action.action_value_3}*技能等级 >`
+          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          break
         default:
           return
       }
+      return {
+        detail,
+        range
+      }
     }
-  },
-  // mounted () {
-  //   console.log(this.princess.skill)
-  //   for(let skill of Object.values(this.princess.skill)) {
-  //     console.log(skill.name, this.skillDetail(skill))
-  //   }
-  // }
+  }
 }
 </script>
