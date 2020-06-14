@@ -2,43 +2,43 @@
   <v-container fluid>
     <v-card>
       <v-toolbar
-              color="gray"
-              flat
+        color="gray"
+        flat
       >
         <v-text-field
-                v-model="searchbox"
-                class="mx-4"
-                flat
-                hide-details
-                label="用法: A-B [ normal | hard ]"
-                prepend-inner-icon="mdi-magnify"
-                solo-inverted
-                clearable
-                @input="onSearchboxInputted()"
-                @focus="onSearchboxFocused()"
-                @blur="onSearchboxBlurred()"
-                @click:clear="onSearchboxClearred()"
+          v-model="searchbox"
+          class="mx-4"
+          flat
+          hide-details
+          label="用法: A-B [ normal | hard ]"
+          prepend-inner-icon="mdi-magnify"
+          solo-inverted
+          clearable
+          @input="onSearchboxInputted()"
+          @focus="onSearchboxFocused()"
+          @blur="onSearchboxBlurred()"
+          @click:clear="onSearchboxClearred()"
         />
         <template v-slot:extension>
           <v-overlay
-                  absolute
-                  :value="overlay"
-                  opacity="0.47"
+            absolute
+            :value="overlay"
+            opacity="0.47"
           />
           <v-tabs
-                  centered
+            centered
           >
             <v-tab
-                    @click="onClickOfDiff('normal')"
-                    v-text="`普通难度`"
+              @click="onClickOfDiff('normal')"
+              v-text="`普通难度`"
             />
             <v-tab
-                    @click="onClickOfDiff('hard')"
-                    v-text="`困难难度`"
+              @click="onClickOfDiff('hard')"
+              v-text="`困难难度`"
             />
             <v-tab
-                    @click="onClickOfDiff('other')"
-                    v-text="`其他`"
+              @click="onClickOfDiff('other')"
+              v-text="`其他`"
             />
           </v-tabs>
         </template>
@@ -46,123 +46,122 @@
     </v-card>
 
     <v-card
-            v-show="diff"
+      v-show="diff"
     >
       <v-overlay
-              absolute
-              :value="overlay"
-              opacity="0.47"
+        absolute
+        :value="overlay"
+        opacity="0.47"
       />
       <v-tabs
-              v-model="area"
-              dark
-              show-arrows
-              background-color="primary"
-              slider-color="orange lighten-3"
-
+        v-model="area"
+        dark
+        show-arrows
+        background-color="primary"
+        slider-color="orange lighten-3"
       >
         <v-tab
-                v-for="(value, key) in this[diff]"
-                :key="key"
-                @click="onClickOfArea(value.area_id)"
-                v-text="value.area_name"
+          v-for="(value, key) in this[diff]"
+          :key="key"
+          @click="onClickOfArea(value.area_id)"
+          v-text="value.area_name"
         />
       </v-tabs>
       <v-tabs-items v-model="area">
         <v-tab-item
-                v-for="(value, key) in this[diff]"
-                :key="key"
+          v-for="(value, key) in this[diff]"
+          :key="key"
         />
       </v-tabs-items>
     </v-card>
 
     <v-row
-            no-gutters
-            class="d-flex flex-nowrap"
+      no-gutters
+      class="d-flex flex-nowrap"
     >
       <v-col
-              v-show="showQuestTabs"
-              cols="12"
-              lg="auto"
+        v-show="showQuestTabs"
+        cols="12"
+        lg="auto"
       >
         <v-card>
           <v-overlay
-                  absolute
-                  :value="overlay"
-                  opacity="0.47"
+            absolute
+            :value="overlay"
+            opacity="0.47"
           />
           <v-tabs
-                  v-model="quest"
-                  slider-size="4"
-                  slider-color="purple"
-                  vertical
-                  :grow="$store.state.mobile ? true : false"
+            v-model="quest"
+            slider-size="4"
+            slider-color="purple"
+            vertical
+            :grow="$store.state.mobile ? true : false"
           >
             <v-tab
-                    v-for="value of listArea"
-                    :key="value"
-                    class="pl-2 pr-2"
-                    @click="onClickOfQuest(value)"
-                    v-text="$store.getters.getQuestNameById(value)"
+              v-for="value of listArea"
+              :key="value"
+              class="pl-2 pr-2"
+              @click="onClickOfQuest(value)"
+              v-text="$store.getters.getQuestNameById(value)"
             />
           </v-tabs>
           <v-tabs-items v-model="quest">
             <v-tab-item
-                    v-for="value of listArea"
-                    :key="value"
+              v-for="value of listArea"
+              :key="value"
             />
           </v-tabs-items>
         </v-card>
       </v-col>
       <v-col
-              v-show="showQuestDetails"
-              cols="12"
-              lg="auto"
+        v-show="showQuestDetails"
+        cols="12"
+        lg="auto"
       >
         <v-card>
           <v-card-title>
             <v-btn
-                    v-if="$store.state.mobile"
-                    color="success"
-                    small
-                    rounded
-                    class="mx-2"
-                    @click="y = 0"
+              v-if="$store.state.mobile"
+              color="success"
+              small
+              rounded
+              class="mx-2"
+              @click="y = 0"
             >
               <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
             </v-btn>
             {{ $store.getters.getQuestNameById(y) }}
           </v-card-title>
           <v-expansion-panels
-                  v-model="panel"
-                  hover
-                  focusable
-                  accordion
-                  multiple
+            v-model="panel"
+            hover
+            focusable
+            accordion
+            multiple
           >
             <v-expansion-panel>
               <v-expansion-panel-header>基本信息</v-expansion-panel-header>
               <v-expansion-panel-content class="pt-4">
                 <v-card
-                        outlined
+                  outlined
                 >
                   <v-row>
                     <v-col cols="auto">
                       <v-list-item
-                              v-for="(value, key) in info"
-                              :key="key"
-                              class="ml-4 pa-0"
-                              dense
+                        v-for="(value, key) in info"
+                        :key="key"
+                        class="ml-4 pa-0"
+                        dense
                       >
                         <v-btn
-                                small
-                                color="primary"
-                                v-text="key"
+                          small
+                          color="primary"
+                          v-text="key"
                         />
                         <v-btn
-                                text
-                                small
-                                v-text="value"
+                          text
+                          small
+                          v-text="value"
                         />
                       </v-list-item>
                     </v-col>
@@ -174,24 +173,24 @@
               <v-expansion-panel-header>魔物数据</v-expansion-panel-header>
               <v-expansion-panel-content class="pt-4">
                 <v-card
-                        v-for="(value, key) in enemy"
-                        :key="key"
+                  v-for="(value, key) in enemy"
+                  :key="key"
                 >
                   <v-row dense>
                     <v-col
-                            cols="auto"
-                            class="d-flex flex-row flex-wrap align-center"
+                      cols="auto"
+                      class="d-flex flex-row flex-wrap align-center"
                     >
                       <v-card-subtitle
-                              class="pa-2"
-                              v-text="key"
+                        class="pa-2"
+                        v-text="key"
                       />
                       <EnemyFigure
-                              v-for="(id, i) of value"
-                              :key="i"
-                              :enemyid="id"
-                              :zoom-ratio="zoom"
-                              class="ml-1 mr-1"
+                        v-for="(id, i) of value"
+                        :key="i"
+                        :enemyid="id"
+                        :zoom-ratio="zoom"
+                        class="ml-1 mr-1"
                       />
                     </v-col>
                   </v-row>
@@ -202,8 +201,8 @@
               <v-expansion-panel-header>道具掉落</v-expansion-panel-header>
               <v-expansion-panel-content class="pt-4">
                 <QuestReward
-                        v-if="y"
-                        :id="y"
+                  v-if="y"
+                  :id="y"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
