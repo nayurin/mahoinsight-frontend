@@ -29,6 +29,9 @@ export default new Vuex.Store({
         state.curLevel = parseInt(Number(level))
       }
     },
+    updateCurrentAtk (state, atk) {
+      state['curAtk'] = Number(atk)
+    },
     change2MobileMode (state) {
       state['mobile'] = true
     }

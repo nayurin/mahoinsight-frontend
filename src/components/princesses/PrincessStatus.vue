@@ -89,6 +89,7 @@ export default {
       },
       set (value) {
         this.$store.commit('updateCurrentRank', value)
+        this.updateAtk()
       }
     },
     level: {
@@ -97,6 +98,7 @@ export default {
       },
       set (value) {
         this.$store.commit('updateCurrentLevel', value)
+        this.updateAtk()
       }
     },
     maxRank () {
@@ -106,7 +108,22 @@ export default {
       return this.$store.state.maxLevel
     }
   },
+  watch: {
+    rarity () {
+      this.updateAtk()
+    }
+  },
+  created () {
+    this.updateAtk()
+  },
   methods: {
+    updateAtk () {
+      if (this.princess.status.atk_type === 1) {
+        this.$store.commit('updateCurrentAtk', this.princessStatus(this.level, this.rank, this.rarity)['物理攻击力'])
+      } else if (this.princess.status.atk_type === 2) {
+        this.$store.commit('updateCurrentAtk', this.princessStatus(this.level, this.rank, this.rarity)['魔法攻击力'])
+      }
+    },
     rarityStatus (rarity, type) {
       return this.princess.growth.rarity[rarity][type]
     },
@@ -153,7 +170,7 @@ export default {
         生命值吸收: NaN,
         技能值消耗降低: NaN,
       }
-    },
+    }
   }
 }
 </script>

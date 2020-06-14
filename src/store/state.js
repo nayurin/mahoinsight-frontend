@@ -9,6 +9,7 @@ const state = {
   maxLevel: 90,
   curRank: 0,
   curLevel: 0,
+  curAtk: 0,
   rankColor: {
     1: "blue",
     2: "brown",
