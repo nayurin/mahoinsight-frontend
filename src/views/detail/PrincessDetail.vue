@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid>
+  <v-container
+    fluid
+    class="pa-1"
+  >
     <PrincessBanner
       :princess="princess"
     />
@@ -7,6 +10,7 @@
       <v-col
         cols="12"
         lg="10"
+        class="col-12 col-lg-10 pr-1"
       >
         <PrincessCard
           :princess="princess"
@@ -15,6 +19,7 @@
       <v-col
         cols="12"
         lg="2"
+        class="col-12 col-lg-2 px-0"
       >
         <PrincessProfile
           :princess="princess"

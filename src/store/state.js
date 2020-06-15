@@ -23,7 +23,13 @@ const state = {
   difficulties: ["normal", "hard", "other"],
   widthThreshold: [300, 600],
   gitcommit: "unknown",
-  mobile: false
+  mobile: false,
+  charaFragByTokens: {
+    地下城商店: [31060, 31034, 31006, 31045, 31051, 31010, 31029],
+    竞技场商店: [31001, 31004, 31046, 31053, 31011],
+    公主竞技场商店: [31016, 31007, 31017, 31012, 31009],
+    行会商店: [31025, 31022, 31042, 31043, 31018]
+  }
 }
 
 export default state

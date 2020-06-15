@@ -47,14 +47,12 @@ import Button2Top from '@/components/Button2Top'
 
 export default {
   name: 'App',
-
   components: {
     Navigator,
     Breadcrumbs,
     Footer,
     Button2Top
   },
-
   data: () => ({
     routes: [],
     nav: false
