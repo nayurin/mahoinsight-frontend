@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import Navigator from '@/components/Navigator';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Navigator from '@/components/Navigator'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import Footer from '@/components/Footer'
 import Button2Top from '@/components/Button2Top'
 
@@ -69,5 +69,5 @@ export default {
     if (/Android|webOS|iPhone|iPod|BlackBerry|MuMu/i.test(navigator.userAgent)) this.$store.commit('change2MobileMode')
     this.nav = !this.$store.state.mobile
   }
-};
+}
 </script>

@@ -87,12 +87,14 @@ export default {
     return {
       anchor: {
         Item: {
+          返回列表: ["back-to-the-list--item", "mdi-arrow-left-drop-circle"],
           卡片: ["#item-card", "mdi-checkerboard"],
           合成: ["#item-craft", "mdi-flask"],
           需求角色: ["#item-requirement", "mdi-chess-queen"],
           素材来源: ["#item-source", "mdi-treasure-chest"],
         },
         Princess: {
+          返回列表: ["back-to-the-list--princess", "mdi-arrow-left-drop-circle"],
           立绘: ["#princess-card", "mdi-face-woman"],
           介绍: ["#princess-profile", "mdi-comment-edit"],
           行动模式: ["#princess-ap", "mdi-rotate-right"],
@@ -146,6 +148,15 @@ export default {
       }
     },
     scroll (selector) {
+      if (selector.match(/(.*)--(.*)/) && selector.match(/(.*)--(.*)/)[2] === 'item') {
+        this.$router.push({
+          name: 'Item'
+        })
+      } else if (selector.match(/(.*)--(.*)/) && selector.match(/(.*)--(.*)/)[2] === 'princess') {
+        this.$router.push({
+          name: 'Princess'
+        })
+      }
       if (document.querySelector(selector)) {
         document.querySelector(selector).scrollIntoView({
           behavior: "smooth",
