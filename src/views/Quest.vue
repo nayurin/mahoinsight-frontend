@@ -325,17 +325,17 @@
       onSearchboxInputted () {
         if (this.search()) {
           this.x = this.search().x,
-                  this.y = this.search().y,
-                  this.diff = this.search().diff
+          this.y = this.search().y,
+          this.diff = this.search().diff
         }
       },
       search () {
         const regexpQuest = /([1-9]\d{0,})-([1-9]\d{0,})/
         const regexpDiff = /([a-z]{1,})/
         let area = "",
-                quest = "",
-                id = "",
-                diff = this.diff
+            quest = "",
+            id = "",
+            diff = this.diff
         if (this.searchbox && this.searchbox.match(regexpQuest) && this.searchbox.match(regexpQuest)[1].length <= 2 && this.searchbox.match(regexpQuest)[2].length <= 2) {
           area = this.searchbox.match(regexpQuest)[1]
           quest = this.searchbox.match(regexpQuest)[2]
