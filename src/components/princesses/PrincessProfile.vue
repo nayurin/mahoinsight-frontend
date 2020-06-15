@@ -32,7 +32,7 @@
                 <v-btn
                   outlined
                   small
-                  class="px-3"
+                  class="px-3 my-1"
                   :disabled="Object.prototype.toString.call(item)== '[object Object]' ? false : true"
                   :to="Object.prototype.toString.call(item)== '[object Object]' ? item.route : ''"
                   v-text="Object.prototype.toString.call(item)== '[object Object]' ? item.name : item"

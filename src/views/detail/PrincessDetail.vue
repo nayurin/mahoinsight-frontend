@@ -3,23 +3,24 @@
     fluid
     class="pa-1"
   >
-    <PrincessBanner
-      :princess="princess"
-    />
+    <v-row>
+      <v-col class="pr-1">
+        <PrincessBanner
+          :princess="princess"
+        />
+      </v-col>
+    </v-row>
+    
     <v-row>
       <v-col
-        cols="12"
-        lg="10"
-        class="col-12 col-lg-10 pr-1"
+        class="col-12 col-lg-10 pr-3"
       >
         <PrincessCard
           :princess="princess"
         />
       </v-col>
       <v-col
-        cols="12"
-        lg="2"
-        class="col-12 col-lg-2 px-0"
+        class="col-12 col-lg-2 pl-0 pr-1"
       >
         <PrincessProfile
           :princess="princess"
@@ -28,7 +29,7 @@
     </v-row>
     <v-row>
       <v-col
-        cols="12"
+        class="pr-1 col-12"
       >
         <PrincessAP
           :princess="princess"
@@ -37,16 +38,14 @@
     </v-row>
     <v-row>
       <v-col
-        cols="12"
-        lg="6"
+        class="col-12 col-lg-6"
       >
         <PrincessEquipment
           :princess="princess"
         />
       </v-col>
       <v-col
-        cols="12"
-        lg="6"
+        class="col-12 col-lg-6 pr-1"
       >
         <PrincessStatus
           :princess="princess"
@@ -56,14 +55,14 @@
     <v-row
       v-if="Object.prototype.hasOwnProperty.call(princess, 'unique_equipment')"
     >
-      <v-col>
+      <v-col class="col-12 pr-1">
         <PrincessUniqueEquipment
           :princess="princess"
         />
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col class="col-12 pr-1">
         <PrincessSkill
           :princess="princess"
         />
