@@ -85,6 +85,8 @@ export default {
   methods: {
     sortEvents () {
       const now = new Date()
+      const tzoffset = -480 - now.getTimezoneOffset()
+      const GMT8Time = now.getTime() - (tzoffset * 1000 * 60)
       const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/
       for (let i in this.$store.state.events) {
         const event = this.$store.state.events[i]
@@ -93,15 +95,15 @@ export default {
           starttime[1] -= 1, endtime[1] -= 1
           starttime = new Date(...starttime)
           endtime = new Date(...endtime)
-          if (now.getTime() - starttime.getTime() >= 0 && now.getTime() - endtime.getTime() < 0) {
-            this.$set(event, 'difftime', endtime.getTime() - now.getTime())
+          if (GMT8Time - starttime.getTime() >= 0 && GMT8Time - endtime.getTime() < 0) {
+            this.$set(event, 'difftime', endtime.getTime() - GMT8Time)
             this.events.current.push(event)
           }
-          else if (now.getTime() - starttime.getTime() < 0) {
-            this.$set(event, 'difftime', starttime.getTime() - now.getTime())
+          else if (GMT8Time - starttime.getTime() < 0) {
+            this.$set(event, 'difftime', starttime.getTime() - GMT8Time)
             this.events.incoming.push(event)
           }
-          else if (now.getTime() - endtime.getTime() >= 0) {
+          else if (GMT8Time - endtime.getTime() >= 0) {
             this.events.outdated.push(event)
           }
         }
