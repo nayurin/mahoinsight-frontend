@@ -97,6 +97,7 @@ export default {
           返回列表: ["back-to-the-list--princess", "mdi-arrow-left-drop-circle"],
           立绘: ["#princess-card", "mdi-face-woman"],
           介绍: ["#princess-profile", "mdi-comment-edit"],
+          剧情奖励: ["#princess-story-bonus", "mdi-star-face"],
           行动模式: ["#princess-ap", "mdi-rotate-right"],
           装备: ["#princess-equipment", "mdi-puzzle"],
           属性: ["#princess-status", "mdi-hexagon-multiple"],

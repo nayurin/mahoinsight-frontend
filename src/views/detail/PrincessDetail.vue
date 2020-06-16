@@ -13,23 +13,30 @@
     
     <v-row>
       <v-col
-        class="col-12 col-lg-10 pr-3"
+        class="col-12 col-lg-8 pr-1"
       >
         <PrincessCard
           :princess="princess"
         />
       </v-col>
       <v-col
-        class="col-12 col-lg-2 pl-0 pr-1"
+        class="col-12 col-lg-2 px-1"
       >
         <PrincessProfile
+          :princess="princess"
+        />
+      </v-col>
+      <v-col
+        class="col-12 col-lg-2 px-1"
+      >
+        <PrincessStoryBonus
           :princess="princess"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col
-        class="pr-1 col-12"
+        class="pr-3 col-12 col-lg-auto"
       >
         <PrincessAP
           :princess="princess"
@@ -80,6 +87,7 @@ import PrincessAP from '@/components/princesses/PrincessAP'
 import PrincessStatus from '@/components/princesses/PrincessStatus'
 import PrincessUniqueEquipment from '@/components/princesses/PrincessUniqueEquipment'
 import PrincessSkill from '@/components/princesses/PrincessSkill'
+import PrincessStoryBonus from '@/components/princesses/PrincessStoryBonus'
 
 export default {
   name: 'PrincessDetail',
@@ -91,7 +99,8 @@ export default {
     PrincessAP,
     PrincessStatus,
     PrincessUniqueEquipment,
-    PrincessSkill
+    PrincessSkill,
+    PrincessStoryBonus
   },
   computed: {
     princess () {
@@ -100,6 +109,9 @@ export default {
     name () {
       return this.$route.params.princessName
     }
+  },
+  mounted () {
+    console.log(this.princess)
   }
 }
 </script>

@@ -5,10 +5,12 @@
     </v-card-title>
     <v-row>
       <v-col
-        cols="12"
-        lg="6"
+        class="col-12 col-lg-auto"
       >
-        <v-card outlined>
+        <v-card
+          outlined
+          class="mx-3"
+        >
           <v-card-text
             class="pa-2"
             v-text="`入场`"
@@ -30,10 +32,12 @@
         </v-card>
       </v-col>
       <v-col
-        cols="12"
-        lg="6"
+        class="col-12 col-lg-auto"
       >
-        <v-card outlined>
+        <v-card
+          outlined
+          class="mx-3"
+        >
           <v-card-text 
             class="pa-2"
           >
