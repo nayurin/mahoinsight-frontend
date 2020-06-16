@@ -159,7 +159,7 @@ export default {
           break
         case 10: // 改变属性值
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
           break
         case 11: // 赋予混乱
           detail = ` 持续【 ${action.action_value_1} 】秒` // 还有个action_value_3不知道是做什么的 推测为命中几率
@@ -197,7 +197,7 @@ export default {
           break
         case 34: // 每次攻击时伤害增加
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
           break
         // case 35: // 英灵的加护?? 安2技能
         case 36: // 每秒伤害
@@ -221,12 +221,12 @@ export default {
           break
         case 50: // 范围防御上升
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
           break
         // case 53: // ???
         case 90: // EX技能:自身属性值提升
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          detail = `${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          detail = ` ${Math.round(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
           break
         default:
           return
