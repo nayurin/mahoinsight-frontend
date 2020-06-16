@@ -1,5 +1,5 @@
 # MahoMaho INSIGHT!!
-这里是**公主连结 Re:Dive 简体中文服**资讯站 [MahoMaho INSIGHT!! 真步真步视界术](https://mahomahoinsight.info) 前端工程的代码仓库。
+这里是**公主连结 Re:Dive 简体中文服**资讯站 [MahoMaho INSIGHT!! 真步真步视界术](https://mahomaho-insight.info) 前端工程的代码仓库。
 
 ## 技术栈
 - [Vue.js](https://vuejs.org/)
