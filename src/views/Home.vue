@@ -1,66 +1,76 @@
 <template>
   <v-container fluid>
-    <v-card-title class="font-weight-bold">
-      MahoMaho INSIGHT!!
-    </v-card-title>
-    <v-card-text>
-      欢迎访问<strong>公主连结Re:Dive 简体中文服</strong>资讯站  MahoMaho INSIGHT!! 真步真步视界术
-    </v-card-text>
-    <v-chip
-      v-for="(value, key) in tags"
-      :key="key"
-      label
-      dark
-      class="mx-2 my-2"
-      :color="value[0]"
-      v-text="value[1]"
-    />
-    <v-row
-      v-for="(status, i) in Object.keys(tags)"
-      :key="i"
-    >
-      <v-col
-        v-for="event in events[status]"
-        :key="event.title"
-        cols="12"
-        lg="6"
-        class="align-self-stretch"
-      >
-        <v-card>
-          <v-chip
-            label
-            large
-            dark
-            class="d-flex justify-center align-center"
-            :color="tags[status][0]"
-            v-text="event.title"
-          />
-          <v-divider />
-          <v-chip
-            v-if="event.difftime && status === 'current'"
-            label
-            dark
-            :color="event.difftime < 86400000 ? 'pink darken-1' : ''"
-            class="d-flex justify-center align-center"
-            v-text="`结束于 ${formatTime(event.difftime)}`"
-          />
-          <v-chip
-            v-if="event.difftime && status === 'incoming'"
-            label
-            dark
-            :color="event.difftime < 86400000 ? 'green darken-2' : ''"
-            class="d-flex justify-center align-center"
-            v-text="`开始于 ${formatTime(event.difftime)}`"
-          />
-        </v-card>
+    <v-row>
+      <v-col class="col-12 col-lg-6">
+        <v-card-title class="font-weight-bold">
+          MahoMaho INSIGHT!!
+        </v-card-title>
+        <v-card-text>
+          欢迎访问<strong>公主连结Re:Dive 简体中文服</strong>资讯站  MahoMaho INSIGHT!! 真步真步视界术
+        </v-card-text>
+        <v-chip
+          v-for="(value, key) in tags"
+          :key="key"
+          label
+          dark
+          class="mx-2 my-2"
+          :color="value[0]"
+          v-text="value[1]"
+        />
+        <v-row
+          v-for="(status, i) in Object.keys(tags)"
+          :key="i"
+        >
+          <v-col
+            v-for="event in events[status]"
+            :key="event.title"
+            class="align-self-stretch col-12 col-lg-6"
+          >
+            <v-card>
+              <v-chip
+                label
+                large
+                dark
+                class="d-flex justify-center align-center text-button"
+                :color="tags[status][0]"
+                v-text="event.title"
+              />
+              <v-divider />
+              <v-chip
+                v-if="event.difftime && status === 'current'"
+                label
+                dark
+                :color="event.difftime < 86400000 ? 'pink darken-1' : ''"
+                class="d-flex justify-center align-center text-overline"
+                v-text="`结束于 ${formatTime(event.difftime)}`"
+              />
+              <v-chip
+                v-if="event.difftime && status === 'incoming'"
+                label
+                dark
+                :color="event.difftime < 86400000 ? 'green darken-2' : ''"
+                class="d-flex justify-center align-center text-overline"
+                v-text="`开始于 ${formatTime(event.difftime)}`"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col class="col-12 col-lg-6">
+        <Calendar />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import Calendar from '@/components/Calendar.vue'
+
 export default {
   name: 'Home',
+  components: {
+    Calendar
+  },
   data () {
     return {
       tags: {
