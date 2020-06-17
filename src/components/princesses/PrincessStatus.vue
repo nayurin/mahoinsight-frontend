@@ -73,11 +73,11 @@ export default {
     return {
       rulesOfLevel: [
         value => !!value || '请写点什么吧，王子大人',
-        value => (!isNaN(Number(value)) && parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.maxLevel) || `王子大人，等级不能超过${this.maxLevel}呀`,
+        value => (!isNaN(Number(value)) && parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.maxLevel) && Number(value) === parseInt(Number(value)) || `王子大人，等级不能超过${this.maxLevel}呀`,
       ],
       rulesOfRank: [
         value => !!value || '请写点什么吧，王子大人',
-        value => (!isNaN(Number(value)) && parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.maxRank) || `王子大人，Rank不能超过${this.maxRank}呀`,
+        value => (!isNaN(Number(value)) && parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.maxRank) && Number(value) === parseInt(Number(value)) || `王子大人，Rank不能超过${this.maxRank}呀`,
       ],
       rarity: 5
     }

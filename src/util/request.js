@@ -28,5 +28,9 @@ export default {
 
   PostNewIssue (data) {
     return request.post('/newissue', data)
+  },
+
+  PostGemsCalculate (data) {
+    return request.post('/arena/gemcalc', data)
   }
 }

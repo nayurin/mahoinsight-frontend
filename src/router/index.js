@@ -2,15 +2,22 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '@/views/Home'
-import About from '@/views/about/About'
-import Item from '@/views/Item.vue'
-import Princess from '@/views/Princess.vue'
-import Quest from '@/views/Quest.vue'
-import ItemDetail from '@/views/detail/ItemDetail.vue'
-import PrincessDetail from '@/views/detail/PrincessDetail.vue'
+
+import About from '@/views/About'
 import Joinus from '@/views/about/Joinus'
 import Issue from '@/views/about/Issue'
 import Link from '@/views/about/Link'
+
+import Item from '@/views/Item'
+import ItemDetail from '@/views/detail/ItemDetail'
+
+import Princess from '@/views/Princess'
+import PrincessDetail from '@/views/detail/PrincessDetail'
+
+import Quest from '@/views/Quest'
+
+import Arena from '@/views/Arena'
+import Calculator from '@/views/arena/Calculator'
 
 Vue.use(VueRouter)
 
@@ -117,6 +124,27 @@ const routes = [
           title: '友情链接',
           icon: 'mdi-link-variant',
           breadcrumb: ['Links']
+        }
+      }
+    ]
+  },
+  {
+    path: '/arena',
+    name: 'Arena',
+    component: Arena,
+    meta: {
+      title: '竞技场',
+      icon: ''
+    },
+    children: [
+      {
+        path: 'calculator',
+        name: 'Calculator',
+        component: Calculator,
+        meta: {
+          title: '排名奖励计算器',
+          icon: '',
+          breadcrumb: ['Calculator']
         }
       }
     ]

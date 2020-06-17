@@ -544,10 +544,11 @@ export default {
       data.commit = this.commit
       this.submitting = true
       setTimeout(() => {
-        this.submitting = false
         request.PostNewIssue(data).then(() => {
+          this.submitting = false
           this.result = 'success'
         }).catch(() => {
+          this.submitting = false
           this.result = 'error'
         })
       }, 3000)
