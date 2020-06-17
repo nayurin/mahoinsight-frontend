@@ -24,9 +24,12 @@
         <a
           id="footer-wangan"
           target="_blank"
-          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011802002039"
+          href="http://www.beian.gov.cn/"
         >
-          <img src="/nism-icon.png">
+          <img
+            src="/nism-icon.png"
+            style="width: 14px; height: 14px;"
+          >
           浙公网安备 33011802002039号
         </a>
       </span>
