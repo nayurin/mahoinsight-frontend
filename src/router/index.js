@@ -83,7 +83,7 @@ const routes = [
     props: true,
     meta: {
       title: '关卡',
-      icon: 'mdi-sword-cross',
+      icon: 'mdi-sword',
       breadcrumb: ['Quest']
     }
   },
@@ -134,7 +134,7 @@ const routes = [
     component: Arena,
     meta: {
       title: '竞技场',
-      icon: ''
+      icon: 'mdi-sword-cross'
     },
     children: [
       {
@@ -143,7 +143,7 @@ const routes = [
         component: Calculator,
         meta: {
           title: '排名奖励计算器',
-          icon: '',
+          icon: 'mdi-chess-queen',
           breadcrumb: ['Calculator']
         }
       }
