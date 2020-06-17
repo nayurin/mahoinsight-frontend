@@ -29,11 +29,11 @@
         />
       </v-navigation-drawer>
     </v-card>
-    <v-content>
+    <v-main>
       <v-container fluid>
         <router-view />
       </v-container>
-    </v-content>
+    </v-main>
     <Footer />
     <Button2Top />
   </v-app>
