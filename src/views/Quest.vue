@@ -253,14 +253,15 @@
         return this.$store.getters.getQuestListByArea(this.x)
       },
       info () {
-        return this.y ? {
-          体力消耗: this.$store.getters.getQuestInfoById(this.y).stamina,
-          每波限时: `${this.$store.getters.getQuestInfoById(this.y).limit_time}s`,
-          好感度获得: this.$store.getters.getQuestInfoById(this.y).love,
-          主角等级限制: this.$store.getters.getQuestInfoById(this.y).limit_team_level || "不限制",
-          角色经验获得: this.$store.getters.getQuestInfoById(this.y).unit_exp,
-          主角经验获得: this.$store.getters.getQuestInfoById(this.y).team_exp,
-          每日挑战次数: this.$store.getters.getQuestInfoById(this.y).daily_limit || "不限制"
+        const quest = this.$store.getters.getQuestInfoById(this.y)
+        return this.y && quest ? {
+          体力消耗: quest.stamina,
+          每波限时: `${quest.limit_time}s`,
+          好感度获得: quest.love,
+          主角等级限制: quest.limit_team_level || "不限制",
+          角色经验获得: quest.unit_exp,
+          主角经验获得: quest.team_exp,
+          每日挑战次数: quest.daily_limit || "不限制"
         } : null
       },
       enemy () {
@@ -297,15 +298,22 @@
     },
     methods: {
       onClickOfDiff (diff) {
-        this.x = 0
-        this.y = 0
+        if (this.diff === diff) return
         this.diff = diff
+        const area = this[diff][0].area_id
+        this.x = area
+        this.area = this.x
+        this.y = Number(area) * 1000 + 1
+        this.quest = this.y
       },
       onClickOfArea (area) {
+        if (this.area === area) return
         this.x = area
         this.y = Number(area) * 1000 + 1
+        this.quest = this.y
       },
       onClickOfQuest (quest) {
+        if (this.quest === quest) return
         this.y = quest
       },
       onSearchboxFocused () {
