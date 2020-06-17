@@ -68,6 +68,14 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-footer
+      absolute
+      class="caption"
+    >
+      本网站是由 公主连结! Re:Dive 爱好者与社区开发者自制，网站所涉及的公司名称、商标、产品等均为其各自所有者的资产，仅供识别。
+      <br>
+      网站内使用的游戏素材，仅用于更好地表现游戏资料，其版权、商标权及其他知识产权属于原内容提供者（Cygames / BiliBili Games）。
+    </v-footer>
   </v-container>
 </template>
 
