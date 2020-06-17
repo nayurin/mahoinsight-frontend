@@ -67,7 +67,6 @@ export default {
   },
   created () {
     this.storyFilter()
-    console.log(this.stories)
   },
   methods: {
     storyFilter () {

@@ -109,9 +109,6 @@ export default {
     name () {
       return this.$route.params.princessName
     }
-  },
-  mounted () {
-    console.log(this.princess)
   }
 }
 </script>
