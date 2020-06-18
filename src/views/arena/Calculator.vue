@@ -47,10 +47,15 @@
       v-text="result"
     />
     <v-row>
-      <v-col class="col-12 col-lg-6">
-        <v-card-text class="text-center font-weight-black">
-          合并了赛季奖励的完整奖励
-        </v-card-text>
+      <v-col
+        v-for="(each, i) in [reward.arenaMax, reward.arenaSeason]"
+        :key="i"
+        class="col-12 col-lg-6"
+      >
+        <v-card-text
+          class="text-center font-weight-black"
+          v-text="i === 0 ? '合并了赛季奖励的完整奖励' : '赛季奖励'"
+        />
         <v-simple-table>
           <template v-slot:default>
             <thead>
@@ -65,39 +70,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="item in reward.arenaMax"
-                :key="item.range[0]"
-              >
-                <td
-                  v-text="item.range[0] === item.range[1] ? `第 ${item.range[0]} 名` : `第 ${item.range[0]} 名至第 ${item.range[1]} 名`"
-                />
-                <td>
-                  {{ item.comment }}
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-col>
-      <v-col class="col-12 col-lg-6">
-        <v-card-text class="text-center font-weight-black">
-          赛季奖励
-        </v-card-text>
-        <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th>
-                  排名区间
-                </th>
-                <th>
-                  奖励内容
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="item in reward.arenaSeason"
+                v-for="item in each"
                 :key="item.range[0]"
               >
                 <td
