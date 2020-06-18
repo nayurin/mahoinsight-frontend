@@ -27,14 +27,23 @@
             class="align-self-stretch col-12 col-lg-6"
           >
             <v-card>
-              <v-chip
-                label
-                large
-                dark
-                class="d-flex justify-center align-center text-button"
-                :color="tags[status][0]"
-                v-text="event.title"
-              />
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-chip
+                    label
+                    large
+                    dark
+                    class="d-flex justify-center align-center text-button text-truncate"
+                    :color="tags[status][0]"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <span class="text-truncate">{{ event.title }}</span>
+                  </v-chip>
+                </template>
+                <span>{{ event.title }}</span>
+              </v-tooltip>
+              
               <v-divider />
               <v-chip
                 v-if="event.difftime && status === 'current'"
