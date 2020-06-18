@@ -23,6 +23,7 @@
     <v-btn
       :disabled="busy || error"
       color="primary"
+      class="my-3"
       @click="calculate"
     >
       计算
@@ -43,9 +44,74 @@
     </v-row>
     <v-card-text
       v-if="result"
-    >
-      {{ result }}
-    </v-card-text>
+      v-text="result"
+    />
+    <v-row>
+      <v-col class="col-12 col-lg-6">
+        <v-card-text class="text-center font-weight-black">
+          合并了赛季奖励的完整奖励
+        </v-card-text>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th>
+                  排名区间
+                </th>
+                <th>
+                  奖励内容
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="item in reward.arenaMax"
+                :key="item.range[0]"
+              >
+                <td
+                  v-text="item.range[0] === item.range[1] ? `第 ${item.range[0]} 名` : `第 ${item.range[0]} 名至第 ${item.range[1]} 名`"
+                />
+                <td>
+                  {{ item.comment }}
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-col>
+      <v-col class="col-12 col-lg-6">
+        <v-card-text class="text-center font-weight-black">
+          赛季奖励
+        </v-card-text>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th>
+                  排名区间
+                </th>
+                <th>
+                  奖励内容
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="item in reward.arenaSeason"
+                :key="item.range[0]"
+              >
+                <td
+                  v-text="item.range[0] === item.range[1] ? `第 ${item.range[0]} 名` : `第 ${item.range[0]} 名至第 ${item.range[1]} 名`"
+                />
+                <td>
+                  {{ item.comment }}
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -67,8 +133,170 @@ export default {
     },
     rules: [
       value => !!value || '不能为空',
-      value => (!isNaN(Number(value)) && parseInt(Number(value)) >= 1 && parseInt(Number(value)) <= 15001) && Number(value) === parseInt(Number(value)) || `排名只能为[1,15001]的正整数`,
+      value => !isNaN(Number(value)) && parseInt(Number(value)) >= 1 && parseInt(Number(value)) <= 15001 && Number(value) === parseInt(Number(value)) || `排名只能为[1,15001]的正整数`,
     ],
+    reward: {
+      arenaMax: [
+        {
+          range: [1, 10],
+          comment: "每一个名次 550 个宝石"
+        },
+        {
+          range: [11, 100],
+          comment: "每一个名次 60 个宝石"
+        },
+        {
+          range: [101, 200],
+          comment: "每一个名次 35 个宝石"
+        },
+        {
+          range: [201, 500],
+          comment: "每一个名次 13 个宝石"
+        },
+        {
+          range: [501, 1000],
+          comment: "每一个名次 7 个宝石"
+        },
+        {
+          range: [1001, 2000],
+          comment: "每一个名次 5 个宝石"
+        },
+        {
+          range: [2001, 4000],
+          comment: "每一个名次 3 个宝石"
+        },
+        {
+          range: [4001, 7999],
+          comment: "每一个名次 1 个宝石"
+        },
+        {
+          range: [8000, 11900],
+          comment: "每到达一百整数名 95 个宝石"
+        },
+        {
+          range: [12000, 12000],
+          comment: "80 个宝石"
+        },
+        {
+          range: [12100, 15000],
+          comment: "每到达一百整数名 45 个宝石"
+        },
+      ],
+      arenaSeason: [
+        {
+          range: [1, 10],
+          comment: "每一个名次 50 个宝石"
+        },
+        {
+          range: [11, 100],
+          comment: "每一个名次 10 个宝石"
+        },
+        {
+          range: [101, 200],
+          comment: "每一个名次 5 个宝石"
+        },
+        {
+          range: [201, 500],
+          comment: "每一个名次 3 个宝石"
+        },
+        {
+          range: [501, 2000],
+          comment: "每一个名次 2 个宝石"
+        },
+        {
+          range: [2001, 3999],
+          comment: "每一个名次 1 个宝石"
+        },
+        {
+          range: [4000, 8000],
+          comment: "每到达一百整数名 50 个宝石"
+        },
+        {
+          range: [8100, 15000],
+          comment: "每到达一百整数名 15 个宝石"
+        },
+      ],
+      grandArenaMax: [
+        {
+          range: [1, 10],
+          comment: "每一个名次 550 个宝石"
+        },
+        {
+          range: [11, 100],
+          comment: "每一个名次 60 个宝石"
+        },
+        {
+          range: [101, 200],
+          comment: "每一个名次 35 个宝石"
+        },
+        {
+          range: [201, 500],
+          comment: "每一个名次 13 个宝石"
+        },
+        {
+          range: [501, 1000],
+          comment: "每一个名次 7 个宝石"
+        },
+        {
+          range: [1001, 2000],
+          comment: "每一个名次 5 个宝石"
+        },
+        {
+          range: [2001, 4000],
+          comment: "每一个名次 3 个宝石"
+        },
+        {
+          range: [4001, 7999],
+          comment: "每一个名次 1 个宝石"
+        },
+        {
+          range: [8000, 11900],
+          comment: "每一百整数名 95 个宝石"
+        },
+        {
+          range: [12000, 12000],
+          comment: "80 个宝石"
+        },
+        {
+          range: [12100, 15000],
+          comment: "每一百整数名 45 个宝石"
+        },
+      ],
+      grandArenaSeason: [
+        {
+          range: [1, 10],
+          comment: "每一个名次 50 个宝石"
+        },
+        {
+          range: [11, 100],
+          comment: "每一个名次 10 个宝石"
+        },
+        {
+          range: [101, 200],
+          comment: "每一个名次 5 个宝石"
+        },
+        {
+          range: [201, 500],
+          comment: "每一个名次 3 个宝石"
+        },
+        {
+          range: [501, 2000],
+          comment: "每一个名次 2 个宝石"
+        },
+        {
+          range: [2001, 3999],
+          comment: "每一个名次 1 个宝石"
+        },
+        {
+          range: [4000, 8000],
+          comment: "每一百整数名 50 个宝石"
+        },
+        {
+          range: [8100, 15000],
+          comment: "每一百整数名 15 个宝石"
+        },
+      ]
+    }
   }),
   methods: {
     calculate () {
@@ -87,6 +315,7 @@ export default {
         }).catch(() => {
           this.busy = false
           this.result = "网络错误，与服务端通信出现故障"
+          this.last = {}
         })
       }, 500)
     },

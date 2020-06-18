@@ -86,7 +86,7 @@ export default {
         case 'saw':
           return obj.status.search_area_width
         default:
-          console.log('invalid param of [sortby]')
+          return
       }
     }
   }
