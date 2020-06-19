@@ -91,7 +91,6 @@
                 </v-card>
               </v-col>
             </v-row>
-            
           </v-col>
         </v-row>
       </v-col>
@@ -126,9 +125,6 @@ export default {
       btnicon: ['mdi-numeric-1', 'mdi-numeric-2','mdi-numeric-3','mdi-numeric-4','mdi-numeric-5']
     }
   },
-  created () {
-    this.init()
-  },
   computed: {
     lapinfo () {
       const from = this.$store.getters.getClanBattleMapById(this.id)[this.phase].lap_num_from
@@ -150,6 +146,9 @@ export default {
       sorted.sort((x, y) => x - y)
       return sorted.map(x => x + 1)
     }
+  },
+  created () {
+    this.init()
   },
   methods: {
     init () {
