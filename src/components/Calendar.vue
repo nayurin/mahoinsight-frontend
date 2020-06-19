@@ -191,7 +191,9 @@ export default {
       if (Object.prototype.toString.call(event)== '[object Object]' && Object.values(event).length) {
         const start = `${event.start.toLocaleDateString()} ${event.start.toLocaleTimeString()}`
         const end = `${event.end.toLocaleDateString()} ${event.end.toLocaleTimeString()}`
-        return `<strong>${event.status}</strong><br><br>活动开始时间：${start}<br>活动结束时间：${end}`
+        return event.desc ?
+        `<strong>${event.status}</strong><br><br>${event.desc}<br><br>活动开始时间：${start}<br>活动结束时间：${end}` :
+        `<strong>${event.status}</strong><br><br>活动开始时间：${start}<br>活动结束时间：${end}`
       }
     },
     updateRange () {
@@ -224,7 +226,8 @@ export default {
           start: starttime,
           end: endtime,
           color: this.colors[this.rnd(0, this.colors.length - 1)],
-          status: status
+          status: status,
+          desc: event.desc ? event.desc : null
         })
       }
       this.events = events

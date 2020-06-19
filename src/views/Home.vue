@@ -41,7 +41,9 @@
                     <span class="text-truncate">{{ event.title }}</span>
                   </v-chip>
                 </template>
-                <span>{{ event.title }}</span>
+                <span
+                  v-html="event.desc ? event.desc : event.title"
+                />
               </v-tooltip>
               
               <v-divider />
