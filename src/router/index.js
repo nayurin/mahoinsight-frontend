@@ -216,7 +216,12 @@ const routes = [
         meta: {
           title: '加入我们',
           icon: 'mdi-account-multiple',
-          breadcrumb: ['Joinus'],
+          breadcrumb: [
+            {
+              name: 'Joinus',
+              disabled: true
+            }
+          ],
         }
       },
       {
@@ -226,7 +231,12 @@ const routes = [
         meta: {
           title: '问题报告',
           icon: 'mdi-bug-outline',
-          breadcrumb: ['Issues']
+          breadcrumb: [
+            {
+              name: 'Issues',
+              disabled: true
+            }
+          ]
         }
       },
       {
@@ -236,7 +246,12 @@ const routes = [
         meta: {
           title: '友情链接',
           icon: 'mdi-link-variant',
-          breadcrumb: ['Links']
+          breadcrumb: [
+            {
+              name: 'Links',
+              disabled: true
+            }
+          ]
         }
       }
     ]
