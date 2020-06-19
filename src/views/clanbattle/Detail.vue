@@ -1,16 +1,16 @@
 <template>
   <v-container>
     <v-card-title>
+      {{ this.$route.params.clanBattlePhase }}
       <v-btn
         color="success"
         small
         rounded
-        class="mx-2"
+        class="mx-3"
         @click="onClick"
       >
         <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
       </v-btn>
-      {{ this.$route.params.clanBattlePhase }}
     </v-card-title>
     <v-card-subtitle>
       {{ lapinfo }}
