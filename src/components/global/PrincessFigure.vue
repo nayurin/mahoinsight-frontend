@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :href="link"
+    :to="route"
   >
     <v-img
       :src="src"
@@ -48,8 +48,11 @@ export default {
     name () {
       return this.princess.status.unit_name
     },
-    link () {
-      return `/princess/detail/${this.name}`
+    route () {
+      return {
+        name: 'PrincessDetail',
+        params: { princessName: this.name }
+      }  
     },
     src () {
       return `${this.$store.state.CDNBaseURL}/image/character_favicons/fav_push_notif_${this.princess.id}.png`

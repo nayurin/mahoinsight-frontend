@@ -33,7 +33,12 @@ const routes = [
     meta: {
       title: '主页',
       icon: 'mdi-home',
-      breadcrumb: ['Home']
+      breadcrumb: [
+        {
+          name: 'Home',
+          disabled: true
+        }
+      ]
     }
   },
   {
@@ -43,7 +48,12 @@ const routes = [
     meta: {
       title: '道具',
       icon: 'mdi-sack',
-      breadcrumb: ['Item']
+      breadcrumb: [
+        {
+          name: 'Item',
+          disabled: true
+        }
+      ]
     }
   },
   {
@@ -54,7 +64,16 @@ const routes = [
     meta: {
       title: '道具详情',
       hidden: true,
-      breadcrumb: ['Item', ':itemName'],
+      breadcrumb: [
+        {
+          name: 'Item',
+          to: { name: 'Item' }
+        },
+        {
+          name: ':itemName',
+          disabled: true
+        }
+      ],
       parent: 'Item'
     }
   },
@@ -65,7 +84,12 @@ const routes = [
     meta: {
       title: '角色',
       icon: 'mdi-heart',
-      breadcrumb: ['Princess']
+      breadcrumb: [
+        {
+          name: 'Princess',
+          disabled: true
+        }
+      ]
     }
   },
   {
@@ -76,7 +100,16 @@ const routes = [
     meta: {
       title: '角色详情',
       hidden: true,
-      breadcrumb: ['Princess', ':princessName'],
+      breadcrumb: [
+        {
+          name: 'Princess',
+          to: { path: '/princess' }
+        },
+        {
+          name: ':princessName',
+          disabled: true
+        } 
+      ],
       parent: 'Princess'
     }
   },
@@ -88,7 +121,12 @@ const routes = [
     meta: {
       title: '关卡',
       icon: 'mdi-sword',
-      breadcrumb: ['Quest']
+      breadcrumb: [
+        {
+          name: 'Quest',
+          disabled: true
+        }
+      ]
     }
   },
   {
@@ -107,7 +145,12 @@ const routes = [
         meta: {
           title: '排名奖励计算器',
           icon: 'mdi-chess-queen',
-          breadcrumb: ['Calculator']
+          breadcrumb: [
+            {
+              name: 'Calculator',
+              disabled: true
+            }
+          ]
         }
       }
     ]
@@ -128,7 +171,12 @@ const routes = [
         meta: {
           title: '活动计划',
           icon: 'mdi-progress-clock',
-          breadcrumb: ['ClanBattlePeriods']
+          breadcrumb: [
+            {
+              name: 'ClanBattlePeriods',
+              disabled: true
+            }
+          ]
         }
       },
       {
@@ -138,7 +186,16 @@ const routes = [
         meta: {
           title: '团队战详细阶段',
           hidden: true,
-          breadcrumb: ['ClanBattlePeriods', ':clanBattlePhase']
+          breadcrumb: [
+            {
+              name: 'ClanBattlePeriods',
+              to: { name: 'ClanBattlePeriods' }
+            },
+            {
+              name: ':clanBattlePhase',
+              disabled: true
+            }
+          ]
         }
       }
     ]

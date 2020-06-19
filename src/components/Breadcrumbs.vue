@@ -8,8 +8,8 @@
     </template>
     <template v-slot:item="{ item }">
       <v-breadcrumbs-item
-        :href="item.href"
         :disabled="item.disabled"
+        @click="onClick(item.to)"
       >
         <span class="breadcrumbs--items">
           {{ item.text }}
@@ -27,8 +27,8 @@ export default {
       items: [
         {
           text: 'MahoMaho INSIGHT!! 真步真步视界术',
-          disabled:  false,
-          href: '/'
+          disabled: false,
+          to: { name: 'Home' }
         }
       ]
     }
@@ -38,8 +38,8 @@ export default {
       this.items = [
         {
           text: 'MahoMaho INSIGHT!! 真步真步视界术',
-          disabled:  false,
-          href: '/'
+          disabled: false,
+          to: { name: 'Home' }
         }
       ]
       if (!this.$store.state.mobile) this.addBreadcrumbs()
@@ -50,38 +50,38 @@ export default {
   },
   methods: {
     addBreadcrumbs () {
-      let text = '', href = ''
+      let text = ''
       if (this.$route.meta.breadcrumb) {
         this.$route.meta.breadcrumb.map(x => {
-          if (x.substring(0, 1) === ':') {
-            text = this.$route.params[x.substring(1)]
-            href = this.$route.path
+          if (x.name.substring(0, 1) === ':') {
+            text = this.$route.params[x.name.substring(1)]
           } else {
             for (const route of Object.values(this.$router.options.routes)) {
               if (route.children) {
                 for (const child of Object.values(route.children)) {
-                  if (child.name === x) {
+                  if (child.name === x.name) {
                     text = child.meta.title
-                    href = child.path
                   }
                 }
               } else {
-                if (route.name === x) {
+                if (route.name === x.name) {
                   text = route.meta.title
-                  href = route.path
                 }
               }
             }
           }
           this.items.push({
             text: text,
-            href: href
+            to: x.to,
+            disabled: x.disabled ? true : false
           })
         })
       }
-      this.items.reverse()[0]['disabled'] = true
-      this.items.reverse()
     },
+    onClick (route) {
+      if (route.name === this.$route.name || route.path === this.$route.path || route === this.$route.name || route === this.$route.path) return
+      this.$router.push(route)
+    }
   }
 }
 </script>
