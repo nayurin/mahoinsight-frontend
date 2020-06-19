@@ -228,6 +228,26 @@ const getters = {
       }
     }
     return arr
+  },
+
+  getClanBattleScheduleById: (state) => (id) => {
+    return state.clanbattle[Number(id)].period.schedule
+  },
+
+  getClanBattleRewardById: (state) => (id) => {
+    const reward = []
+    for ( let i = 1; i <= 3; i++) {
+      reward.push(state.clanbattle[Number(id)].period.reward[0][`reward_id_${i}`])
+    }
+    return reward
+  },
+
+  getClanBattleMapById: (state) => (id) => {
+    return state.clanbattle[Number(id)].mapdata
+  },
+
+  getClanBattleBossGroup: (state) => (id, phase) => {
+    return state.clanbattle[Number(id)].mapdata[Number(phase)].clan_battle_boss_group
   }
 }
 

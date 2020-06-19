@@ -32,18 +32,20 @@
     <v-list-group
       v-else-if="route.children"
       :prepend-icon="route.meta.icon"
-      value="true"
+      :value="route.name === 'About' ? '' : 'true'"
     >
       <template v-slot:activator>
         <v-list-item
           class="pa-0"
           dense
         >
-          <v-list-item-title>{{ route.meta.title }}</v-list-item-title>
+          <v-list-item-title>
+            {{ route.meta.title }}
+          </v-list-item-title>
         </v-list-item>
       </template>
       <v-list-item
-        v-for="(child, i) in route.children"
+        v-for="(child, i) in visibleChild(route.children)"
         :key="i"
         dense
         :class="isActive(child.name)"
@@ -128,9 +130,12 @@ export default {
   },
   methods: {
     isActive (name) {
-      return name === this.$route.name ? {
+      return name === this.$route.name && !this.$route.meta.hidden ? {
         "v-list-item--active": true
       } : ''
+    },
+    visibleChild (routes) {
+      return routes.filter(x => !x.meta.hidden)
     },
     navigate (route) {
       const fullpath = route.path.substring(0, 1) === '/' ? true : false

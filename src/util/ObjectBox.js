@@ -8,6 +8,7 @@ class ObjectBox {
       chara: 'cache_princess.json',
       item: 'cache_item.json',
       quest: 'cache_quest.json',
+      clanbattle: 'cache_clanbattle.json',
       events: 'gameevents.json'
     }
     this.cachefile = path.join('/cached', filemap[type])

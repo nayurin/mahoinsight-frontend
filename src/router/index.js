@@ -19,6 +19,10 @@ import Quest from '@/views/Quest'
 import Arena from '@/views/Arena'
 import Calculator from '@/views/arena/Calculator'
 
+import ClanBattle from '@/views/ClanBattle'
+import ClanBattlePeriods from '@/views/clanbattle/Periods'
+import ClanBattleDetail from '@/views/clanbattle/Detail'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -88,6 +92,58 @@ const routes = [
     }
   },
   {
+    path: '/arena',
+    name: 'Arena',
+    component: Arena,
+    meta: {
+      title: '竞技场',
+      icon: 'mdi-sword-cross'
+    },
+    children: [
+      {
+        path: 'calculator',
+        name: 'Calculator',
+        component: Calculator,
+        meta: {
+          title: '排名奖励计算器',
+          icon: 'mdi-chess-queen',
+          breadcrumb: ['Calculator']
+        }
+      }
+    ]
+  },
+  {
+    path: '/clanbattle',
+    name: 'ClanBattle',
+    component: ClanBattle,
+    meta: {
+      title: '团队战',
+      icon: 'mdi-calendar-check-outline',
+    },
+    children: [
+      {
+        path: 'periods',
+        name: 'ClanBattlePeriods',
+        component: ClanBattlePeriods,
+        meta: {
+          title: '活动计划',
+          icon: 'mdi-progress-clock',
+          breadcrumb: ['ClanBattlePeriods']
+        }
+      },
+      {
+        path: 'periods/:clanBattlePhase',
+        name: 'ClanBattleDetail',
+        component: ClanBattleDetail,
+        meta: {
+          title: '团队战详细阶段',
+          hidden: true,
+          breadcrumb: ['ClanBattlePeriods', ':clanBattlePhase']
+        }
+      }
+    ]
+  },
+  {
     path: '/about',
     name: 'About',
     component: About,
@@ -124,27 +180,6 @@ const routes = [
           title: '友情链接',
           icon: 'mdi-link-variant',
           breadcrumb: ['Links']
-        }
-      }
-    ]
-  },
-  {
-    path: '/arena',
-    name: 'Arena',
-    component: Arena,
-    meta: {
-      title: '竞技场',
-      icon: 'mdi-sword-cross'
-    },
-    children: [
-      {
-        path: 'calculator',
-        name: 'Calculator',
-        component: Calculator,
-        meta: {
-          title: '排名奖励计算器',
-          icon: 'mdi-chess-queen',
-          breadcrumb: ['Calculator']
         }
       }
     ]
