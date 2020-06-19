@@ -165,7 +165,7 @@ export default {
       return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${id}.png`
     },
     stats (obj) {
-      return obj ? {
+      const stats = obj ? {
         等级: obj.level,
         生命值: obj.hp,
         物理攻击力: obj.atk,
@@ -174,15 +174,21 @@ export default {
         魔法防御力: obj.magic_def,
         物理暴击: obj.physical_critical,
         魔法暴击: obj.magic_critical,
+        技能值上升: obj.energy_recovery_rate,
         回避: obj.dodge,
         命中: obj.accuracy,
         回复量上升: obj.hp_recovery_rate,
-        技能值上升: obj.energy_recovery_rate,
         生命值吸收: obj.life_steal,
         技能值消耗降低: obj.energy_reduce_rate,
         物理穿透: obj.physical_penetrate,
         魔法穿透: obj.magic_penetrate
       } : null
+      for (const key of Object.keys(stats)) {
+        if (stats[key] === 0) {
+          delete stats[key]
+        }
+      }
+      return stats
     },
     onClick () {
       this.$router.push({
