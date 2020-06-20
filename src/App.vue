@@ -30,7 +30,10 @@
       </v-navigation-drawer>
     </v-card>
     <v-main>
-      <v-container fluid>
+      <v-container
+        v-if='loaded'
+        fluid
+      >
         <router-view />
       </v-container>
     </v-main>
@@ -59,14 +62,15 @@ export default {
   }),
   created () {
     this.routes = this.$router.options.routes.filter(x => !x.meta || !x.meta.hidden);
-    this.$store.commit('loadObjects', 'chara')
-    this.$store.commit('loadObjects', 'item')
-    this.$store.commit('loadObjects', 'quest')
-    this.$store.commit('loadObjects', 'events')
-    this.$store.commit('loadObjects', 'clanbattle')
-    this.$store.commit('loadGitCommit', GIT_COMMIT.trim())
-    if (/Android|webOS|iPhone|iPod|BlackBerry|MuMu/i.test(navigator.userAgent)) this.$store.commit('change2MobileMode')
+    this.$store.dispatch('loadAll')
+    this.$store.commit('updateState', { key: 'gitcommit', value: GIT_COMMIT.trim() })
+    if (/Android|webOS|iPhone|iPod|BlackBerry|MuMu/i.test(navigator.userAgent)) this.$store.commit('updateState', { key: 'mobile', value: true })
     this.nav = !this.$store.state.mobile
+  },
+  computed: {
+    loaded () {
+      return this.$store.state.loaded
+    }
   }
 }
 </script>

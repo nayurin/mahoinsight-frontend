@@ -44,7 +44,9 @@ export default {
   },
   methods: {
     onClick (rank) {
-      this.$store.commit('updateCurrentRank', rank)
+      if (parseInt(Number(rank)) > 0 && parseInt(Number(rank)) <= this.$store.state.maxRank) {
+        this.$store.commit('updateState', { key: 'curRank', value: parseInt(Number(rank)) })
+      }
     },
     promotion() {
       return this.princess.promotion_info

@@ -91,7 +91,9 @@ export default {
         return this.$store.getters.curRank
       },
       set (value) {
-        this.$store.commit('updateCurrentRank', value)
+        if (parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.$store.state.maxRank) {
+          this.$store.commit('updateState', { key: 'curRank', value: parseInt(Number(value)) })
+        }
         this.updateAtk()
       }
     },
@@ -100,7 +102,9 @@ export default {
         return this.$store.getters.curLevel
       },
       set (value) {
-        this.$store.commit('updateCurrentLevel', value)
+        if (parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.$store.state.maxLevel) {
+          this.$store.commit('updateState', { key: 'curLevel', value: parseInt(Number(value)) })
+        }
         this.updateAtk()
       }
     },
@@ -122,9 +126,9 @@ export default {
   methods: {
     updateAtk () {
       if (this.princess.status.atk_type === 1) {
-        this.$store.commit('updateCurrentAtk', this.princessStatus(this.level, this.rank, this.rarity)['物理攻击力'])
+        this.$store.commit('updateState', { key: 'curAtk', value: this.princessStatus(this.level, this.rank, this.rarity)['物理攻击力']})
       } else if (this.princess.status.atk_type === 2) {
-        this.$store.commit('updateCurrentAtk', this.princessStatus(this.level, this.rank, this.rarity)['魔法攻击力'])
+        this.$store.commit('updateState', { key: 'curAtk', value: this.princessStatus(this.level, this.rank, this.rarity)['魔法攻击力']})
       }
     },
     rarityStatus (rarity, type) {
