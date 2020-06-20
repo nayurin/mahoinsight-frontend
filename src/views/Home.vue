@@ -93,7 +93,8 @@ export default {
         outdated: [],
         current: [],
         incoming: []
-      }
+      },
+      maxOutdatedDisplays: 2
     }
   },
   created () {
@@ -129,6 +130,7 @@ export default {
           }
         }
       }
+      this.events.outdated = this.events.outdated.slice(-this.maxOutdatedDisplays)
     },
     formatTime (time) {
       const days = Math.floor(time / (3600 * 1000 * 24))
