@@ -60,17 +60,17 @@ export default {
     routes: [],
     nav: false
   }),
+  computed: {
+    loaded () {
+      return this.$store.state.loaded
+    }
+  },
   created () {
     this.routes = this.$router.options.routes.filter(x => !x.meta || !x.meta.hidden);
     this.$store.dispatch('loadAll')
     this.$store.commit('updateState', { key: 'gitcommit', value: GIT_COMMIT.trim() })
     if (/Android|webOS|iPhone|iPod|BlackBerry|MuMu/i.test(navigator.userAgent)) this.$store.commit('updateState', { key: 'mobile', value: true })
     this.nav = !this.$store.state.mobile
-  },
-  computed: {
-    loaded () {
-      return this.$store.state.loaded
-    }
   }
 }
 </script>
