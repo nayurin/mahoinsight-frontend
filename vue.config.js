@@ -1,4 +1,5 @@
 const webpack = require("webpack")
+const { InjectManifest } = require("workbox-webpack-plugin")
 
 let commit
 
@@ -20,5 +21,8 @@ module.exports = {
         args[0].GIT_COMMIT = JSON.stringify(commit)
         return args
       })
+    config
+      .plugin('workbox')
+        .use(InjectManifest, [{ swSrc: './src/workers/sw.js', dontCacheBustURLsMatching: /.[a-f0-9]{8}./, maximumFileSizeToCacheInBytes: 4 * 1024 * 1024 }])
   }
 }
