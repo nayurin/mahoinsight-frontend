@@ -1,15 +1,24 @@
 <template>
-  <v-card
-    :to="route"
-    :max-width="origWidth * parseFloat(zoomRatio)"
-  >
-    <v-img
-      :src="src"
-      :alt="alt"
-      :style="style"
+  <v-tooltip top>
+    <template v-slot:activator="{ on, attrs }">
+      <v-card
+        :to="route"
+        :max-width="origWidth * parseFloat(zoomRatio)"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <v-img
+          :src="src"
+          :alt="alt"
+          :style="style"
+        />
+        <slot name="under" />
+      </v-card>
+    </template>
+    <span
+      v-html="comment"
     />
-    <slot name="under" />
-  </v-card>
+  </v-tooltip>
 </template>
 
 <script>
@@ -51,6 +60,21 @@ export default {
     },
     alt () {
       return this.id === 999999 ? null : this.$store.getters.getItemNameById(this.id)
+    },
+    comment () {
+      if (this.id === 999999) {
+        return '暂未开放'
+      } else if (String(this.id).length === 5) {
+        return this.$store.getters.getItemNameById(this.id)
+      } else {
+        const stats = this.$store.getters.getItemStatsById(this.id)
+        if (stats === {}) return
+        let comment = `${this.$store.getters.getItemNameById(this.id)}<br>`
+        for (const key of Object.keys(stats)) {
+          comment += `<br>${key}：${stats[key]} (${stats[key] * 2})`
+        }
+        return comment
+      }
     }
   }
 }

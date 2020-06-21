@@ -33,55 +33,58 @@ const getters = {
   },
 
   getItemByName: (state) => (name) => {
-    return state.item[name]
-  },
-
-  getItemById: (state) => (id) => {
     for (const key of Object.keys(state.item)) {
-      if (state.item[key].id == id) return state.item[key]
+      if ((key.length === 5 && state.item[key].detail.item_name === name) || (key.length === 6 && state.item[key].detail.equipment_name === name)) {
+        return state.item[key]
+      }
     }
   },
 
+  getItemById: (state) => (id) => {
+    return state.item[id]
+  },
+
   getItemIdByName: (state) => (name) => {
-    return state.item[name].id
+    for (const key of Object.keys(state.item)) {
+      if ((key.length === 5 && state.item[key].detail.item_name === name) || (key.length === 6 && state.item[key].detail.equipment_name === name)) {
+        return key
+      }
+    }
   },
 
   getItemNameById: (state) => (id) => {
-    for (const key of Object.keys(state.item)) {
-      if (state.item[key].id == id) return state.item[key].detail.equipment_name
+    if (String(id).length === 6 && state.item[id]) {
+      return state.item[id].detail.equipment_name
+    } else if (String(id).length === 5 && state.item[id]) {
+      return state.item[id].detail.item_name
     }
   },
   
   getItemStatsById: (state) => (id) => {
-    let stats
-    for (const key of Object.keys(state.item)) {
-      if (state.item[key].id == id) {
-        const item = state.item[key]
-        stats = {
-          生命值: parseFloat(item.detail.hp),
-          物理攻击力: parseFloat(item.detail.atk),
-          魔法攻击力: parseFloat(item.detail.magic_str),
-          物理防御力: parseFloat(item.detail.def),
-          魔法防御力: parseFloat(item.detail.magic_def),
-          物理暴击: parseFloat(item.detail.physical_critical),
-          魔法暴击: parseFloat(item.detail.magic_critical),
-          生命值自动回复: parseFloat(item.detail.wave_hp_recovery),
-          技能值自动回复: parseFloat(item.detail.wave_energy_recovery),
-          回避: parseFloat(item.detail.dodge),
-          物理穿透: parseFloat(item.detail.physical_penetrate),
-          魔法穿透: parseFloat(item.detail.magic_penetrate),
-          生命值吸收: parseFloat(item.detail.life_steal),
-          回复量上升: parseFloat(item.detail.hp_recovery_rate),
-          技能值上升: parseFloat(item.detail.energy_recovery_rate),
-          技能值消耗降低: parseFloat(item.detail.energy_reduce_rate),
-          命中: parseFloat(item.detail.accuracy)
-        }
-        for (const key of Object.keys(stats)) {
-          if (stats[key] === 0) {
-            delete stats[key]
-          }
-        }
-        break
+    let stats = {}
+    const item = state.item[id]
+    stats = {
+      生命值: parseFloat(item.detail.hp),
+      物理攻击力: parseFloat(item.detail.atk),
+      魔法攻击力: parseFloat(item.detail.magic_str),
+      物理防御力: parseFloat(item.detail.def),
+      魔法防御力: parseFloat(item.detail.magic_def),
+      物理暴击: parseFloat(item.detail.physical_critical),
+      魔法暴击: parseFloat(item.detail.magic_critical),
+      生命值自动回复: parseFloat(item.detail.wave_hp_recovery),
+      技能值自动回复: parseFloat(item.detail.wave_energy_recovery),
+      回避: parseFloat(item.detail.dodge),
+      物理穿透: parseFloat(item.detail.physical_penetrate),
+      魔法穿透: parseFloat(item.detail.magic_penetrate),
+      生命值吸收: parseFloat(item.detail.life_steal),
+      回复量上升: parseFloat(item.detail.hp_recovery_rate),
+      技能值上升: parseFloat(item.detail.energy_recovery_rate),
+      技能值消耗降低: parseFloat(item.detail.energy_reduce_rate),
+      命中: parseFloat(item.detail.accuracy)
+    }
+    for (const key of Object.keys(stats)) {
+      if (!stats[key]) {
+        delete stats[key]
       }
     }
     return stats

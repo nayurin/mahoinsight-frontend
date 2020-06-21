@@ -58,7 +58,7 @@ export default {
     items () {
       const _item = []
       Object.values(this.$store.state.item).map(x=>{
-        if (x.id.toString().split('')[1] === '0' || x.id === 140000) {
+        if (String(x.id).length === 6 && (String(x.id).split('')[1] === '0' || x.id === 140000)) {
           _item.push(x)
         }
       })
