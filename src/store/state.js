@@ -12,6 +12,7 @@ const state = {
   curRank: 0,
   curLevel: 0,
   curAtk: 0,
+  equipSelected: [],
   rankColor: {
     1: "blue",
     2: "brown",

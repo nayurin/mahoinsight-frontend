@@ -2,10 +2,24 @@
   <v-card>
     <v-card-title id="princess-equipment">
       角色装备 [Rank {{ curRank }}]
+      <v-btn-toggle
+        v-model="equipSelected"
+        multiple
+        class="ml-8"
+      >
+        <v-btn
+          v-for="(icon, i) in icons"
+          :key="i"
+          :disabled="icon.disabled"
+          small
+        >
+          <v-icon>{{ icon.name }}</v-icon>
+        </v-btn>
+      </v-btn-toggle>
     </v-card-title>
     <v-card-text>
       <v-btn
-        v-for="(value, key) in promotion()"
+        v-for="(value, key) in promotion"
         :key="key"
         text
         small
@@ -16,7 +30,7 @@
       </v-btn>
       <v-row>
         <PrincessEquipmentFig
-          :equips="promotion()[curRank]"
+          :equips="promotion[curRank]"
         />
       </v-row>
     </v-card-text>
@@ -37,10 +51,56 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      equipSelected: [0, 1, 2, 3, 4, 5],
+      icons: [
+        {
+          name: 'mdi-arrow-top-left-thick',
+          disabled: false
+        },
+        {
+          name: 'mdi-arrow-top-right-thick',
+          disabled: false
+        },
+        {
+          name: 'mdi-arrow-left-thick',
+          disabled: false
+        },
+        {
+          name: 'mdi-arrow-right-thick',
+          disabled: false
+        },
+        {
+          name: 'mdi-arrow-bottom-left-thick',
+          disabled: false
+        },
+        {
+          name: 'mdi-arrow-bottom-right-thick',
+          disabled: false
+        }
+      ]
+    }
+  },
   computed: {
     curRank () {
       return this.$store.getters.curRank
+    },
+    promotion () {
+      return this.princess.promotion_info
     }
+  },
+  watch: {
+    curRank () {
+      this.setEquipBtn()
+    },
+    equipSelected (val) {
+      this.$store.commit('updateState', { key: 'equipSelected', value: val.map(x => this.promotion[this.$store.getters.curRank][`equip_slot_${x + 1}`]) })
+    }
+  },
+  mounted () {
+    this.setEquipBtn()
+    this.$store.commit('updateState', { key: 'equipSelected', value: this.equipSelected.map(x => this.promotion[this.$store.getters.curRank][`equip_slot_${x + 1}`]) })
   },
   methods: {
     onClick (rank) {
@@ -48,9 +108,16 @@ export default {
         this.$store.commit('updateState', { key: 'curRank', value: parseInt(Number(rank)) })
       }
     },
-    promotion() {
-      return this.princess.promotion_info
-    },
+    setEquipBtn () {
+      this.equipSelected = [0, 1, 2, 3, 4, 5]
+      for (let i = 1; i <= 6; i++) {
+        if (this.promotion[this.$store.getters.curRank][`equip_slot_${i}`] === 999999) {
+          this.$set(this.icons[i - 1], 'disabled', true)
+        } else {
+          this.$set(this.icons[i - 1], 'disabled', false)
+        }
+      }
+    }
   }
 }
 </script>

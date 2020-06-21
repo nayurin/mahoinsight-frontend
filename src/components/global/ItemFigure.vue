@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :to="id != 999999 && String(id).length !== 5 ? route : ''"
+    :to="route"
     :max-width="origWidth * parseFloat(zoomRatio)"
   >
     <v-img
@@ -39,10 +39,10 @@ export default {
       }
     },
     route () {
-      return {
+      return this.id !== 999999 && String(this.id).length !== 5 ? {
         name: 'ItemDetail',
         params: { itemName: this.$store.getters.getItemNameById(this.id) }
-      }
+      } : null
     },
     src () {
       return String(this.id).length === 6 ? 

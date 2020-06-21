@@ -4,7 +4,7 @@
       角色属性
     </v-card-title>
     <v-card-subtitle>
-      注：以下属性未计入装备加成以及好感度剧情奖励
+      注：以下属性未计入好感度剧情奖励，装备属性默认为满强化属性。点击角色装备卡片中的按钮修改当前装备
     </v-card-subtitle>
     <v-card-text>
       <v-row>
@@ -113,6 +113,21 @@ export default {
     },
     maxLevel () {
       return this.$store.state.maxLevel
+    },
+    equipStats () {
+      const stats = {}
+      for (const equipid of this.$store.state.equipSelected) {
+        if (equipid === 999999) continue
+        const item = this.$store.getters.getItemStatsById(equipid)
+        for (const stattype of Object.keys(item)) {
+          if (Object.keys(stats).includes(stattype)) {
+            stats[stattype] += parseFloat(item[stattype] * 2)
+          } else {
+            stats[stattype] = parseFloat(item[stattype] * 2)
+          }
+        }
+      }
+      return stats
     }
   },
   watch: {
@@ -138,7 +153,7 @@ export default {
       return rank === 1 ? 0 : this.princess.growth.promotion[rank][type]
     },
     princessStatus (level, rank, rarity) {
-      return level && rank && rarity ? {
+      const stats = level && rank && rarity ? {
         生命值: Math.round(this.rarityStatus(rarity, 'hp') + this.promotionStatus(rank, 'hp') + this.rarityStatus(rarity, 'hp_growth') * (this.level + this.rank)),
         索敌半径: this.princess.status.search_area_width,
         物理攻击力: Math.round(this.rarityStatus(rarity, 'atk') + this.promotionStatus(rank, 'atk') + this.rarityStatus(rarity, 'atk_growth') * (this.level + this.rank)),
@@ -177,6 +192,10 @@ export default {
         生命值吸收: NaN,
         技能值消耗降低: NaN,
       }
+      for (const stattype of Object.keys(this.equipStats)) {
+        stats[stattype] += this.equipStats[stattype]
+      }
+      return stats
     }
   }
 }
