@@ -2,17 +2,20 @@
   <v-app>
     <v-app-bar
       app
-      dark
-      color="primary"
+      light
       clipped-left
+      class="app-header"
     >
-      <v-app-bar-nav-icon @click="nav = !nav" />
+      <v-app-bar-nav-icon
+        color="secondary"
+        @click="nav = !nav"
+      />
       <v-img
         :src="`${$store.state.CDNBaseURL}/image/bg/favicon.png`"
         contain
         max-width="48"
       />
-      <Breadcrumbs />
+      <Breadcrumbs light />
     </v-app-bar>
     <v-card
       class="overflow-hidden"
@@ -74,3 +77,28 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .v-main {
+    // 可以下载成本地资源
+    background-image:url("https://static.biligame.com/pcr/gw/pc/images/p5/bg.jpg?85b29228");
+  }
+  .v-navigation-drawer {
+    // Todo: 挪至CustomTheme.scss
+    background-color: rgba(255,255,255,0.8) ;
+  }
+  .app-header {
+    background-color: rgba(255,255,255,0.8) !important;
+    .v-toolbar__content {
+      background-image: url('../public/image/common/AtlasCommon.png');
+      background-size: 300px 300px;
+      background-repeat: no-repeat;
+      background-position: 0 500px;
+    }
+  }
+  // Todo: 或许有更好的方法，我没怎么看Vuetify的文档。
+  @media screen and (max-width: 1263px) {
+    .v-navigation-drawer {
+      background-color: rgba(255,255,255,1) ;
+    }
+  }
+</style>

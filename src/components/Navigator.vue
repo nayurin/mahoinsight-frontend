@@ -31,7 +31,6 @@
 
     <v-list-group
       v-else-if="route.children"
-      :prepend-icon="route.meta.icon"
       :value="route.name === 'About' ? '' : 'true'"
     >
       <template v-slot:activator>
@@ -39,7 +38,14 @@
           class="pa-0"
           dense
         >
-          <v-list-item-title>
+          <v-list-item-icon>
+            <div
+              v-if="route.meta.icon"
+              :class="'pcr-icon '+route.meta.icon"
+            />
+            <!--            <v-icon v-text="child.meta.icon" />-->
+          </v-list-item-icon>
+          <v-list-item-title :class="route.meta.color">
             {{ route.meta.title }}
           </v-list-item-title>
         </v-list-item>
@@ -56,7 +62,11 @@
           v-text="child.meta.title"
         />
         <v-list-item-icon>
-          <v-icon v-text="child.meta.icon" />
+          <div
+            v-if="route.meta.icon"
+            :class="'pcr-icon '+child.meta.icon"
+          />
+          <!--          <v-icon v-text="child.meta.icon" />-->
         </v-list-item-icon>
       </v-list-item>
     </v-list-group>
@@ -69,9 +79,15 @@
       @click="navigate(route)"
     >
       <v-list-item-icon>
-        <v-icon v-text="route.meta.icon" />
+        <div
+          v-if="route.meta.icon"
+          :class="'pcr-icon '+route.meta.icon"
+        />
+        <!--        <v-icon v-text="route.meta.icon" />-->
       </v-list-item-icon>
-      <v-list-item-title>{{ route.meta.title }}</v-list-item-title>
+      <v-list-item-title color="primary">
+        {{ route.meta.title }}
+      </v-list-item-title>
     </v-list-item>
   </v-list>
 </template>
@@ -173,3 +189,12 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  @import '../style/Icon';
+</style>
+<style lang="scss" scoped>
+  @import '../style/CustomTheme';
+  .v-list-item__title {
+    color: $theme-nav-text-color;
+  }
+</style>
