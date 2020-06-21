@@ -11,9 +11,9 @@
         :disabled="item.disabled"
         @click="onClick(item.to)"
       >
-        <span class="breadcrumbs--items">
-          {{ item.text }}
-        </span>
+        <a><span class="breadcrumbs--items">  
+          {{ item.text }} 
+        </span></a>
       </v-breadcrumbs-item>
     </template>
   </v-breadcrumbs>
@@ -89,6 +89,10 @@ export default {
 <style scoped>
 a:not(.v-breadcrumbs__item--disabled)>span.breadcrumbs--items {
   color: white;
+}
+
+div.v-breadcrumbs__item--disabled span.breadcrumbs--items {
+  color: hsla(0,0%,100%,.5);
 }
 
 span.breadcrumbs--items {
