@@ -24,7 +24,7 @@ registerRoute(
         statuses: [0, 200],
       }),
       new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 365,
+        maxAgeSeconds: 60 * 60 * 24 * 180,
         maxEntries: 30,
       })
     ]
@@ -34,7 +34,12 @@ registerRoute(
 registerRoute(
   /^https:\/\/mahomaho-insight-cos-.*.png$/,
   new CacheFirst({
-    cacheName: "images-resources"
+    cacheName: "images-resources",
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 60 * 60 * 24 * 30
+      })
+    ]
   })
 )
 
