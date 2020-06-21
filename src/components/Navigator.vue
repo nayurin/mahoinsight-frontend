@@ -31,7 +31,6 @@
 
     <v-list-group
       v-else-if="route.children"
-      :prepend-icon="route.meta.icon"
       :value="route.name === 'About' ? '' : 'true'"
     >
       <template v-slot:activator>
@@ -39,6 +38,13 @@
           class="pa-0"
           dense
         >
+          <v-list-item-icon>
+            <div
+              v-if="route.meta.icon"
+              :class="'pcr-icon '+route.meta.icon"
+            />
+            <!--            <v-icon v-text="child.meta.icon" />-->
+          </v-list-item-icon>
           <v-list-item-title>
             {{ route.meta.title }}
           </v-list-item-title>
@@ -56,7 +62,11 @@
           v-text="child.meta.title"
         />
         <v-list-item-icon>
-          <v-icon v-text="child.meta.icon" />
+          <div
+            v-if="route.meta.icon"
+            :class="'pcr-icon '+child.meta.icon"
+          />
+          <!--          <v-icon v-text="child.meta.icon" />-->
         </v-list-item-icon>
       </v-list-item>
     </v-list-group>
@@ -69,9 +79,15 @@
       @click="navigate(route)"
     >
       <v-list-item-icon>
-        <v-icon v-text="route.meta.icon" />
+        <div
+          v-if="route.meta.icon"
+          :class="'pcr-icon '+route.meta.icon"
+        />
+        <!--        <v-icon v-text="route.meta.icon" />-->
       </v-list-item-icon>
-      <v-list-item-title>{{ route.meta.title }}</v-list-item-title>
+      <v-list-item-title color="primary">
+        {{ route.meta.title }}
+      </v-list-item-title>
     </v-list-item>
   </v-list>
 </template>
@@ -173,3 +189,59 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .pcr-icon {
+    width: 44px;
+    height: 30px;
+    background: url('../../public/image/common/AtlasCommon.png') no-repeat;
+  }
+  .pcr-icon-home {
+    
+    background-position: 76.144% 26.457%;
+    background-size: 670px 768px;
+  }
+  .pcr-icon-item {
+    background-position: 47.204% 13.059%;
+    background-size: 1024px 1024px;
+  }
+  .pcr-icon-princesses {
+    background-position: 54.162% 20.827%;
+    background-size: 800px 768px;
+  }
+  .pcr-icon-quests {
+    background-position: 62.614% 15.185%;
+    background-size: 768px 768px;
+  }
+  .pcr-icon-battle {
+    background-position: 76.446% 52.634%;
+    background-size: 650px 650px;
+  }
+  .pcr-icon-batte-rank-calculation {
+    background-position: -0.5% 7.712%;
+    background-size: 1024px 1150px;
+  }
+  .pcr-icon-team-battle {
+    background-position: 0 14.964%;
+    background-size: 650px 650px;
+  }
+  .pcr-icon-team-battle-arrange {
+    background-position: 97.793% 29.298%;
+    background-size: 768px 768px;
+  }
+  .pcr-icon-about-us {
+    background-position: 73.044% 15.482%;
+    background-size: 900px 900px;
+  }
+  .pcr-icon-join-us {
+    background-position: 15.789% 56.877%;
+    background-size: 512px 512px;
+  }
+  .pcr-icon-report {
+    background-position: 9.509% 62.12%;
+    background-size: 550px 512px;
+  }
+  .pcr-icon-friend-link {
+    background-position: 14.214% 29.259%;
+    background-size: 1100px 1100px;
+  }
+</style>

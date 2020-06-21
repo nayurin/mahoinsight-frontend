@@ -2,17 +2,17 @@
   <v-app>
     <v-app-bar
       app
-      dark
-      color="primary"
+      light
       clipped-left
+      class="app-header"
     >
-      <v-app-bar-nav-icon @click="nav = !nav" />
+      <v-app-bar-nav-icon color="secondary" @click="nav = !nav" />
       <v-img
         :src="`${$store.state.CDNBaseURL}/image/bg/favicon.png`"
         contain
         max-width="48"
       />
-      <Breadcrumbs />
+      <Breadcrumbs light />
     </v-app-bar>
     <v-card
       class="overflow-hidden"
@@ -74,3 +74,20 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .v-main {
+    background-image:url("https://static.biligame.com/pcr/gw/pc/images/p5/bg.jpg?85b29228");
+  }
+  .v-navigation-drawer {
+    background-color: rgba(255,255,255,0.8) !important;
+  }
+  .app-header {
+    background-color: rgba(255,255,255,0.8) !important;
+    .v-toolbar__content {
+      background-image: url('../public/image/common/AtlasTitle.png');
+      background-size: 300px 300px;
+      background-repeat: no-repeat;
+      background-position: 0 500px;
+    }
+  }
+</style>
