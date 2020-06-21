@@ -31,7 +31,7 @@
                 v-for="(bonus, seq) in value"
                 :key="seq"
               >
-                <td>
+                <td class="storybonus-text">
                   {{ seq }}
                 </td>
                 <td>
@@ -39,6 +39,7 @@
                     v-for="(itemvalue, itemkey) in bonus"
                     :key="itemkey"
                     dense
+                    class="storybonus-text"
                     v-text="`${itemkey} +${itemvalue}`"
                   />
                 </td>
@@ -82,3 +83,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .storybonus-text {
+    font-size: 0.8em !important;
+  }
+</style>

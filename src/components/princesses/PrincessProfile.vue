@@ -20,7 +20,7 @@
         </tr>
         <tr>
           <td class="profile-text">
-            碎片来源
+            碎片
           </td>
           <td>
             <v-row no-gutters>
@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style scoped>
-td.profile-text {
-  font-size: 0.8em;
-}
+  td.profile-text {
+    font-size: 0.8em !important;
+  }
 </style>
