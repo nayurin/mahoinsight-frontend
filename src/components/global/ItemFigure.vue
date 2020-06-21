@@ -67,9 +67,10 @@ export default {
       } else if (String(this.id).length === 5) {
         return this.$store.getters.getItemNameById(this.id)
       } else {
-        const stats = this.$store.getters.getItemStatsById(this.id)
+        const crafted = ['1', '2'].includes(String(this.id).substring(1, 2)) ? this.id - (this.id - this.id % 100000 % 10000) % 100000 : this.id
+        const stats = this.$store.getters.getItemStatsById(crafted)
         if (stats === {}) return
-        let comment = `${this.$store.getters.getItemNameById(this.id)}<br>`
+        let comment = `${this.$store.getters.getItemNameById(crafted)}<br>`
         for (const key of Object.keys(stats)) {
           comment += `<br>${key}：${stats[key]} (${stats[key] * 2})`
         }
