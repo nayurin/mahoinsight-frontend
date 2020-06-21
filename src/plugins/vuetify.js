@@ -18,7 +18,7 @@ export default new Vuetify({
         headerText:'#fff',
         menuText: '#F75194',
         menuBg: '#F75194',
-        secondary: '#5a96f7',
+        secondary: '#2c94e4',
         accent: colors.indigo.base, // #3F51B5
         error: '#FF5252',
         info: '#2196F3',

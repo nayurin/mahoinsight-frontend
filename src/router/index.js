@@ -33,6 +33,7 @@ const routes = [
     meta: {
       title: '主页',
       icon: 'pcr-icon-home',
+      color: '',
       breadcrumb: [
         {
           name: 'Home',
