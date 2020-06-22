@@ -36,7 +36,8 @@ const routes = [
     component: Home,
     meta: {
       title: '主页',
-      icon: 'mdi-home',
+      icon: 'pcr-icon-home',
+      color: '',
       breadcrumb: [
         {
           name: 'Home',
@@ -51,7 +52,7 @@ const routes = [
     component: Item,
     meta: {
       title: '道具',
-      icon: 'mdi-sack',
+      icon: 'pcr-icon-item',
       breadcrumb: [
         {
           name: 'Item',
@@ -87,7 +88,7 @@ const routes = [
     component: Princess,
     meta: {
       title: '角色',
-      icon: 'mdi-heart',
+      icon: 'pcr-icon-princesses',
       breadcrumb: [
         {
           name: 'Princess',
@@ -124,7 +125,7 @@ const routes = [
     props: true,
     meta: {
       title: '关卡',
-      icon: 'mdi-sword',
+      icon: 'pcr-icon-quests',
       breadcrumb: [
         {
           name: 'Quest',
@@ -139,7 +140,7 @@ const routes = [
     component: Arena,
     meta: {
       title: '竞技场',
-      icon: 'mdi-sword-cross'
+      icon: 'pcr-icon-battle'
     },
     children: [
       {
@@ -148,7 +149,7 @@ const routes = [
         component: Calculator,
         meta: {
           title: '排名奖励计算器',
-          icon: 'mdi-chess-queen',
+          icon: 'pcr-icon-batte-rank-calculation',
           breadcrumb: [
             {
               name: 'Calculator',
@@ -165,7 +166,7 @@ const routes = [
     component: ClanBattle,
     meta: {
       title: '团队战',
-      icon: 'mdi-calendar-check-outline',
+      icon: 'pcr-icon-team-battle',
     },
     children: [
       {
@@ -174,7 +175,7 @@ const routes = [
         component: ClanBattlePeriods,
         meta: {
           title: '活动计划',
-          icon: 'mdi-progress-clock',
+          icon: 'pcr-icon-team-battle-arrange',
           breadcrumb: [
             {
               name: 'ClanBattlePeriods',
@@ -251,7 +252,7 @@ const routes = [
     component: About,
     meta: {
       title: '关于',
-      icon: 'mdi-badge-account-horizontal'
+      icon: 'pcr-icon-about-us'
     },
     children: [
       {
@@ -260,7 +261,7 @@ const routes = [
         component: Joinus,
         meta: {
           title: '加入我们',
-          icon: 'mdi-account-multiple',
+          icon: 'pcr-icon-join-us',
           breadcrumb: [
             {
               name: 'Joinus',
@@ -275,7 +276,7 @@ const routes = [
         component: Issue,
         meta: {
           title: '问题报告',
-          icon: 'mdi-bug-outline',
+          icon: 'pcr-icon-report',
           breadcrumb: [
             {
               name: 'Issues',
@@ -290,7 +291,7 @@ const routes = [
         component: Link,
         meta: {
           title: '友情链接',
-          icon: 'mdi-link-variant',
+          icon: 'pcr-icon-friend-link',
           breadcrumb: [
             {
               name: 'Links',

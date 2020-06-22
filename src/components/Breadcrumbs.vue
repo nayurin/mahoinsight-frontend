@@ -4,14 +4,14 @@
     :items="items"
   >
     <template v-slot:divider>
-      <v-icon>mdi-chevron-right</v-icon>
+      <v-icon color="secondary">mdi-chevron-right</v-icon>
     </template>
     <template v-slot:item="{ item }">
       <v-breadcrumbs-item
         :disabled="item.disabled"
         @click="onClick(item.to)"
       >
-        <a><span class="breadcrumbs--items">  
+        <a><span class="breadcrumbs--items" color="secondary">  
           {{ item.text }} 
         </span></a>
       </v-breadcrumbs-item>
@@ -87,13 +87,13 @@ export default {
 </script>
 
 <style scoped>
-a:not(.v-breadcrumbs__item--disabled)>span.breadcrumbs--items {
-  color: white;
-}
+/*a:not(.v-breadcrumbs__item--disabled)>span.breadcrumbs--items {*/
+/*  color: #F75194;*/
+/*}*/
 
-div.v-breadcrumbs__item--disabled span.breadcrumbs--items {
-  color: hsla(0,0%,100%,.5);
-}
+/*div.v-breadcrumbs__item--disabled span.breadcrumbs--items {*/
+/*  color: hsla(0,0%,100%,.85);*/
+/*}*/
 
 span.breadcrumbs--items {
   font-size: 0.95em;
