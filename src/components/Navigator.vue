@@ -31,7 +31,7 @@
 
     <v-list-group
       v-else-if="route.children"
-      :value="route.name === 'About' ? '' : 'true'"
+      :value="extend.includes(route.name) ? 'true' : ''"
     >
       <template v-slot:activator>
         <v-list-item
@@ -122,7 +122,8 @@ export default {
           专用装备: ["#princess-ue", "mdi-puzzle-star"],
           技能: ["#princess-skill", "mdi-variable"]
         }
-      }
+      },
+      extendsDefault: ['Arena', 'ClanBattle']
     }
   },
   computed: {
@@ -142,6 +143,13 @@ export default {
     },
     resolvedAnchor () {
       return this.anchor[this.parent.name]
+    },
+    extend () {
+      const extend = this.extendsDefault
+      if (this.$route.matched.length > 1) {
+        extend.push(this.$route.matched[0].name)
+      }
+      return extend
     }
   },
   methods: {
