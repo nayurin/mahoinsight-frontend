@@ -77,6 +77,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
   .v-main {
     // 可以下载成本地资源
@@ -89,7 +90,7 @@ export default {
   .app-header {
     background-color: rgba(255,255,255,0.8) !important;
     .v-toolbar__content {
-      background-image: url('../public/image/common/AtlasCommon.png');
+      background-image: url('https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com/image/common/AtlasCommon.png');
       background-size: 300px 300px;
       background-repeat: no-repeat;
       background-position: 0 500px;

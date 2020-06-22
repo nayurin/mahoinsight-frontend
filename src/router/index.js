@@ -211,7 +211,7 @@ const routes = [
     component: Profile,
     meta: {
       title: '用户档案',
-      icon: 'mdi-account-box'
+      icon: ''
     },
     children: [
       {
@@ -220,7 +220,7 @@ const routes = [
         component: ProfileManager,
         meta: {
           title: '用户档案管理',
-          icon: 'mdi-account-cog',
+          icon: '',
           breadcrumb: [
             {
               name: 'ProfileManager',
@@ -235,7 +235,7 @@ const routes = [
         component: ProfilePrincess,
         meta: {
           title: '角色管理',
-          icon: 'mdi-account-plus',
+          icon: '',
           breadcrumb: [
             {
               name: 'ProfilePrincess',

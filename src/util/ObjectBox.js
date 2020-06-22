@@ -31,7 +31,6 @@ class ObjectBox {
       xhr.onreadystatechange = () => {
         if (xhr.readyState === DONE) {
           if (xhr.status === OK) {
-            console.log(xhr.responseText)
             resolve(JSON.parse(xhr.responseText))
           } else {
             reject('Error:', this.cachefile, xhr.readyState, xhr.status)
