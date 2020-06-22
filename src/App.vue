@@ -81,7 +81,7 @@ export default {
 <style lang="scss">
   .v-main {
     // 可以下载成本地资源
-    background-image:url("https://static.biligame.com/pcr/gw/pc/images/p5/bg.jpg?85b29228");
+    background-image:url("https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com/image/bg/bg.jpg");
   }
   .v-navigation-drawer {
     // Todo: 挪至CustomTheme.scss
