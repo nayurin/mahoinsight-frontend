@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 import Home from '@/views/Home'
 
-import About from '@/views/About'
+import About from '@/views/about/Connect'
 import Joinus from '@/views/about/Joinus'
 import Issue from '@/views/about/Issue'
 import Link from '@/views/about/Link'
@@ -16,12 +16,16 @@ import PrincessDetail from '@/views/detail/PrincessDetail'
 
 import Quest from '@/views/Quest'
 
-import Arena from '@/views/Arena'
+import Arena from '@/views/arena/Connect'
 import Calculator from '@/views/arena/Calculator'
 
-import ClanBattle from '@/views/ClanBattle'
+import ClanBattle from '@/views/clanbattle/Connect'
 import ClanBattlePeriods from '@/views/clanbattle/Periods'
 import ClanBattleDetail from '@/views/clanbattle/Detail'
+
+import Profile from '@/views/profile/Connect'
+import ProfileManager from '@/views/profile/Manager'
+import ProfilePrincess from '@/views/profile/Princess'
 
 Vue.use(VueRouter)
 
@@ -193,6 +197,47 @@ const routes = [
             },
             {
               name: ':clanBattlePhase',
+              disabled: true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      title: '用户档案',
+      icon: 'mdi-account-box'
+    },
+    children: [
+      {
+        path: 'manager',
+        name: 'ProfileManager',
+        component: ProfileManager,
+        meta: {
+          title: '用户档案管理',
+          icon: 'mdi-account-cog',
+          breadcrumb: [
+            {
+              name: 'ProfileManager',
+              disabled: true
+            }
+          ]
+        }
+      },
+      {
+        path: 'princess',
+        name: 'ProfilePrincess',
+        component: ProfilePrincess,
+        meta: {
+          title: '角色管理',
+          icon: 'mdi-account-plus',
+          breadcrumb: [
+            {
+              name: 'ProfilePrincess',
               disabled: true
             }
           ]
