@@ -273,9 +273,46 @@ const getters = {
   },
 
   getClanBattleRewardById: (state) => (id) => {
-    const reward = []
-    for ( let i = 1; i <= 3; i++) {
-      reward.push(state.clanbattle[Number(id)].period.reward[0][`reward_id_${i}`])
+    let reward = []
+    for (let i = 1; i <= 3; i++) {
+      if (state.clanbattle[Number(id)].period.reward[0]) {
+        reward.push(state.clanbattle[Number(id)].period.reward[0][`reward_id_${i}`])
+      } else {
+        switch (Number(id)) {
+          case 1004:
+            reward = [91002, 90006, 31018]
+            break
+          case 1005:
+            reward = [91002, 90006, 31025]
+            break
+          case 1006:
+            reward = [91002, 90006, 31043]
+            break
+          case 1007:
+            reward = [91002, 90006, 31022]
+            break
+          case 1008:
+            reward = [91002, 90006, 31042]
+            break
+          case 1009:
+            reward = [91002, 90006, 31018]
+            break
+          case 1010:
+            reward = [91002, 90006, 31025]
+            break
+          case 1011:
+            reward = [91002, 90006, 31043]
+            break
+          case 1012:
+            reward = [91002, 90006, 31022]
+            break
+          case 1013:
+            reward = [91002, 90006, 31042]
+            break
+          default:
+            break
+        }
+      }
     }
     return reward
   },
