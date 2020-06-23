@@ -34,7 +34,7 @@
                     large
                     dark
                     class="d-flex justify-center align-center text-button text-truncate"
-                    :color="tags[status][0]"
+                    :color="['current', 'incoming'].includes(status) && event.category === 'maintenance' ? tags['maintenance'][0] : tags[status][0]"
                     v-bind="attrs"
                     v-on="on"
                   >
@@ -87,7 +87,8 @@ export default {
       tags: {
         outdated: ['gray darken-3', '已经结束的活动'],
         current: ['green darken-2', '正在进行的活动'],
-        incoming: ['primary', '即将到来的活动']
+        incoming: ['primary', '即将到来的活动'],
+        maintenance: ['error', '服务器维护']
       },
       events: {
         outdated: [],

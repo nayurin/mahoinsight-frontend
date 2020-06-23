@@ -2,13 +2,12 @@
 import { registerRoute } from 'workbox-routing'
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
-import { CacheFirst } from 'workbox-strategies'
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 
-self.addEventListener('install', () => self.skipWaiting())
 self.addEventListener('activate', () => self.clients.claim())
 self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+  if (event.data && event.data.content === 'skipwaiting') {
     self.skipWaiting()
   }
 })
@@ -32,12 +31,36 @@ registerRoute(
 )
 
 registerRoute(
-  /^https:\/\/mahomaho-insight-cos-.*.png$/,
+  ({ url }) => url.pathname.startsWith('/preload/') || url.pathname.startsWith('/lib/'),
   new CacheFirst({
-    cacheName: "images-resources",
+    cacheName: "preload-resources",
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 30
+      })
+    ]
+  })
+)
+
+registerRoute(
+  ({ url }) => url.hostname.startsWith('mahomaho-insight-cos'),
+  new CacheFirst({
+    cacheName: "cos-resources",
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 60 * 60 * 24 * 30
+      })
+    ]
+  })
+)
+
+registerRoute(
+  ({ url }) => url.pathname.startsWith('/cached/'),
+  new StaleWhileRevalidate({
+    cacheName: "data-resources",
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 60 * 60 * 24
       })
     ]
   })

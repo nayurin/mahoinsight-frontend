@@ -40,6 +40,7 @@
         <router-view />
       </v-container>
     </v-main>
+    <SWMessenger />
     <Footer />
     <Button2Top />
   </v-app>
@@ -50,6 +51,7 @@ import Navigator from '@/components/Navigator'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import Footer from '@/components/Footer'
 import Button2Top from '@/components/Button2Top'
+import SWMessenger from '@/components/SWMessenger'
 
 export default {
   name: 'App',
@@ -57,7 +59,8 @@ export default {
     Navigator,
     Breadcrumbs,
     Footer,
-    Button2Top
+    Button2Top,
+    SWMessenger
   },
   data: () => ({
     routes: [],
