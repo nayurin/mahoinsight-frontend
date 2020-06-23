@@ -22,7 +22,7 @@
             </v-list-item>
           </template>
           <v-list-item>
-            <v-row>
+            <v-row no-gutters>
               <v-col class="col-12">
                 <v-card>
                   <v-card-text v-if="!edit">
@@ -34,11 +34,22 @@
                     label="档案名称"
                     class="ma-3"
                   />
-                  <v-card-text
+                  <v-card
                     v-if="exported"
                     outlined
-                    v-text="compress(item)"
-                  />
+                  >
+                    <v-sheet dark>
+                      <v-textarea
+                        auto-grow
+                        dark
+                        dense
+                        disabled
+                        outlined
+                        class="caption"
+                        :value="compress(item)"
+                      />
+                    </v-sheet>
+                  </v-card>
                   <v-card-actions>
                     <v-btn
                       v-if="!isActive(key)"
@@ -106,10 +117,12 @@
       <v-col class="col-5">
         <v-textarea
           v-model="importdata"
+          auto-grow
           clearable
+          class="caption"
           label="可以导入其他来源的档案数据"
           hint="数据的格式是以逗号分隔的一串数字"
-        />       
+        />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
@@ -285,3 +298,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#exported-text {
+  font-size: 0.6em;
+}
+</style>
