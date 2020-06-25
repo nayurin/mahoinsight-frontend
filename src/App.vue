@@ -77,6 +77,7 @@ export default {
     this.$store.commit('updateState', { key: 'gitcommit', value: GIT_COMMIT.trim() })
     if (/Android|webOS|iPhone|iPod|BlackBerry|MuMu/i.test(navigator.userAgent)) this.$store.commit('updateState', { key: 'mobile', value: true })
     this.nav = !this.$store.state.mobile
+    this.$store.commit('updateState', { key: 'activeProfile', value: window.localStorage.getItem('active') })
   }
 }
 </script>

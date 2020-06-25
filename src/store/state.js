@@ -33,7 +33,9 @@ const state = {
     公主竞技场商店: [31016, 31007, 31017, 31012, 31009],
     行会商店: [31025, 31022, 31042, 31043, 31018]
   },
-  loaded: false
+  loaded: false,
+  activeProfile: null,
+  profile: {}
 }
 
 export default state

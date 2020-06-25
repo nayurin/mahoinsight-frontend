@@ -25,7 +25,7 @@ import ClanBattleDetail from '@/views/clanbattle/Detail'
 
 import Profile from '@/views/profile/Connect'
 import ProfileManager from '@/views/profile/Manager'
-import ProfilePrincess from '@/views/profile/Princess'
+import ProfilePrincess from '@/views/profile/ManagePrincess'
 
 Vue.use(VueRouter)
 
@@ -230,7 +230,7 @@ const routes = [
         }
       },
       {
-        path: 'princess',
+        path: 'manageprincess',
         name: 'ProfilePrincess',
         component: ProfilePrincess,
         meta: {

@@ -11,14 +11,18 @@ const getters = {
     return state.chara[name]
   },
 
-  getPrincessIdByName: (state) => (name) => {
-    return state.chara[name].id
-  },
-
   getPrincessById: (state) => (id) => {
     for (const key of Object.keys(state.chara)) {
       if (state.chara[key].id === id) return state.chara[key]
     }
+  },
+
+  getPrincessIdByName: (state) => (name) => {
+    return state.chara[name].id
+  },
+
+  getPrincessIdList: (state) => () => {
+    return Object.keys(state.chara).map(x => state.chara[x].id)
   },
 
   getPrincessByRarity: (state) => (rarity) => {

@@ -55,7 +55,7 @@
                       v-if="!isActive(key)"
                       text
                       color="primary"
-                      @click="$setLSItem('active', key)"
+                      @click="$setLSItem({ pos: '{}', key: 'active', value: key})"
                     >
                       激活
                     </v-btn>
@@ -200,12 +200,15 @@ export default {
       btnicon: ['mdi-star-off', 'mdi-numeric-1', 'mdi-numeric-2','mdi-numeric-3','mdi-numeric-4','mdi-numeric-5']
     }
   },
+  watch: {
+    active (val) {
+      this.$store.commit('updateState', { key: 'activeProfile', value: val })
+      this.$store.commit('updateState', { key: 'profile', value: this.profile })
+    }
+  },
   created () {
     window.addEventListener('setItemEvent', this.loadProfile)
     this.loadProfile()
-  },
-  destroyed () {
-    window.removeEventListener('setItemEvent', this.loadProfile)
   },
   methods: {
     isActive (name) {
@@ -229,24 +232,43 @@ export default {
       for (seq = 1; Object.keys(this.profile).includes(`Profile ${seq}`); seq++) {
         continue
       }
-      this.$setLSItem(`Profile ${seq}`, JSON.stringify(data))
+      this.$setLSItem({
+        key: `Profile ${seq}`,
+        value: data
+      })
       if (!this.storage.getItem('active')) {
-        this.$setLSItem('active', `Profile ${seq}`)
+        this.$setLSItem({
+          key: 'active',
+          value: `Profile ${seq}`
+        })
       }
     },
     removeProfile (name) {
-      this.$removeLSItem(name)
+      this.$removeLSItem({
+        key: name
+      })
       if (this.storage.getItem('active') === name) {
-        this.$setLSItem('active', '')
+        this.$setLSItem({
+          key: 'active',
+          value: ''
+        })
       }
     },
     editProfileTitle (oldTitle, newTitle) {
       if (newTitle && newTitle !== oldTitle) {
-        this.$setLSItem(`${newTitle}`, JSON.stringify(this.profile[oldTitle]))
+        this.$setLSItem({
+          key: `${newTitle}`,
+          value: this.profile[oldTitle]
+        })
         if (this.isActive(oldTitle)) {
-          this.$setLSItem('active', newTitle)
+          this.$setLSItem({
+            key: 'active',
+            value: newTitle
+          })
         }
-        this.$removeLSItem(`${oldTitle}`)
+        this.$removeLSItem({
+          key: oldTitle
+        })
       }
       this.edit = false,
       this.title = null
@@ -264,10 +286,10 @@ export default {
       this.active = this.storage.getItem('active') || ''
     },
     parseProfile (obj) {
-      const number = obj.princess && Array.isArray(obj.princess) ? obj.princess.length : 0
+      const number = obj.princess && Object.prototype.toString.call(obj.princess) === '[object Object]' ? Object.keys(obj.princess).length : 0
       let rarity = 0
       if (number) {
-        for (const chara of obj.princess) {
+        for (const chara of Object.values(obj.princess)) {
           rarity += chara.rarity
         }
       }
@@ -284,14 +306,14 @@ export default {
     },
     createDefaultProfile () {
       const profile = {}
-      profile.princess = []
+      profile.princess = {}
       for (const chara of Object.values(this.$store.state.chara)) {
-        profile.princess.push({
+        profile.princess[chara.id] = {
           name: chara.status.unit_name,
           rarity: this.rarity || chara.status.rarity,
-          frags: [0, 0],
+          pieces: [0, 0],
           ue: false 
-        })
+        }
       }
       this.addNewProfile({ data: profile })
     }
