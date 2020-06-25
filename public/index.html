@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>MahoMaho INSIGHT!! 真步真步视界术 公主连结Re:Dive爱好者资料分享</title>
+    <title>MahoMaho INSIGHT!! 真步真步视界术 公主连结资讯站</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
     <script src="/lib/spine-webgl.min.js"></script>
@@ -282,7 +282,6 @@
                     if (nextAnim == 'stop') return;
                     if (nextAnim == 'hold') return setTimeout(tick, 1e3);
                     if (nextAnim.substr(0, 1) != '1') nextAnim = getClass(currentClassAnimData.type) + '_' + nextAnim;
-                    console.log(nextAnim);
                     animationState.setAnimation(0, nextAnim, !animationQueue.length);
                   }
                 },
