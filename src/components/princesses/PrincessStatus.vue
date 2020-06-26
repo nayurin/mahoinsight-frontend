@@ -25,11 +25,8 @@
           />
         </v-col>
         <v-col
-          class="col-12"
+          class="col-12 pb-0"
         >
-          <v-card-text class="px-0 py-1">
-            好感度奖励
-          </v-card-text>
           <v-combobox
             v-model="selectstory"
             :filter="filter"
@@ -40,7 +37,6 @@
             label="选择好感剧情"
             multiple
             small-chips
-            solo
           >
             <template v-slot:selection="{ attrs, item, parent, selected }">
               <v-chip
@@ -76,7 +72,7 @@
         </v-col>
       </v-row>
       <v-row
-        class="pa-3"
+        class="pa-3 pt-0"
       >
         ★数
         <v-rating
