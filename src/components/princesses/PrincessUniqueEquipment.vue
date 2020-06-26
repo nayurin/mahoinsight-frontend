@@ -133,7 +133,7 @@ export default {
         } else {
           const baseval = this.princess.unique_equipment.data[type]
           const enhval = this.princess.unique_equipment.enhance_rate[type]
-          data[this.statsMap[type]] = [baseval, Math.round(baseval + enhval * level)]
+          data[this.statsMap[type]] = [baseval, Math.ceil(baseval + enhval * level)]
         }
       }
       this.stats = data
