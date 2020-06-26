@@ -30,7 +30,6 @@
         创建新的档案
       </v-btn>
     </v-row>
-    <v-card></v-card>
     <v-row
       v-if="this.$store.state.activeProfile"
       no-gutters
@@ -58,14 +57,6 @@
         在添加角色前请先创建或激活一个档案
       </v-card-text>
     </v-row>
-
-    
-    <v-card>
-      <!-- <PrincessPlate
-        :id="$store.getters.getPrincessById(100101)"
-        zoom-ratio="0.5"
-      /> -->
-    </v-card>
   </v-container>
 </template>
 
