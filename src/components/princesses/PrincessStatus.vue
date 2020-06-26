@@ -325,8 +325,9 @@ export default {
         生命值吸收: NaN,
         技能值消耗降低: NaN,
       }
-      for (const stattype of Object.keys(this.equipStats)) {
-        stats[stattype] += this.storyBonusStats[stattype] ? this.equipStats[stattype] + this.storyBonusStats[stattype] : this.equipStats[stattype]
+      for (const stattype of Object.keys(stats)) {
+        if (this.equipStats[stattype]) stats[stattype] += this.equipStats[stattype]
+        if (this.storyBonusStats[stattype]) stats[stattype] += this.storyBonusStats[stattype]
         stats[stattype] = Math.ceil(stats[stattype])
       }
       return stats
