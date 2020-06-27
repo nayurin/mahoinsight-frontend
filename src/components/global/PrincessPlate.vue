@@ -16,7 +16,18 @@
               :style="style"
               v-bind="attrs"
               v-on="on"
-            />
+            >
+              <template v-slot:placeholder>
+                <v-row
+                  class="fill-height ma-0 align-center justify-center"
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="pink"
+                  />
+                </v-row>
+              </template>
+            </v-img>
           </template>
           <span
             v-html="comment"

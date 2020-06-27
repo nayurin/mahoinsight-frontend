@@ -15,7 +15,18 @@
             :src="src"
             :alt="name"
             :style="style"
-          />
+          >
+            <template v-slot:placeholder>
+              <v-row
+                class="fill-height ma-0 align-center justify-center"
+              >
+                <v-progress-circular
+                  indeterminate
+                  color="red"
+                />
+              </v-row>
+            </template>
+          </v-img>
           <v-row
             class="d-flex justify-center align-center"
             no-gutters

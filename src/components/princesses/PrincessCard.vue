@@ -5,7 +5,18 @@
     </v-card-title>
     <v-img
       :src="sourceURL"
-    />
+    >
+      <template v-slot:placeholder>
+        <v-row
+          class="fill-height ma-0 align-center justify-center"
+        >
+          <v-progress-circular
+            indeterminate
+            color="pink"
+          />
+        </v-row>
+      </template>
+    </v-img>
     <v-row no-gutters>
       <v-col>
         <v-card-text

@@ -12,7 +12,18 @@
         contain
         :src="src"
         :style="style"
-      />
+      >
+        <template v-slot:placeholder>
+          <v-row
+            class="fill-height ma-0 align-center justify-center"
+          >
+            <v-progress-circular
+              indeterminate
+              color="cyan"
+            />
+          </v-row>
+        </template>
+      </v-img>
       <slot name="afterImage" />
     </v-row>
   </v-col>

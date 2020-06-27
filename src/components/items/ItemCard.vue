@@ -26,7 +26,18 @@
             >
               <v-img
                 :src="src"
-              />
+              >
+                <template v-slot:placeholder>
+                  <v-row
+                    class="fill-height ma-0 align-center justify-center"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      color="primary"
+                    />
+                  </v-row>
+                </template>
+              </v-img>
             </v-avatar>
             <v-card-text
               class="pa-2"
