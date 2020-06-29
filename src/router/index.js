@@ -27,6 +27,9 @@ import Profile from '@/views/profile/Connect'
 import ProfileManager from '@/views/profile/Manager'
 import ProfilePrincess from '@/views/profile/ManagePrincess'
 
+import Planner from '@/views/planner/Connect'
+import EquipPlanner from '@/views/planner/EquipPlanner'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -202,6 +205,32 @@ const routes = [
             }
           ]
         }
+      }
+    ]
+  },
+  {
+    path: '/planner',
+    name: 'Planner',
+    component: Planner,
+    meta: {
+      title: '规划工具',
+      icon: ''
+    },
+    children: [
+      {
+        path: 'equipment',
+        name: 'EquipPlanner',
+        component: EquipPlanner,
+        meta: {
+          title: '刷图规划',
+          icon: '',
+          breadcrumb: [
+            {
+              name: 'EquipPlanner',
+              disabled: true
+            }
+          ]
+        },
       }
     ]
   },

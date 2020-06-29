@@ -240,9 +240,6 @@ export default {
         range
       }
     }
-  },
-  mounted () {
-    console.log(this.princess.skill)
   }
 }
 </script>

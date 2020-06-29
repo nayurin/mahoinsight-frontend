@@ -8,24 +8,30 @@ const state = {
   CDNBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com' : '',
   maxRank: 9,
   maxLevel: 93,
+  furthestArea: 11,
   maxUELevel: 100,
   curRank: 0,
   curLevel: 0,
   curAtk: 0,
   equipSelected: [],
+  equipSelectedFrom: [],
+  equipSelectedTo: [],
+  rankFrom: 0,
+  rankTo: 0,
   rankColor: {
-    1: "blue",
-    2: "brown",
-    3: "brown",
-    4: "grey darken-1",
-    5: "grey darken-1",
-    6: "grey darken-1",
-    7: "amber darken-2",
-    8: "amber darken-2"
+    1: 'blue',
+    2: 'brown',
+    3: 'brown',
+    4: 'grey darken-1',
+    5: 'grey darken-1',
+    6: 'grey darken-1',
+    7: 'amber darken-2',
+    8: 'amber darken-2',
+    9: 'amber darken-2'
   },
-  difficulties: ["normal", "hard", "other"],
+  difficulties: ['normal', 'hard', 'other'],
   widthThreshold: [300, 600],
-  gitcommit: "unknown",
+  gitcommit: 'unknown',
   mobile: false,
   charaFragByTokens: {
     地下城商店: [31060, 31034, 31006, 31045, 31051, 31010, 31029],
@@ -35,7 +41,8 @@ const state = {
   },
   loaded: false,
   activeProfile: null,
-  profile: {}
+  profile: {},
+  lastUpdatedChara: 0
 }
 
 export default state

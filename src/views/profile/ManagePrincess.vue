@@ -14,6 +14,8 @@
         <PrincessPlate
           :id="item"
           zoom-ratio="0.5"
+          stars
+          pieces
         />
       </v-col>
     </v-row>
@@ -46,6 +48,8 @@
           <PrincessPlate
             :id="item"
             zoom-ratio="0.5"
+            stars
+            pieces
           />
         </v-col>
       </v-row>
@@ -79,7 +83,7 @@ export default {
       return this.profile[this.$store.state.activeProfile] && this.profile[this.$store.state.activeProfile].princess && Object.prototype.toString.call(this.profile[this.$store.state.activeProfile].princess) === '[object Object]' ? Object.keys(this.profile[this.$store.state.activeProfile].princess).map(x => Number(x)) : []
     },
     unStoragedPrincess () {
-      return this.$store.getters.getPrincessIdList().filter(x => !this.storagedPrincess.includes(x))
+      return this.$store.getters.getPrincessIdList.filter(x => !this.storagedPrincess.includes(x))
     }
   },
   mounted () {

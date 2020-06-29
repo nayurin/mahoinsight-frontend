@@ -171,7 +171,7 @@ export default {
     },
     rank: {
       get () {
-        return this.$store.getters.curRank
+        return this.$store.getters.curRank({})
       },
       set (value) {
         if (parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.$store.state.maxRank) {
@@ -199,7 +199,8 @@ export default {
     },
     equipStats () {
       const stats = {}
-      for (const equipid of this.$store.state.equipSelected) {
+      const equipments = this.$store.state.equipSelected.map(x => this.princess.promotion_info[this.$store.getters.curRank({})][`equip_slot_${x + 1}`])
+      for (const equipid of equipments) {
         if (equipid === 999999) continue
         const item = this.$store.getters.getItemStatsById(equipid)
         for (const stattype of Object.keys(item)) {

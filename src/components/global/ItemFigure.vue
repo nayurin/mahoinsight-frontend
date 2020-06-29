@@ -2,7 +2,7 @@
   <v-tooltip top>
     <template v-slot:activator="{ on, attrs }">
       <v-card
-        :to="route"
+        :to="noRoute ? '' : route"
         :max-width="origWidth * parseFloat(zoomRatio)"
         v-bind="attrs"
         v-on="on"
@@ -44,6 +44,10 @@ export default {
     zoomRatio: {
       type: String,
       default: '1'
+    },
+    noRoute: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

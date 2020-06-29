@@ -1,6 +1,12 @@
 const getters = {
-  curRank: state => {
-    return state.curRank ? state.curRank : state.maxRank
+  curRank: state => ({ from=false, to=false }) => {
+    if (from && !to) {
+      return state.rankFrom ? state.rankFrom : state.maxRank
+    } else if (to && !from) {
+      return state.rankTo ? state.rankTo : state.maxRank
+    } else {
+      return state.curRank ? state.curRank : state.maxRank
+    }
   },
 
   curLevel: state => {
@@ -17,11 +23,17 @@ const getters = {
     }
   },
 
+  getPrincessNameById: (state) => (id) => {
+    for (const key of Object.keys(state.chara)) {
+      if (state.chara[key].id === id) return key
+    }
+  },
+
   getPrincessIdByName: (state) => (name) => {
     return state.chara[name].id
   },
 
-  getPrincessIdList: (state) => () => {
+  getPrincessIdList: (state) => {
     return Object.keys(state.chara).map(x => state.chara[x].id)
   },
 
@@ -230,7 +242,7 @@ const getters = {
     }
   },
 
-  getQuestArea: (state) => () => {
+  getQuestArea: (state) => {
     const obj = {
       normal: [],
       hard: [],
@@ -327,6 +339,50 @@ const getters = {
 
   getClanBattleBossGroup: (state) => (id, phase) => {
     return state.clanbattle[Number(id)].mapdata[Number(phase)].clan_battle_boss_group
+  },
+
+  getLootSimulation: (state) => ({ questid, times = 1, multiplier = 1 }) => {
+    let rewards, stamina
+    const loots = {}
+    const lootDivider = (reward) => {
+      const arr = [0]
+      let odds = 0
+      for (let i = 1; i <= 5; i++) {
+        odds += reward[`odds_${i}`]
+        arr.push(odds)
+      }
+      return arr
+    }
+    for (const diff of state.difficulties) {
+      if (state.quest[diff][questid] && state.quest[diff][questid].id === questid) {
+        rewards = state.quest[diff][questid].reward_info
+        stamina = state.quest[diff][questid].quest_info.stamina
+      } 
+    }
+    for (let t = 0; t < times; t++) {
+      rewards.forEach(reward => {
+        const divider = lootDivider(reward)
+        const rand = Math.random() * divider[divider.length - 1]
+        for (let i = 0; i < divider.length - 1; i++) {
+          if (rand >= divider[i] && rand < divider[i + 1]) {
+            if (reward[`reward_id_${i + 1}`] && reward[`reward_num_${i + 1}`]) {
+              if (Object.prototype.hasOwnProperty.call(loots, reward[`reward_id_${i + 1}`])) {
+                loots[reward[`reward_id_${i + 1}`]] += reward[`reward_num_${i + 1}`] * multiplier
+              } else {
+                loots[reward[`reward_id_${i + 1}`]] = reward[`reward_num_${i + 1}`] * multiplier
+              }
+            }
+            break
+          }
+        }
+      }) 
+    }
+    
+    return {
+      loots,
+      stamina,
+      times
+    }
   }
 }
 

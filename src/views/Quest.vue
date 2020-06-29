@@ -241,13 +241,13 @@
     },
     computed: {
       normal () {
-        return this.$store.getters.getQuestArea().normal
+        return this.$store.getters.getQuestArea.normal
       },
       hard () {
-        return this.$store.getters.getQuestArea().hard
+        return this.$store.getters.getQuestArea.hard
       },
       other () {
-        return this.$store.getters.getQuestArea().other
+        return this.$store.getters.getQuestArea.other
       },
       listArea () {
         return this.$store.getters.getQuestListByArea(this.x)
