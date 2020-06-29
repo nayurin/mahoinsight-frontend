@@ -159,7 +159,11 @@ export default {
           break
         case 10: // 改变属性值
           total = Number(action.action_value_2) + (Number(action.action_value_3) * level)
-          detail = ` ${Math.ceil(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】`
+          if (action.action_value_1 === 1) {
+            detail = ` ${Math.ceil(total)} 【 ${action.action_value_2} + ${action.action_value_3}*技能等级 】 持续【 ${action.action_value_4} 】秒`
+          } else if (action.action_value_1 === 2) {
+            detail = ` 【变化率 ${Math.ceil(total)}%】 【 ${action.action_value_2}% + ${action.action_value_3}*技能等级 】 持续【 ${action.action_value_4} 】秒`
+          }
           break
         case 11: // 赋予混乱
           detail = ` 持续【 ${action.action_value_1} 】秒` // 还有个action_value_3不知道是做什么的 推测为命中几率
@@ -236,6 +240,9 @@ export default {
         range
       }
     }
+  },
+  mounted () {
+    console.log(this.princess.skill)
   }
 }
 </script>
