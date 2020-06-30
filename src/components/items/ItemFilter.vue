@@ -38,7 +38,9 @@ export default {
   props: {
     filter: {
       type: Array,
-      required: true
+      default: function () {
+        return []
+      }
     },
     search: {
       type: String,

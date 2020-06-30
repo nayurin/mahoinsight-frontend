@@ -73,12 +73,12 @@
             </v-row>
           </v-card>
           <v-switch
-            v-model="step1switch"
+            v-model="fromProfile"
             label="从用户档案中选择"
             class="mx-5"
           />
           <v-card
-            v-if="step1switch"
+            v-if="fromProfile"
             class="mb-12"
           >
             <v-card-title>
@@ -144,53 +144,12 @@
                 :key="itemid"
                 class="col-auto pa-0"
               >
-                <v-dialog
-                  v-model="editing"
-                  :width="$store.state.mobile ? '350' : '380'"
+                <EditableItemFigure 
+                  :id="Number(itemid)"
+                  @update="onUpdate(itemid, amount)"
+                  @remove="onRemove(itemid)"
                 >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-card
-                      outlined
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <ItemFigure
-                        v-if="Number(itemid) !== 999999"
-                        :id="Number(itemid)"
-                        no-route
-                        zoom-ratio="0.5"
-                      >
-                        <template v-slot:inner>
-                          <v-badge
-                            inline
-                            bordered
-                            color="light-green darken-2"
-                            :content="amount"
-                          />
-                        </template>
-                      </ItemFigure>
-                    </v-card>
-                  </template>
-                  <v-card>
-                    <v-row no-gutters>
-                      <v-col
-                        class="col-auto pa-5"
-                      >
-                        <ItemFigure
-                          :id="Number(itemid)"
-                          no-route
-                          zoom-ratio="0.8"
-                        />
-                      </v-col>
-                      <v-col>
-                        <v-card-title>
-                          {{ $store.getters.getItemNameById(itemid) }}
-                        </v-card-title>
-                        <!-- <v-card-subtitle>
-                          {{ $store.getters.getItemById(itemid).detail.description.replace(/\\n/g, '') }}
-                        </v-card-subtitle> -->
-                      </v-col>
-                    </v-row>
+                  <template v-slot:content>
                     <v-row
                       no-gutters
                       class="justify-center"
@@ -205,37 +164,16 @@
                         />
                       </v-col>
                     </v-row>
-                    <v-card-actions class="justify-center">
-                      <v-btn
-                        color="light-gray"
-                        @click="onUpdate(itemid, amount)"
-                      >
-                        <v-icon left>
-                          mdi-text-box-plus-outline
-                        </v-icon>
-                        修改
-                      </v-btn>
-                      <v-btn
-                        color="light-gray"
-                        @click="onRemove(itemid)"
-                      >
-                        <v-icon left>
-                          mdi-text-box-remove-outline
-                        </v-icon>
-                        删除
-                      </v-btn>
-                      <v-btn
-                        color="light-gray"
-                        @click="editing = false"
-                      >
-                        <v-icon left>
-                          mdi-close-box-outline
-                        </v-icon>
-                        取消
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                  </template>
+                  <template v-slot:inner>
+                    <v-badge
+                      inline
+                      bordered
+                      color="light-green darken-2"
+                      :content="amount"
+                    />
+                  </template>
+                </EditableItemFigure>
               </v-col>
             </v-row>
           </v-card>
@@ -246,7 +184,91 @@
             <v-card-subtitle>
               需求计算
             </v-card-subtitle>
+            <v-switch
+              v-model="mainPiece"
+              label="仅计算主要素材"
+              color="green lighten-1"
+              class="mx-3"
+              hide-details
+            />
+            <v-row
+              no-gutters
+              class="px-4 py-3"
+            >
+              <v-col
+                v-for="(amount, itemid) in reqPieces"
+                :key="itemid"
+                class="col-auto"
+              >
+                <ItemFigure
+                  :id="Number(itemid)"
+                  no-route
+                  zoom-ratio="0.5"
+                >
+                  <template v-slot:inner>
+                    <v-badge
+                      inline
+                      bordered
+                      color="light-green darken-2"
+                      :content="amount"
+                    />
+                  </template>
+                </ItemFigure>
+              </v-col>
+            </v-row>
           </v-card>
+          <v-row no-gutters>
+            <v-toolbar
+              color="gray"
+              flat
+            >
+              <v-text-field
+                v-model="searchbox"
+                class="mx-0"
+                flat
+                hide-details
+                label="输入装备名称"
+                prepend-inner-icon="mdi-magnify"
+                solo-inverted
+                clearable
+                @click:clear="searchbox = ''"
+              />
+            </v-toolbar>
+          </v-row>
+          <v-row
+            no-gutters
+            class="px-4 py-3"
+          >
+            <v-col
+              v-for="(item, i) in filtedItem"
+              :key="i"
+              class="col-auto pa-0"
+            >
+              <EditableItemFigure 
+                :id="Number(item.id)"
+                @update="onUpdate(item.id, itemAmount)"
+                @remove="onRemove(item.id)"
+              >
+                <template v-slot:content>
+                  <v-row
+                    no-gutters
+                    class="justify-center"
+                  >
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="itemAmount"
+                        dense
+                        :rules="[rules.required, rules.range]"
+                        label="数量"
+                        @blur="itemAmount = itemAmount === '' ? 1 : itemAmount"
+                      />
+                    </v-col>
+                  </v-row>
+                </template>
+              </EditableItemFigure>
+            </v-col>
+          </v-row>
+
           <v-btn
             color="primary"
             @click="step = 3"
@@ -255,7 +277,7 @@
           </v-btn>
           <v-btn
             text
-            @click="showd5g"
+            @click="step = 1"
           >
             上一步
           </v-btn>
@@ -265,16 +287,71 @@
           <v-card
             class="mb-12"
             color="grey lighten-1"
-            height="200px"
-          ></v-card>
+          >
+            <v-row no-gutters>
+              <v-col class="col-auto">
+                <v-chip
+                  label
+                  color="primary"
+                  class="ma-4"
+                >
+                  素材的最终确认
+                </v-chip>
+              </v-col>
+              <v-col class="col-auto">
+                <v-switch
+                  v-model="bonus2x"
+                  label="庆典：双倍"
+                  color="light-blue"
+                  class="mx-3"
+                  hide-details
+                />
+              </v-col>
+              <v-col class="col-auto">
+                <v-switch
+                  v-model="bonus3x"
+                  label="庆典：三倍"
+                  color="red"
+                  class="mx-3"
+                  hide-details
+                />
+              </v-col>
+            </v-row>
+            <v-row
+              no-gutters
+              class="px-4 py-3"
+            >
+              <v-col
+                v-for="(amount, itemid) in reqPieces"
+                :key="itemid"
+                class="col-auto"
+              >
+                <ItemFigure
+                  :id="Number(itemid)"
+                  no-route
+                  zoom-ratio="0.5"
+                >
+                  <template v-slot:inner>
+                    <v-badge
+                      inline
+                      bordered
+                      color="light-green darken-2"
+                      :content="amount"
+                    />
+                  </template>
+                </ItemFigure>
+              </v-col>
+            </v-row>
+          </v-card>
           <v-btn
             color="primary"
+            :disabled="pending || completed"
             @click="batchGathering"
-          >
-            开始计算
-          </v-btn>
+            v-text="startbutton"
+          />
           <v-btn
             text
+            :disabled="pending || completed"
             @click="step = 2"
           >
             上一步
@@ -282,38 +359,22 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-
-    <v-banner
-      v-if="pending"
-      sticky
-      :single-line="!$store.state.mobile"
-    >
-      <v-row class="d-flex">
-        <v-col
-          v-for="(amount, item) in requirement"
-          :key="item"
-          class="col-auto"
-        >
-          <ItemFigure
-            :id="Number(item)"
-            zoom-ratio="0.5"
-          >
-            <template v-slot:inner>
-              <v-badge
-                inline
-                bordered
-                color="light-green darken-2"
-                :content="amount"
-              />
-            </template>
-          </ItemFigure>
-        </v-col>
-      </v-row>
-    </v-banner>
     <v-dialog
-      v-model="completed"
+      v-model="summary"
       :max-width="$store.state.mobile ? '400' : '600'"
     >
+      <template v-slot:activator="{ on, attrs }">
+        <v-row class="justify-center py-3">
+          <v-btn
+            v-if="completed"
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+          >
+            显示摘要
+          </v-btn>
+        </v-row>
+      </template>
       <v-card>
         <v-card-title>
           数据摘要
@@ -348,7 +409,7 @@
         <v-card-actions class="justify-center">
           <v-btn
             color="primary"
-            @click="completed = false"
+            @click="summary = false"
           >
             返回
           </v-btn>
@@ -413,23 +474,29 @@
 <script>
 import ItemFigure from '@/components/global/ItemFigure'
 import PrincessPlate from '@/components/global/PrincessPlate'
+import EditableItemFigure from '@/components/global/EditableItemFigure'
 
 export default {
   name: 'EquipPlanner',
   components: {
     ItemFigure,
-    PrincessPlate
+    PrincessPlate,
+    EditableItemFigure
   },
   data () {
     return {
       step: 1,
-      step1switch: false,
+      fromProfile: false,
+      mainPiece: false,
       editing: false,
       pending: false,
       completed: false,
+      summary: false,
+      searchbox: '',
       itemAmount: 1,
       times: 0,
-      multiplier: 2,
+      bonus2x: false,
+      bonus3x: false,
       lootsTotal: {},
       comments: [],
       rewards: [],
@@ -454,6 +521,12 @@ export default {
     profile () {
       return this.$store.state.profile
     },
+    startbutton () {
+      let text = '开始计算'
+      if (this.pending && !this.completed) text = '正在扫荡……'
+      if (this.completed && !this.pending) text = '已完成'
+      return text
+    },
     dim5Group () {
       return {
         rFrom: this.$store.state.rankFrom,
@@ -462,6 +535,24 @@ export default {
         eTo: this.$store.state.equipSelectedTo,
         chara: this.$store.state.lastUpdatedChara
       }
+    },
+    fullItem () {
+      const _item = []
+      Object.values(this.$store.state.item).map(x=>{
+        if (String(x.id).length === 6 && (String(x.id).split('')[1] === '0' || x.id === 140000)) {
+          _item.push(x)
+        }
+      })
+      return _item.reverse()
+    },
+    filtedItem () {
+      return this.searchbox === '' ? [] : this.fullItem.filter(x => x.detail.equipment_name.match(this.searchbox))
+    },
+    multiplier () {
+      if (!this.bonus2x && !this.bonus3x) return 1
+      if (this.bonus2x) return 2
+      if (this.bonus3x) return 3
+      return null
     }
   },
   watch: {
@@ -485,6 +576,52 @@ export default {
         this.mergeRequirements()
       },
       deep: true
+    },
+    mergedReq: {
+      handler (val) {
+        this.reqPieces = {}
+        for (const itemid of Object.keys(val)) {
+          if (!this.isCraft(Number(itemid))) {
+            if (Object.prototype.hasOwnProperty.call(this.reqPieces, itemid)) {
+              this.reqPieces[itemid] += val[itemid]
+            } else {
+              this.$set(this.reqPieces, itemid, val[itemid])
+            }
+          } else {
+            if (this.mainPiece) {
+              const craftby = this.findItem(itemid).craft_by
+              craftby.forEach(item => {
+                if ((item[0] - itemid) % 10000 === 0) {
+                  if (Object.prototype.hasOwnProperty.call(this.reqPieces, item[0])) {
+                    this.reqPieces[item[0]] += item[1] * val[itemid]
+                  } else {
+                    this.$set(this.reqPieces, item[0], item[1] * val[itemid])
+                  }
+                }
+              })
+            } else {
+              const craftby = this.craftBy(Number(itemid))
+              craftby.forEach(item => {
+                if (Object.prototype.hasOwnProperty.call(this.reqPieces, item[0])) {
+                  this.reqPieces[item[0]] += item[1] * val[itemid]
+                } else {
+                  this.$set(this.reqPieces, item[0], item[1] * val[itemid])
+                }
+              })
+            }
+          }
+        }
+      },
+      deep: true
+    },
+    mainPiece () {
+      this.mergeRequirements()
+    },
+    bonus2x (val) {
+      if (val) this.bonus3x = false
+    },
+    bonus3x (val) {
+      if (val) this.bonus2x = false
     }
   },
   mounted () {
@@ -511,11 +648,11 @@ export default {
     },
     onUpdate (id, amount) {
       this.$set(this.mergedReq, id, Number(amount))
-      this.editing = false
+      this.itemAmount = 1
     },
     onRemove (id) {
       this.$delete(this.mergedReq, id)
-      this.editing = false
+      this.itemAmount = 1
     },
     routeToQuest (questid) {
       this.$router.push({
@@ -565,12 +702,11 @@ export default {
     },
     async batchGathering () {
       this.pending = true
-      this.completed = false
-      while (Object.keys(this.requirement).length > 0) {
-        const item = this.sortByAmount(this.requirement)[0]
-        const amount = this.requirement[item]
+      while (Object.keys(this.reqPieces).length > 0) {
+        const item = this.sortByAmount(this.reqPieces)[0]
+        const amount = this.reqPieces[item]
 
-        const targetQuest = this.questPriority(this.parseSourcesEfficiency(item, amount), this.requirement)[0]
+        const targetQuest = this.questPriority(this.parseSourcesEfficiency(item, amount), this.reqPieces)[0]
         await this.sleep(500)
         
         const once = this.$store.getters.getLootSimulation({
@@ -580,11 +716,11 @@ export default {
         })
         
         for (const loot of Object.keys(once.loots)) {
-          if (Object.prototype.hasOwnProperty.call(this.requirement, loot)) {
-            if (this.requirement[loot] - once.loots[loot] > 0) {
-              this.requirement[loot] -= once.loots[loot]
+          if (Object.prototype.hasOwnProperty.call(this.reqPieces, loot)) {
+            if (this.reqPieces[loot] - once.loots[loot] > 0) {
+              this.reqPieces[loot] -= once.loots[loot]
             } else {
-              this.$delete(this.requirement, loot)
+              this.$delete(this.reqPieces, loot)
             }
           }
           if (Object.prototype.hasOwnProperty.call(this.lootsTotal, loot)) {
@@ -601,6 +737,7 @@ export default {
         this.quests.push(targetQuest.id)
       }
       this.pending = false
+      this.summary = true
       this.completed = true
     },
     equips4Promotion () {
@@ -680,10 +817,35 @@ export default {
         }
       }
     },
-    showd5g () {
-      // console.log(this.dim5Group)
-      console.log(this.requirement)
-      console.log(this.mergedReq)
+    findItem (id) {
+      return this.$store.getters.getItemById(id)
+    },
+    isCraft (id) {
+      return this.findItem(id) && this.findItem(id).detail.craft_flg === 1 ? true : false 
+    },
+    _craft (arr) {
+      for (let i = 0; i < arr.length; i++) {
+        if (this.isCraft(arr[i][0])) {
+          arr[i] = this._craft(this.findItem(arr[i][0]).craft_by)
+        }
+      }
+      return arr
+    },
+    craftBy (id) {
+      const by = this._craft(this.findItem(id).craft_by).flat(Infinity)
+      const item = [], amount = [], combined = []
+      for (let i = 0; i < by.length; i = i + 2) {
+        if (item.indexOf(by[i]) !== -1) {
+          amount[item.indexOf(by[i])] += by[i + 1]
+        } else {
+          item.push(by[i])
+          amount.push(by[i + 1])
+        }
+      }
+      for (let i = 0; i < item.length; i++) {
+        combined.push([item[i], amount[i]])
+      }
+      return combined      
     }
   }
 }

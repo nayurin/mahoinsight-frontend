@@ -17,7 +17,7 @@
             prepend-inner-icon="mdi-magnify"
             solo-inverted
             clearable
-            @click:clear="onSearchboxClearred()"
+            @click:clear="searchbox = ''"
           />
         </v-toolbar>
       </v-row>
@@ -95,9 +95,9 @@ export default {
     onClick2Cancel () {
       this.filter = []
     },
-    onSearchboxClearred () {
-      this.searchbox = ''
-    }
+    // onSearchboxClearred () {
+    //   this.searchbox = ''
+    // }
   }
 }
 </script>
