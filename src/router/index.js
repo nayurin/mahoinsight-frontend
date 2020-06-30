@@ -214,7 +214,7 @@ const routes = [
     component: Planner,
     meta: {
       title: '规划工具',
-      icon: ''
+      icon: 'pcr-icon-planner'
     },
     children: [
       {
@@ -223,7 +223,7 @@ const routes = [
         component: EquipPlanner,
         meta: {
           title: '刷图规划',
-          icon: '',
+          icon: 'pcr-icon-planner-equipment',
           breadcrumb: [
             {
               name: 'EquipPlanner',
@@ -240,7 +240,7 @@ const routes = [
     component: Profile,
     meta: {
       title: '用户档案',
-      icon: ''
+      icon: 'pcr-icon-profile'
     },
     children: [
       {
@@ -249,7 +249,7 @@ const routes = [
         component: ProfileManager,
         meta: {
           title: '用户档案管理',
-          icon: '',
+          icon: 'pcr-icon-profile-user',
           breadcrumb: [
             {
               name: 'ProfileManager',
@@ -264,7 +264,7 @@ const routes = [
         component: ProfilePrincess,
         meta: {
           title: '角色管理',
-          icon: '',
+          icon: 'pcr-icon-profile-chara',
           breadcrumb: [
             {
               name: 'ProfilePrincess',
