@@ -2,12 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col class="col-12 col-lg-6">
-        <v-card-title class="font-weight-bold">
-          MahoMaho INSIGHT!!
-        </v-card-title>
-        <v-card-text>
-          欢迎访问<strong>公主连结Re:Dive 简体中文服</strong>资讯站  MahoMaho INSIGHT!! 真步真步视界术
-        </v-card-text>
         <v-chip
           v-for="(value, key) in tags"
           :key="key"
@@ -75,10 +69,10 @@
 </template>
 
 <script>
-import Calendar from '@/components/Calendar.vue'
+import Calendar from '@/views/home/Calendar'
 
 export default {
-  name: 'Home',
+  name: 'EventsCounter',
   components: {
     Calendar
   },
@@ -111,8 +105,8 @@ export default {
       const tzoffset = -480 - now.getTimezoneOffset()
       const GMT8Time = now.getTime() - (tzoffset * 1000 * 60)
       const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/
-      for (let i in this.$store.state.events) {
-        const event = this.$store.state.events[i]
+      for (let i in this.$store.state.events.cn) {
+        const event = this.$store.state.events.cn[i]
         if (event.start.match(re) && event.end.match(re)) {
           let starttime = event.start.match(re).splice(1, 5), endtime = event.end.match(re).splice(1, 5)
           starttime[1] -= 1, endtime[1] -= 1

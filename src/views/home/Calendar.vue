@@ -202,7 +202,7 @@ export default {
       const now = new Date()
       const tzoffset = -480 - now.getTimezoneOffset()
 
-      for (const event of Object.values(this.$store.state.events)) {
+      for (const event of Object.values(this.$store.state.events.cn)) {
         let starttime = event.start.match(re).splice(1, 5), endtime = event.end.match(re).splice(1, 5)
         let status = ''
         starttime[1] -= 1, endtime[1] -= 1
