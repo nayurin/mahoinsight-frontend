@@ -163,6 +163,7 @@ export default {
       return event.color
     },
     setToday () {
+      this.type = 'day'
       this.focus = ''
     },
     prev () {
