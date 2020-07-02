@@ -104,6 +104,7 @@ export default {
         starttime[1] -= 1, endtime[1] -= 1
         event.starttime = new Date(...starttime).getTime()
         endtime = new Date(...endtime).getTime()
+        event.duration = Math.ceil((endtime - event.starttime) / (60 * 60 * 24 * 1000))
         if (this.baseAnchor.starttime - event.starttime <= 0) {
           if (Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) this.events.cn.push(event)
         }
@@ -142,13 +143,14 @@ export default {
       let comment = ''
       for (const server of ['cn', 'tw', 'jp']) {
         if (this.events[server][index]) {
-          comment += `<br>${server.toUpperCase()}：【${this.eventstype[this.events[server][index].category]}】${this.events[server][index].title}<br>活动开始时间：${this.events[server][index].start}<br>活动结束时间：${this.events[server][index].end}<br>`
-          if (this.servers.includes(server)) {
-            comment += `持续：${this.events[server][index].duration} 天<br>`
-          }
+          comment += `${server.toUpperCase()}：【${this.eventstype[this.events[server][index].category]}】${this.events[server][index].title}<br>`
+          comment += `活动开始时间：${this.events[server][index].start}<br>`
+          comment += `活动结束时间：${this.events[server][index].end}<br>`
+          comment += `持续：${this.events[server][index].duration} 天<br>`
+          comment += '<br>'
         }
       }
-      return comment
+      return comment.substring(0, comment.length - 4)
     }
   }
 }
