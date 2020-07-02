@@ -61,7 +61,8 @@ export default {
         tw: [],
         jp: []
       },
-      offset: 60 * 60 * 24 * 60 * 1000
+      offset: 60 * 60 * 24 * 60 * 1000,
+      msToDays: 60 * 60 * 24 * 1000
     }
   },
   computed: {
@@ -102,9 +103,9 @@ export default {
         event = JSON.parse(JSON.stringify(event))
         let starttime = event.start.match(re).splice(1, 5), endtime = event.end.match(re).splice(1, 5)
         starttime[1] -= 1, endtime[1] -= 1
-        event.starttime = new Date(...starttime).getTime()
-        endtime = new Date(...endtime).getTime()
-        event.duration = Math.ceil((endtime - event.starttime) / (60 * 60 * 24 * 1000))
+        event.starttime = new Date(...starttime)
+        endtime = new Date(...endtime)
+        event.duration = [2, 3, 4].includes(endtime.getHours()) ? Math.floor((endtime.getTime() - event.starttime) / this.msToDays) : Math.ceil((endtime.getTime() - event.starttime) / this.msToDays)
         if (this.baseAnchor.starttime - event.starttime <= 0) {
           if (Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) this.events.cn.push(event)
         }
@@ -121,7 +122,7 @@ export default {
         starttime[1] -= 1, endtime[1] -= 1
         event.starttime = new Date(...starttime).getTime()
         endtime = new Date(...endtime).getTime()
-        event.duration = (endtime - event.starttime) / (60 * 60 * 24 * 1000)
+        event.duration = (endtime - event.starttime) / this.msToDays
         if ((anchorstart - event.starttime >= 0 && anchorstart - endtime < 0) || (anchorstart - event.starttime > -this.offset)) {
           if (Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) this.events[server].push(event)
         }
