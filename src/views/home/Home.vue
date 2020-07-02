@@ -19,6 +19,7 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items
+      id="tab--home-items"
       v-model="tab"
     >
       <v-tab-item>
@@ -49,8 +50,8 @@ export default {
 }
 </script>
 
-<style scoped>
-  div#tab--home>div.v-item-group.v-tabs-bar,.v-tabs-items {
-    background-color: rgba(0, 0, 0, 0) !important;
+<style>
+  div#tab--home>.v-tabs-bar,#tab--home-items {
+    background-color: rgba(0, 0, 0, 0);
   }
 </style>

@@ -18,6 +18,11 @@
           class="title"
           v-text="`【${eventstype[event.category]}】${event.title}`"
         />
+        <v-card-subtitle
+          v-if="event.category === 'sidestory'"
+          class="subtitle-1"
+          v-text="`活动碎片奖励： ${event.rewards.join('，')}`"
+        />
         <v-card-text
           v-html="comment(i)"
         />
@@ -115,6 +120,7 @@ export default {
         starttime[1] -= 1, endtime[1] -= 1
         event.starttime = new Date(...starttime).getTime()
         endtime = new Date(...endtime).getTime()
+        event.duration = (endtime - event.starttime) / (60 * 60 * 24 * 1000)
         if ((anchorstart - event.starttime >= 0 && anchorstart - endtime < 0) || (anchorstart - event.starttime > -this.offset)) {
           if (Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) this.events[server].push(event)
         }
@@ -137,6 +143,9 @@ export default {
       for (const server of ['cn', 'tw', 'jp']) {
         if (this.events[server][index]) {
           comment += `<br>${server.toUpperCase()}：【${this.eventstype[this.events[server][index].category]}】${this.events[server][index].title}<br>活动开始时间：${this.events[server][index].start}<br>活动结束时间：${this.events[server][index].end}<br>`
+          if (this.servers.includes(server)) {
+            comment += `持续：${this.events[server][index].duration} 天<br>`
+          }
         }
       }
       return comment
