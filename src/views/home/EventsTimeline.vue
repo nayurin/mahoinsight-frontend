@@ -123,7 +123,7 @@ export default {
         event.starttime = new Date(...starttime).getTime()
         endtime = new Date(...endtime).getTime()
         event.duration = (endtime - event.starttime) / this.msToDays
-        if ((anchorstart - event.starttime >= 0 && anchorstart - endtime < 0) || (anchorstart - event.starttime > -this.offset)) {
+        if ((anchorstart - event.starttime >= 0 && anchorstart - endtime < 0) || (anchorstart - event.starttime > -this.offset && anchorstart - event.starttime <= 0)) {
           if (Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) this.events[server].push(event)
         }
       }
