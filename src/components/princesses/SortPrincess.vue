@@ -50,12 +50,16 @@ export default {
   computed: {
     up2down () {
       return Object.values(this.$store.state.chara).sort((x, y) => {
-        return Number(y.profile[this.sortby]) - Number(x.profile[this.sortby])
+        x = Number(x.profile[this.sortby]) || 10000000
+        y = Number(y.profile[this.sortby]) || 10000000
+        return y - x
       })
     },
     down2up () {
       return Object.values(this.$store.state.chara).sort((x, y) => {
-        return Number(x.profile[this.sortby]) - Number(y.profile[this.sortby])
+        x = Number(x.profile[this.sortby]) || 10000000
+        y = Number(y.profile[this.sortby]) || 10000000
+        return x - y
       })
     },
     sorted () {
