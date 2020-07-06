@@ -7,7 +7,7 @@ const state = {
   backendBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight.info/api' : 'http://127.0.0.1:23333/api',
   CDNBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com' : '',
   maxRank: 9,
-  maxLevel: 93,
+  maxLevel: 95,
   furthestArea: 11,
   maxUELevel: 100,
   curRank: 0,
