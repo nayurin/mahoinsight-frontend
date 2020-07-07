@@ -270,11 +270,10 @@ export default {
       this.selectstory = item.filter(x => !x.header)
     },
     updateAtk () {
-      if (this.princess.status.atk_type === 1) {
-        this.$store.commit('updateState', { key: 'curAtk', value: this.princessStatus(this.level, this.rank, this.rarity)['物理攻击力']})
-      } else if (this.princess.status.atk_type === 2) {
-        this.$store.commit('updateState', { key: 'curAtk', value: this.princessStatus(this.level, this.rank, this.rarity)['魔法攻击力']})
-      }
+      this.$store.commit('updateState', { key: 'curAtk', value: {
+        atk: this.princessStatus(this.level, this.rank, this.rarity)['物理攻击力'],
+        magic_str: this.princessStatus(this.level, this.rank, this.rarity)['魔法攻击力']
+      }})
     },
     rarityStatus (rarity, type) {
       return this.princess.growth.rarity[rarity][type]

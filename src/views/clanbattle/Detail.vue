@@ -55,22 +55,20 @@
                   <v-card-subtitle>
                     点数倍率： {{ mapBossSeq.score_coefficient }}
                   </v-card-subtitle>
-                  <v-img
-                    class="mx-4"
-                    :src="src(boss.unit_id)"
-                    :alt="boss.name"
-                    width="96"
-                    height="96"
+                  
+                  <BossDialog
+                    :bossdetail="boss"
                   />
+                  
                   <v-card-text
-                    v-html="boss.comment.replace(/\\n/g, '<br>')"
+                    v-html="boss.parameter.comment.replace(/\\n/g, '<br>')"
                   />
                   <v-row
                     no-gutters
                     class="d-flex flex-row"
                   >
                     <v-col
-                      v-for="(value, key) in stats(boss)"
+                      v-for="(value, key) in stats(boss.parameter)"
                       :key="key"
                       class="col-12 mx-4 my-2"
                     >
@@ -99,8 +97,13 @@
 </template>
 
 <script>
+import BossDialog from '@/views/clanbattle/BossDialog'
+
 export default {
   name: 'ClanBattleDetail',
+  components: {
+    BossDialog
+  },
   data () {
     return {
       id: null,
@@ -160,9 +163,6 @@ export default {
     },
     bossfilter (seq) {
       return this.bossgroup.filter(x => x.order_num === seq)
-    },
-    src (id) {
-      return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${id}.png`
     },
     stats (obj) {
       const stats = obj ? {

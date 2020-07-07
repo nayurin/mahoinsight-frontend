@@ -12,7 +12,7 @@ const state = {
   maxUELevel: 100,
   curRank: 0,
   curLevel: 0,
-  curAtk: 0,
+  curAtk: {},
   equipSelected: [],
   equipSelectedFrom: [],
   equipSelectedTo: [],

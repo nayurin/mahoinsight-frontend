@@ -79,55 +79,9 @@
               contain
               max-width="128"
             />
-            <v-dialog
-              v-model="dialogEnemyResistance"
-              width="400"
-            >
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  color="purple darken-3 ma-4"
-                  class="white--text mr-8"
-                  :small="$store.state.mobile ? true : false"
-                  v-on="on"
-                  v-text="`异常状态抗性`"
-                />
-              </template>
-              <v-card
-                class="d-flex flex-wrap"
-              >
-                <v-row no-gutters>
-                  <v-col
-                    v-for="(value, key) in resistance"
-                    :key="key"
-                    cols="4"
-                  >
-                    <v-list-item dense>
-                      <v-chip
-                        small
-                        label
-                        color="primary"
-                        v-text="key"
-                      />
-                      <v-chip
-                        label
-                        outlined
-                        small
-                        :color="value !== 0 ? 'red' : ''"
-                        v-text="value"
-                      />
-                    </v-list-item>
-                  </v-col>
-                </v-row>
-                <v-card-actions v-if="$store.state.mobile">
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="dialogEnemyResistance = false"
-                    v-text="`关闭`"
-                  />
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            <ResistanceDialog
+              :resistance="resistance"
+            />
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -172,8 +126,13 @@
 </template>
 
 <script>
+import ResistanceDialog from '@/components/global/ResistanceDialog'
+
 export default {
   name: 'EnemyFigure',
+  components: {
+    ResistanceDialog
+  },
   props: {
     enemyid: {
       type: Number,
