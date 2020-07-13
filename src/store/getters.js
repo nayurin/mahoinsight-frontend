@@ -405,6 +405,27 @@ const getters = {
     return unitSkill
   },
 
+  // get quest data from quest diff
+  // returns: object[]
+  getQuestDataByDiff: (state) => {
+    return {
+      normal: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
+      hard: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { x.quest_name = `${x.quest_name}(H)`; return x }),
+      other: Object.values(state.database.quest_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2)))
+    }
+  },
+
+  // get quest data from quest diff
+  // returns: object[]
+  getQuestAreaDataByDiff: (state) => {
+    return {
+      normal: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
+      hard: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { x.quest_name = `${x.quest_name}(H)`; return x }),
+      other: Object.values(state.database.quest_area_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2))) 
+    }
+  },
+
+
   // getPrincessByName: (state) => (name) => {
   //   return state.chara[name]
   // },

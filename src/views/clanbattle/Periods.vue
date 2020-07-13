@@ -82,9 +82,6 @@ export default {
     }
   },
   methods: {
-    // mapdata (id) {
-    //   return this.$store.getters.getClanBattleMapData(id)
-    // },
     event (id) {
       return this.$store.getters.getClanBattlePeriod(id) ? this.schedule[id] : this.schedule[id].map(x => `${x}（暂定）`)
     },

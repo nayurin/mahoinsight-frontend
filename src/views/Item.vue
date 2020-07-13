@@ -95,14 +95,6 @@ export default {
     onClick2Cancel () {
       this.filter = []
     }
-  },
-  mounted () {
-    // console.log(this.$store.getters.getCharaStoryStatusEX({
-    //   name: '日和莉（新年）'
-    // }))
-    // console.log(this.$store.getters.getUnitSkillDataEX(100101))
-    // console.log(this.$store.getters.getUnitSkillData(100101))
-    // console.log(this.$store.getters.getQuestsByAreaId(11001))
   }
 }
 </script>

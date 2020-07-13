@@ -61,7 +61,7 @@
         slider-color="orange lighten-3"
       >
         <v-tab
-          v-for="(value, key) in this[diff]"
+          v-for="(value, key) in listArea[diff]"
           :key="key"
           @click="onClickOfArea(value.area_id)"
           v-text="value.area_name"
@@ -69,7 +69,7 @@
       </v-tabs>
       <v-tabs-items v-model="area">
         <v-tab-item
-          v-for="(value, key) in this[diff]"
+          v-for="(value, key) in listArea[diff]"
           :key="key"
         />
       </v-tabs-items>
@@ -98,16 +98,16 @@
             :grow="$store.state.mobile ? true : false"
           >
             <v-tab
-              v-for="value of listArea"
+              v-for="value of listQuest"
               :key="value"
               class="pl-2 pr-2"
               @click="onClickOfQuest(value)"
-              v-text="$store.getters.getQuestNameById(value)"
+              v-text="$store.getters.getQuestData(value).quest_name"
             />
           </v-tabs>
           <v-tabs-items v-model="quest">
             <v-tab-item
-              v-for="value of listArea"
+              v-for="value of listQuest"
               :key="value"
             />
           </v-tabs-items>
@@ -130,7 +130,7 @@
             >
               <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
             </v-btn>
-            {{ $store.getters.getQuestNameById(y) }}
+            {{ $store.getters.getQuestData(y).quest_name }}
           </v-card-title>
           <v-expansion-panels
             v-model="panel"
@@ -185,13 +185,25 @@
                         class="pa-2"
                         v-text="key"
                       />
-                      <EnemyFigure
-                        v-for="(id, i) of value"
-                        :key="i"
-                        :enemyid="id"
-                        :zoom-ratio="zoom"
-                        class="ml-1 mr-1"
-                      />
+                      <v-row
+                        v-for="(group, groupid) of value"
+                        :key="groupid"
+                      >
+                        <v-col class="col-auto d-flex flex-row flex-wrap align-center">
+                          <EnemyFigure
+                            v-for="(enemyid, i) of listEnemies(group)"
+                            :key="i"
+                            :enemyid="enemyid"
+                            :zoom-ratio="zoom"
+                            class="ml-1 mr-1"
+                          />
+                        </v-col>
+                        <v-card-text
+                          class="py-0 px-5 font-weight-light"
+                        >
+                          该魔物配置出现几率： {{ group.odds }} %
+                        </v-card-text>
+                      </v-row>
                     </v-col>
                   </v-row>
                 </v-card>
@@ -240,20 +252,17 @@
       }
     },
     computed: {
-      normal () {
-        return this.$store.getters.getQuestArea.normal
-      },
-      hard () {
-        return this.$store.getters.getQuestArea.hard
-      },
-      other () {
-        return this.$store.getters.getQuestArea.other
+      listAll () {
+        return this.$store.getters.getQuestDataByDiff
       },
       listArea () {
-        return this.$store.getters.getQuestListByArea(this.x)
+        return this.$store.getters.getQuestAreaDataByDiff
+      },
+      listQuest () {
+        return Object.values(this.listAll[this.diff]).filter(i => i.area_id === Number(this.x)).map(i => i.quest_id)
       },
       info () {
-        const quest = this.$store.getters.getQuestInfoById(this.y)
+        const quest = this.$store.getters.getQuestData(this.y)
         return this.y && quest ? {
           体力消耗: quest.stamina,
           每波限时: `${quest.limit_time}s`,
@@ -266,16 +275,13 @@
       },
       enemy () {
         const enemies = {}
-        const re = /^enemy_id_(\d)_in_wave_(\d)$/
-        for (const i in this.$store.getters.getQuestEnemyIdById(this.y)) {
-          const enemy = this.$store.getters.getQuestEnemyIdById(this.y)[i]
-          if (Object.keys(enemy)[0].match(re) && Object.keys(enemy)[0].match(re).length === 3) {
-            if (Object.prototype.hasOwnProperty.call(enemies, `第${Object.keys(enemy)[0].match(re)[2]}波`)) {
-              enemies[`第${Object.keys(enemy)[0].match(re)[2]}波`].push(Object.values(enemy)[0])
-            } else {
-              enemies[`第${Object.keys(enemy)[0].match(re)[2]}波`] = [Object.values(enemy)[0]]
-            }
-          }
+        const waves = [
+          this.$store.getters.getQuestData(this.y).wave_group_id_1,
+          this.$store.getters.getQuestData(this.y).wave_group_id_2,
+          this.$store.getters.getQuestData(this.y).wave_group_id_3
+        ]
+        for (let i = 1; i <= 3; i++) {
+          enemies[`第${i}波`] = this.$store.getters.getWaveGroupData(waves[i - 1])
         }
         return enemies
       },
@@ -288,7 +294,7 @@
         return true
       },
       showQuestDetails () {
-        return this.y ? true : false
+        return this.y
       }
     },
     created () {
@@ -300,7 +306,7 @@
       onClickOfDiff (diff) {
         if (this.diff === diff) return
         this.diff = diff
-        const area = this[diff][0].area_id
+        const area = this.listAll[diff][0].area_id
         this.x = area
         this.area = this.x
         this.y = Number(area) * 1000 + 1
@@ -363,21 +369,30 @@
               id = String(Number(area) * 1000 + Number(quest) + 18000000)
           }
         }
-        return this.$store.getters.getQuestNameById(Number(id)) ? {
+        return this.$store.getters.getQuestData(id) ? {
           diff: diff,
           x: Number(id.substring(0, 5)),
           y: Number(id)
         } : null
       },
       resolveQuest (id) {
-        if (this.$store.getters.getQuestNameById(Number(id))) {
+        if (this.$store.getters.getQuestData(id)) {
           this.x = Number(String(id).substring(0, 5))
-          this.y = Number(String(id))
+          this.y = Number(id)
         } else {
-          const area = this['normal'][0].area_id
+          const area = this.listAll['normal'][0]?.area_id
           this.x = area
-          this.y = Number(area) * 1000 + 1
+          this.y = area * 1000 + 1
         }
+      },
+      listEnemies (group) {
+        return [
+          group.enemy_id_1,
+          group.enemy_id_2,
+          group.enemy_id_3,
+          group.enemy_id_4,
+          group.enemy_id_5
+        ].filter(i => i)
       }
     }
   }

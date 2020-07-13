@@ -70,7 +70,7 @@ export default {
       } : null
     },
     src () {
-      return String(this.id.length) === 6 ? 
+      return String(this.id).length === 6 ? 
         `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${this.id}.png` :
         `${this.$store.state.CDNBaseURL}/image/items/icon_item_${this.id}.png`
     },

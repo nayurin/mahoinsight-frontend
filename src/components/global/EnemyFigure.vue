@@ -80,7 +80,7 @@
               max-width="128"
             />
             <ResistanceDialog
-              :resistance="resistance"
+              :resistid="resistance"
             />
           </v-col>
         </v-row>
@@ -153,10 +153,10 @@ export default {
   },
   computed: {
     unitid () {
-      return this.$store.getters.getQuestEnemyUnitIdByEnemyId(this.enemyid)
+      return this.info.unit_id
     },
     name () {
-      return this.$store.getters.getQuestEnemyNameByEnemyId(this.enemyid)
+      return this.info.name
     },
     src () {
       return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${this.unitid}.png`
@@ -168,19 +168,19 @@ export default {
       }
     },
     info () {
-      return this.$store.getters.getQuestEnemyInfoByEnemyId(this.enemyid)
+      return this.$store.getters.getEnemyParameter(this.enemyid)
     },
     comment () {
-      return this.info.comment.replace(/\\n/g, '')
+      return this.$store.getters.getUnitEnemyData(this.unitid).comment.replace(/\\n/g, '')
     },
     resistance () {
-      return this.$store.getters.getQuestEnemyResistanceByEnemyId(this.enemyid)
+      return this.info.resist_status_id
     },
     status () {
       return this.info ? {
         等级: this.info.level,
         生命值: this.info.hp,
-        索敌半径: this.info.search_area_width,
+        索敌半径: this.$store.getters.getUnitEnemyData(this.unitid).search_area_width,
         物理攻击力: this.info.atk,
         魔法攻击力: this.info.magic_str,
         物理防御力: this.info.def,

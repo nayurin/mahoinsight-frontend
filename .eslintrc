@@ -14,7 +14,6 @@
     "no-console": "off",
     "vue/html-quotes": "off",
     "vue/no-v-html": "off",
-    "vue/this-in-template": "off",
     "vue/no-template-shadow": "off",
     "vuetify/no-deprecated-classes": "error",
     "vuetify/grid-unknown-attributes": "error",
