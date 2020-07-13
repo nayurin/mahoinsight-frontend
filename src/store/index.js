@@ -41,7 +41,6 @@ export default new Vuex.Store({
 
     // async func of load files with Promise.all()
     loadAll (context) {
-      // const list = ['events', 'chara', 'quest', 'item', 'clanbattle'].map(x => {
       const list = [
         'gameevents',
         'clan_battle_map_data',

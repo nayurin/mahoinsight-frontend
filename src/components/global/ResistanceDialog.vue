@@ -59,14 +59,19 @@
 export default {
   name: 'ResistanceDialog',
   props: {
-    resistance: {
-      type: Object,
+    resistid: {
+      type: Number,
       required: true
     }
   },
   data () {
     return {
       dialogEnemyResistance: false
+    }
+  },
+  computed: {
+    resistance () {
+      return this.$store.getters.getResistData(this.resistid)
     }
   }
 }

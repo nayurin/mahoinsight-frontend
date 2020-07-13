@@ -34,7 +34,7 @@
         {{ bossdetail.parameter.name }}
       </v-card-title>
       <v-row
-        v-for="(ap, i) in bossdetail.attackpattern"
+        v-for="(ap, i) in APs"
         :key="i"
         no-gutters
       >
@@ -49,7 +49,7 @@
         </v-col>
       </v-row>
       <v-row
-        v-for="(value, key) in skill(bossdetail.parameter)"
+        v-for="(value, key) in skill(getSkills, bossdetail.parameter)"
         :key="key"
         no-gutters
       >
@@ -69,7 +69,7 @@
       </v-row>
       <v-card-actions class="justify-center">
         <ResistanceDialog
-          :resistance="resistance(bossdetail.resistance)"
+          :resistid="bossdetail.parameter.resist_status_id"
         />
         <v-btn
           color="light-gray"
@@ -114,6 +114,17 @@ export default {
       }
     }
   },
+  computed: {
+    unitId () {
+      return this.bossdetail.parameter.unit_id
+    },
+    APs () {
+      return this.$store.getters.getUnitAttackPattern(this.unitId)
+    },
+    getSkills () {
+      return this.$store.getters.getUnitSkillDataEX(this.unitId)
+    }
+  },
   methods: {
     src (id) {
       return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${id}.png`
@@ -146,30 +157,6 @@ export default {
 
       return `入场：${start.join('→')}<br>循环：${loop.join('→')}`
     },
-    resistance (obj) {
-      return {
-        减速: obj.ailment_1,
-        加速: obj.ailment_2,
-        麻痹: obj.ailment_3,
-        冻结: obj.ailment_4,
-        束缚: obj.ailment_5,
-        睡眠: obj.ailment_6,
-        眩晕: obj.ailment_7,
-        石化: obj.ailment_8,
-        拘留α: obj.ailment_9, //拘留
-        拘留β: obj.ailment_10, //拘留(造成伤害)
-        毒: obj.ailment_11,
-        烧伤: obj.ailment_12,
-        诅咒: obj.ailment_13,
-        魅惑: obj.ailment_14,
-        黑暗: obj.ailment_15,
-        沉默: obj.ailment_16,
-        即死: obj.ailment_17,
-        击退: obj.ailment_18,
-        混乱: obj.ailment_19,
-        猛毒: obj.ailment_20,
-      }
-    },
     skillSelector (value) {
       if (typeof(value) === 'string') {
         return [value]
@@ -177,7 +164,7 @@ export default {
         return value
       }
     },
-    skill (obj) {
+    skill (skills, unitstats) {
       const skill = {
         union_burst: {},
         union_burst_evolution: {},
@@ -216,44 +203,44 @@ export default {
       for (const type of skillType) {
         if (type.count) {
           for (let i = 1; i <= type.count; i++) {
-            if (obj[`${type.name}_${i}`]) {
+            if (skills[`${type.name}_${i}`]) {
               skill[type.name][i] = this.skillDetail({
-                skill: obj[`${type.name}_${i}`],
-                unitLevel: obj.level,
-                unitAtk: obj.atk,
-                unitMAtk: obj.magic_str,
-                skillLevel: obj[`${type.level}_${i}`] || obj.level
+                skill: skills[`${type.name}_${i}`],
+                unitLevel: unitstats.level,
+                unitAtk: unitstats.atk,
+                unitMAtk: unitstats.magic_str,
+                skillLevel: unitstats[`${type.level}_${i}`] || unitstats.level
               })
             }
 
-            if (obj[`${type.evo}_${i}`]) {
+            if (skills[`${type.evo}_${i}`]) {
               skill[type.evo][i] = this.skillDetail({
-                skill: obj[`${type.evo}_${i}`],
-                unitLevel: obj.level,
-                unitAtk: obj.atk,
-                unitMAtk: obj.magic_str,
-                skillLevel: obj[`${type.level}_${i}`] || obj.level
+                skill: skills[`${type.evo}_${i}`],
+                unitLevel: unitstats.level,
+                unitAtk: unitstats.atk,
+                unitMAtk: unitstats.magic_str,
+                skillLevel: unitstats[`${type.level}_${i}`] || unitstats.level
               })
             }
           }
         } else {
-          if (obj[type.name]) {
+          if (skills[type.name]) {
             skill[type.name] = this.skillDetail({
-              skill: obj[type.name],
-              unitLevel: obj.level,
-              unitAtk: obj.atk,
-              unitMAtk: obj.magic_str,
-              skillLevel: obj[type.level] || obj.level
+              skill: skills[type.name],
+              unitLevel: unitstats.level,
+              unitAtk: unitstats.atk,
+              unitMAtk: unitstats.magic_str,
+              skillLevel: unitstats[type.level] || unitstats.level
             })
           }
 
-          if (obj[type.evo]) {
+          if (skills[type.evo]) {
             skill[type.evo] = this.skillDetail({
-              skill: obj[type.evo],
-              unitLevel: obj.level,
-              unitAtk: obj.atk,
-              unitMAtk: obj.magic_str,
-              skillLevel: obj[type.level] || obj.level
+              skill: skills[type.evo],
+              unitLevel: unitstats.level,
+              unitAtk: unitstats.atk,
+              unitMAtk: unitstats.magic_str,
+              skillLevel: unitstats[type.level] || unitstats.level
             })
           }
         }
@@ -272,9 +259,9 @@ export default {
         return null
       }
       for (let i = 1; i <= 7; i++) {
-        const action = skill[`action_${i}`]
-        const dependAction = skill[`depend_action_${i}`]
-        desc = action ? 
+        const action = this.$store.getters.getSkillAction(skill[`action_${i}`])
+        const dependAction = this.$store.getters.getSkillAction(skill[`depend_action_${i}`]) ?? 0
+        desc = action ?
           ActionParser.getSkillActionDetails({
             action: action,
             dependAction: dependAction,

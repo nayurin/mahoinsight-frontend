@@ -39,21 +39,21 @@
       >
         <v-row no-gutters>
           <v-col
-            v-for="(mapBossSeq, i) in bossfilter(seq)"
+            v-for="(bossgroup, i) in bossfilter(seq)"
             :key="i"
           >
             <v-row>
               <v-col
-                v-for="(boss, j) in mapBossSeq.enemy"
+                v-for="(boss, j) of bossParameter(bossgroup)"
                 :key="j"
                 class="col-12"
               >
                 <v-card>
                   <v-card-title>
-                    {{ boss.name }}
+                    {{ boss.parameter.name }}
                   </v-card-title>
                   <v-card-subtitle>
-                    点数倍率： {{ mapBossSeq.score_coefficient }}
+                    点数倍率： {{ bossgroup.score_coefficient }}
                   </v-card-subtitle>
                   
                   <BossDialog
@@ -108,21 +108,21 @@ export default {
     return {
       id: null,
       phase: null,
-      bossgroup: null,
+      bossgroup: [],
       schedule: {
-        '2020.5「团队战」白羊座': 1001,
-        '2020.6「团队战」金牛座': 1002,
-        '2020.7「团队战」双子座': 1003,
-        '2020.8「团队战」巨蟹座': 1004,
-        '2020.9「团队战」狮子座': 1005,
-        '2020.10「团队战」处女座': 1006,
-        '2020.11「团队战」天秤座': 1007,
-        '2020.12「团队战」天蝎座': 1008,
-        '2021.1「团队战」射手座': 1009,
-        '2021.2「团队战」摩羯座': 1010,
-        '2021.3「团队战」水瓶座': 1011,
-        '2021.4「团队战」双鱼座': 1012,
-        '2021.5「团队战」白羊座': 1013
+        '2020.5白羊座': 1001,
+        '2020.6金牛座': 1002,
+        '2020.7双子座': 1003,
+        '2020.8巨蟹座': 1004,
+        '2020.9狮子座': 1005,
+        '2020.10处女座': 1006,
+        '2020.11天秤座': 1007,
+        '2020.12天蝎座': 1008,
+        '2021.1射手座': 1009,
+        '2021.2摩羯座': 1010,
+        '2021.3水瓶座': 1011,
+        '2021.4双鱼座': 1012,
+        '2021.5白羊座': 1013
       },
       show: [],
       btnicon: ['mdi-numeric-1', 'mdi-numeric-2','mdi-numeric-3','mdi-numeric-4','mdi-numeric-5']
@@ -130,8 +130,8 @@ export default {
   },
   computed: {
     lapinfo () {
-      const from = this.$store.getters.getClanBattleMapById(this.id)[this.phase].lap_num_from
-      const to = this.$store.getters.getClanBattleMapById(this.id)[this.phase].lap_num_to
+      const from = this.$store.getters.getClanBattleMapData(this.id)[this.phase].lap_num_from
+      const to = this.$store.getters.getClanBattleMapData(this.id)[this.phase].lap_num_to
       let info = ''
       if (from === to) {
         info = `${from} 周目`
@@ -158,11 +158,25 @@ export default {
       const re = /^(.*)第(\d{1})阶段$/
       this.id = this.schedule[this.$route.params.clanBattlePhase.match(re)[1]]
       this.phase = Number(this.$route.params.clanBattlePhase.match(re)[2]) - 1
-      this.bossgroup = this.$store.getters.getClanBattleBossGroup(this.id, this.phase)
+      const bossgroupid = this.$store.getters.getClanBattleMapData(this.id)[this.phase].clan_battle_boss_group_id
+      for (let order_num = 1; order_num <= 5; order_num++) {
+        this.bossgroup.push(this.$store.getters.getClanBattleBossGroup(bossgroupid, order_num))
+      }
       this.show = this.$store.state.mobile ? [] : [0, 1, 2, 3 ,4]
     },
+    bossParameter (boss) {
+      const waveDetail = this.$store.getters.getWaveGroupData(boss.wave_group_id)
+      switch (waveDetail.length) {
+        case 1:
+          return [waveDetail[0].enemy_id_1, waveDetail[0].enemy_id_2, waveDetail[0].enemy_id_3, waveDetail[0].enemy_id_4, waveDetail[0].enemy_id_5]
+            .filter(x => x !== 0)
+            .map(x => this.$store.getters.getEnemyDetailsByEnemyId(x))
+        default:
+          return []
+      }
+    },
     bossfilter (seq) {
-      return this.bossgroup.filter(x => x.order_num === seq)
+      return this.bossgroup.filter(x => x?.order_num === seq)
     },
     stats (obj) {
       const stats = obj ? {

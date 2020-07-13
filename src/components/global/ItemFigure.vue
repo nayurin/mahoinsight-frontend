@@ -39,7 +39,7 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true
+      required: true,
     },
     zoomRatio: {
       type: String,
@@ -66,31 +66,31 @@ export default {
     route () {
       return this.id !== 999999 && String(this.id).length !== 5 ? {
         name: 'ItemDetail',
-        params: { itemName: this.$store.getters.getItemNameById(this.id) }
+        params: { itemName: this.$store.getters.getCraftedEquipmentNameByItemId(this.id) }
       } : null
     },
     src () {
-      return String(this.id).length === 6 ? 
+      return String(this.id.length) === 6 ? 
         `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${this.id}.png` :
         `${this.$store.state.CDNBaseURL}/image/items/icon_item_${this.id}.png`
     },
     alt () {
-      return this.id === 999999 ? null : this.$store.getters.getItemNameById(this.id)
+      return this.id === 999999 ? null : this.$store.getters.getCraftedEquipmentNameByItemId(this.id)
     },
     comment () {
       if (this.id === 999999) {
         return '暂未开放'
-      } else if (String(this.id).length === 5) {
+      } else if (String(this.id.length) === 5) {
         if (this.id === 91001 || this.id === 91002) {
           return '宝石'
         } else {
           return this.$store.getters.getItemNameById(this.id)
         }
       } else {
-        const crafted = ['1', '2'].includes(String(this.id).substring(1, 2)) ? this.id - (this.id - this.id % 100000 % 10000) % 100000 : this.id
-        const stats = this.$store.getters.getItemStatsById(crafted)
+        // const crafted = ['1', '2'].includes(String(this.id).substring(1, 2)) ? this.id - this.id - this.id % 100000 % 10000) % 100000) : this.id
+        const stats = this.$store.getters.getEquipmentStatsById(this.id)
         if (stats === {}) return
-        let comment = `${this.$store.getters.getItemNameById(crafted)}<br>`
+        let comment = `${this.$store.getters.getCraftedEquipmentNameByItemId(this.id)}<br>`
         for (const key of Object.keys(stats)) {
           comment += `<br>${key}：${stats[key]} (${stats[key] * 2})`
         }

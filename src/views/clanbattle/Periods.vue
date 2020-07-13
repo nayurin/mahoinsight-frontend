@@ -25,7 +25,7 @@
               class="d-flex flex-row px-3 justify-center"
             >
               <ItemFigure
-                v-for="(value, i) of $store.getters.getClanBattleRewardById(id)"
+                v-for="(value, i) of $store.getters.getClanBattlePeriodRankReward(id)"
                 :id="value"
                 :key="i"
                 zoom-ratio="0.5"
@@ -38,7 +38,7 @@
                 Boss设置
               </v-card-text>
               <v-btn
-                v-for="(value, i) in $store.getters.getClanBattleMapById(id)"
+                v-for="(value, i) in $store.getters.getClanBattleMapData(id)"
                 :key="i"
                 :color="phase[i]"
                 class="mx-2 my-2"
@@ -82,18 +82,21 @@ export default {
     }
   },
   methods: {
+    // mapdata (id) {
+    //   return this.$store.getters.getClanBattleMapData(id)
+    // },
     event (id) {
-      return this.$store.getters.getClanBattleScheduleById(id) ? this.schedule[id] : this.schedule[id].map(x => `${x}（暂定）`)
+      return this.$store.getters.getClanBattlePeriod(id) ? this.schedule[id] : this.schedule[id].map(x => `${x}（暂定）`)
     },
     comment (id) {
-      const sche = this.$store.getters.getClanBattleScheduleById(id)
+      const sche = this.$store.getters.getClanBattlePeriod(id)
       return sche ? `${sche.start_time} ~ ${sche.end_time}<br>${sche.period_detail.replace(/\\n/g, '')}` : null
     },
     onClick (id, phase) {
       this.$router.push({
         name: 'ClanBattleDetail',
         params: {
-          clanBattlePhase: `${this.schedule[id][0]}${this.schedule[id][1]}第${phase + 1}阶段`
+          clanBattlePhase: `${this.schedule[id][0]}${this.schedule[id][1].substring(5)}第${phase + 1}阶段`
         }
       })
     }

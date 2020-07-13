@@ -3,14 +3,6 @@ import path from 'path'
 class ObjectBox {
   constructor (name) {
     this.objects = {}
-    // const filemap = {
-    //   chara: 'cache_princess.json',
-    //   item: 'cache_item.json',
-    //   quest: 'cache_quest.json',
-    //   clanbattle: 'cache_clanbattle.json',
-    //   events: 'gameevents.json'
-    // }
-    // this.cachefile = path.join('/cached', filemap[name])
     this.cachefile = path.join('/cached', `${name}.json`)
   }
 

@@ -43,7 +43,7 @@ export default {
   },
   mounted () {
     this.findQuest().sort((x, y) => {
-      return y.odds - x.odds
+      return Number(y.odds) - Number(x.odds)
     })
   },
   methods: {
