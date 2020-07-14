@@ -1,8 +1,4 @@
 const state = {
-  item: {},
-  chara: {},
-  quest: {},
-  clanbattle: {},
   events: {},
   database: {},
   backendBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight.info/api' : 'http://127.0.0.1:23333/api',

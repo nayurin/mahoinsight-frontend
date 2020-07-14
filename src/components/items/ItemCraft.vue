@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-card v-if="isCraft(item.id)">
+    <v-card v-if="isCraft(id)">
       <v-card-title
         id="item-craft"
         v-text="`合成所需的素材`"
@@ -26,14 +26,14 @@
         </ItemFigure>
       </v-row>
     </v-card>
-    <v-card v-if="!isCraft(item.id)">
+    <v-card v-if="!isCraft(id)">
       <v-card-title
         id="item-craft"
         v-text="`能够合成的装备`"
       />
       <v-row
         no-gutters
-        class="ml-4"
+        class="ml-4 pb-4"
       >
         <v-col
           v-for="id in craftTo"
@@ -48,7 +48,7 @@
             <template v-slot:under>
               <v-card-text
                 class="pa-2 caption text-center"
-                v-text="$store.getters.getItemNameById(id)"
+                v-text="$store.getters.getEquipmentData(id).equipment_name"
               />
             </template>
           </ItemFigure>
@@ -60,20 +60,21 @@
 
 <script>
 import ItemFigure from '@/components/global/ItemFigure'
+
 export default {
   name: 'ItemCraft',
   components: {
     ItemFigure
   },
   props: {
-    item: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
   computed: {
     craftBy () {
-      const by = this._craft(this.item.craft_by).flat(Infinity)
+      const by = this._craft(this.findCraft(this.id)).flat(Infinity)
       const item = [], amount = [], combined = []
       for (let i = 0; i < by.length; i = i + 2) {
         if (item.indexOf(by[i]) !== -1) {
@@ -90,9 +91,14 @@ export default {
     },
     craftTo () {
       const to = []
-      for (const item of Object.values(this.$store.state.item)) {
-        if (this.isCraft(item.id) && this._craft(this.findItem(item.id).craft_by).flat(Infinity).includes(this.item.id)) {
-          to.push(item.id)
+      for (const itemid of Object.keys(this.$store.state.database.equipment_data).filter(x => x[1] === '0')) {
+        if (
+          this._craft(this.findCraft(itemid))
+            .flat(Infinity)
+            .filter(x => String(x).length === 6)
+            .includes(this.id)
+        ) {
+          to.push(Number(itemid))
         }
       }
       return to
@@ -100,18 +106,21 @@ export default {
   },
   methods: {
     isCraft (id) {
-      return this.findItem(id) && this.findItem(id).detail.craft_flg === 1 ? true : false 
+      return this.findEquipment(id)?.craft_flg === 1
     },
     _craft (arr) {
       for (let i = 0; i < arr.length; i++) {
         if (this.isCraft(arr[i][0])) {
-          arr[i] = this._craft(this.findItem(arr[i][0]).craft_by)
+          arr[i] = this._craft(this.findCraft(arr[i][0]))
         }
       }
       return arr
     },
-    findItem (id) {
-      return this.$store.getters.getItemById(id)
+    findEquipment (id) {
+      return this.$store.getters.getEquipmentData(id)
+    },
+    findCraft (id) {
+      return this.$store.getters.getEquipmentCraftBy(id)
     }
   }
 }

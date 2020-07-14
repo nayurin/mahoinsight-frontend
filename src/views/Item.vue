@@ -1,12 +1,14 @@
 <template>
   <v-container fluid>
-    <v-card>
+    <v-card
+      class="ma-2"
+    >
       <v-card-title>装备列表</v-card-title>
       <v-row no-gutters>
         <v-toolbar
           color="gray"
           flat
-          class="pa-0"
+          class="px-2"
         >
           <v-text-field
             v-model="searchbox"
@@ -29,7 +31,7 @@
           <v-btn
             color="primary"
             class="ma-2"
-            @click="onClick2Cancel()"
+            @click="filter = []"
             v-text="`清除筛选`"
           />
         </v-col>
@@ -89,11 +91,6 @@ export default {
         magic_penetrate: '魔法穿透'
       },
       searchbox: ''
-    }
-  },
-  methods: {
-    onClick2Cancel () {
-      this.filter = []
     }
   }
 }

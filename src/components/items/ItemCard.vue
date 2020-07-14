@@ -5,7 +5,7 @@
         id="item-card"
         class="pa-4 pb-0"
       >
-        {{ itemName }}
+        {{ equipName }}
       </v-card-title>
       <v-row
         dense
@@ -48,7 +48,7 @@
         </v-col>
         <v-col>
           <ItemStatus
-            :item="item"
+            :id="id"
           />
         </v-col>
       </v-row>
@@ -58,26 +58,30 @@
 
 <script>
 import ItemStatus from '@/components/items/ItemStatus'
+
 export default {
   name: 'ItemCard',
   components: {
     ItemStatus
   },
   props: {
-    item: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
   computed: {
-    itemName () {
-      return this.item.detail.equipment_name
+    equip () {
+      return this.$store.getters.getEquipmentData(this.id)
+    },
+    equipName () {
+      return this.equip.equipment_name
     },
     src () {
-      return `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${this.item.id}.png`
+      return `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${this.id}.png`
     },
     desc () {
-      return this.item.detail.description.replace(/\\n/g, '')
+      return this.equip.description.replace(/\\n/g, '')
     }
   }
 }

@@ -57,7 +57,16 @@ export default {
   },
   computed: {
     name () {
-      return this.$store.getters.getQuestData(this.id).quest_name
+      let questName
+      for (const diff of Object.values(this.$store.getters.getQuestDataByDiff)) {
+        const quest = diff.filter(x => x.quest_id === this.id)
+        if (quest.length) {
+          questName = quest[0].quest_name 
+        } else {
+          continue
+        }
+      }
+      return questName
     },
     reward () {
       const rewards = []
@@ -99,7 +108,7 @@ export default {
             arr_2_main = [],
             arr_3_other = []
       for (const item of this.reward) {
-        if (item.itemid == this.target) {
+        if (item.itemid === this.target) {
           arr_0_target.push(item)
           continue
         }

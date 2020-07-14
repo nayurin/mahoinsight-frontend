@@ -7,7 +7,7 @@
         class="pa-0"
       >
         <ItemCard
-          :item="thisItem"
+          :id="equipId"
         />
       </v-col>
       <v-col
@@ -16,18 +16,18 @@
         class="pa-2"
       >
         <ItemCraft
-          :item="thisItem"
+          :id="equipId"
         />
       </v-col>
     </v-row>
     <v-row>
       <ItemRequirement
-        :item="thisItem"
+        :id="equipId"
       />
     </v-row>
     <v-row>
       <ItemSource
-        :item="thisItem"
+        :id="equipId"
       />
     </v-row>
   </v-container>
@@ -48,12 +48,12 @@ export default {
     ItemSource
   },
   computed: {
-    thisItem () {
-      return this.$store.getters.getItemByName(this.itemName)
+    equipId () {
+      return this.$store.getters.getEquipmentIdByName(this.equipName)
     },
-    itemName () {
+    equipName () {
       return this.$route.params.itemName
-    },
+    }
   }
 }
 </script>

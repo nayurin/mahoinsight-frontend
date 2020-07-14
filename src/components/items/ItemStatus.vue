@@ -44,14 +44,14 @@
   export default {
     name: 'ItemStatus',
     props: {
-      item: {
-        type: Object,
+      id: {
+        type: Number,
         required: true
       }
     },
     computed: {
       status () {
-        return this.$store.getters.getItemStatsById(this.item.id)
+        return this.$store.getters.getEquipmentStatsById(this.id, false)
       }
     }
   }

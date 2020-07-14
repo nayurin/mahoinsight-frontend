@@ -137,6 +137,20 @@ const getters = {
     return state.database.equipment_craft[equipmentId]
   },
 
+  // get array-format equipment craft data by equipmentid
+  // returns: [number, number][]
+  getEquipmentCraftBy: (state) => (equipmentId) => {
+    const craft = state.database.equipment_craft[equipmentId]
+    if (!craft) return []
+    const by = []
+    for (let i = 1; i <= 10; i++) {
+      if (craft[`condition_equipment_id_${i}`]) {
+        by.push([craft[`condition_equipment_id_${i}`], craft[`consume_num_${i}`]])
+      }
+    }
+    return by
+  },
+
   // get raw data of equipment_data by equipmentid
   // returns: object
   getEquipmentData: (state) => (equipmentId) => {
@@ -249,6 +263,26 @@ const getters = {
     return state.database.unit_promotion[`${unitId}#${promotionLevel}`]
   },
 
+  // get unitid, promotionlevel and amounts of promotion data with equipmentid
+  // return: object[]
+  getUnitPromotionEX: (state) => (equipmentId) => {
+    const arr = []
+    Object.values(state.database.unit_promotion).map(x => {
+      let count = 0
+      for (let i = 1; i <= 6; i++) {
+        if (x[`equip_slot_${i}` === Number(equipmentId)]) count++
+      }
+      if (count) {
+        arr.push({
+          unitId: x.unit_id,
+          promotionLevel: x.promotion_level,
+          amount: count
+        })
+      }
+    })
+    return arr
+  },
+
   // get raw data of unit_promotion_status by unitid and promotionlevel
   // returns: object
   getUnitPromotionStatus: (state) => (unitId, promotionLevel) => {
@@ -283,7 +317,7 @@ const getters = {
     return Object.keys(state.database.equipment_data)
   },
 
-  // filtered the ones which need to craft
+  // filtered equipments which need not craft
   // returns: string[]
   equipmentIdListEX: (state) => {
     return Object.keys(state.database.equipment_data).filter(x => x[1] === '0')
@@ -310,11 +344,15 @@ const getters = {
 
   // get equipment stats by equipmentid
   // returns object
-  getEquipmentStatsById: (state) => (equipmentId) => {
+  getEquipmentStatsById: (state) => (equipmentId, ignoreCraftFlag) => {
     let equip
     switch (String(equipmentId)[1]) {
       case '1': case '2':
-        equip = state.database.equipment_data[`${Number(equipmentId) % 10000 + 100000}`]
+        if (ignoreCraftFlag) {
+          equip = state.database.equipment_data[`${Number(equipmentId) % 10000 + 100000}`]
+        } else {
+          return {}
+        }
         break
       case '3':
         equip = state.database.unique_equipment_data[equipmentId]
@@ -410,7 +448,7 @@ const getters = {
   getQuestDataByDiff: (state) => {
     return {
       normal: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
-      hard: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { x.quest_name = `${x.quest_name}(H)`; return x }),
+      hard: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.quest_name = `${y.quest_name}(H)`; return y }),
       other: Object.values(state.database.quest_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2)))
     }
   },
@@ -420,9 +458,71 @@ const getters = {
   getQuestAreaDataByDiff: (state) => {
     return {
       normal: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
-      hard: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { x.quest_name = `${x.quest_name}(H)`; return x }),
+      hard: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.area_name = `${y.area_name}(H)`; return y }),
       other: Object.values(state.database.quest_area_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2))) 
     }
+  },
+
+  // get equipment id by equipment name
+  // returns: number
+  getEquipmentIdByName: (state) => (name) => {
+    return Object.values(state.database.equipment_data).filter(x => x.equipment_name === name).map(x => x.equipment_id)[0]
+  },
+
+  // get equipment source by equipmentid
+  // returns: object[]
+  getEquipmentSource: (state) => (equipmentId) => {
+    if (state.database.equipment_data[equipmentId].craft_flg) return
+    const source = []
+    Object.values(state.database.enemy_reward_data)
+      .filter(x => {
+        return [
+          x.reward_id_1,
+          x.reward_id_2,
+          x.reward_id_3,
+          x.reward_id_4,
+          x.reward_id_5
+        ].includes(Number(equipmentId))
+      })
+      .map(reward => {
+        const data = {}
+        for (let i = 1; i <= 5; i++) {
+          if (reward[`reward_id_${i}`] === Number(equipmentId)) {
+            data.drop_count = reward.drop_count,
+            data.reward_num = reward[`reward_num_${i}`]
+            data.odds = reward[`odds_${i}`]
+            data.quest = []
+          }
+        }
+        for (const wavegroup of Object.values(state.database.wave_group_data)) {
+          for (let i = 1; i <= 5; i++) {
+            if (wavegroup[`drop_reward_id_${i}`] === reward.drop_reward_id) {
+              data.odds *= wavegroup.odds / 100
+              const quest = Object.values(state.database.quest_data).filter(y => [
+                y.wave_group_id_1,
+                y.wave_group_id_2,
+                y.wave_group_id_3
+              ].includes(wavegroup.wave_group_id))
+              switch (quest.length) {
+                case 0:
+                  break
+                case 1:
+                  data.quest.push({
+                    quest_id: quest[0].quest_id,
+                    area_id: quest[0].area_id,
+                    quest_name: quest[0].quest_name,
+                    stamina: quest[0].stamina
+                  })
+                  break
+                default:
+                  throw new Error('Over 1 matched results!')
+              }
+            }
+          }
+        }
+        source.push(data)
+      })
+    return source
   },
 
 

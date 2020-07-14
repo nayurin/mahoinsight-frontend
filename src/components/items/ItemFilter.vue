@@ -1,24 +1,23 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col
-      v-for="(value, key) of filtedItem"
-      :key="key"
+      v-for="(id, i) of filtedItem"
+      :key="i"
       cols="auto"
-      class="pa-1"
+      class="pa-2"
     >
       <v-card
-        class="ma-1"
         outlined
         tile
       >
         <ItemFigure
-          :id="value.id"
+          :id="id"
           zoom-ratio="0.75"
         >
           <template v-slot:under>
             <v-card-text
               class="pa-2 caption text-center"
-              v-text="value.detail.equipment_name"
+              v-text="$store.getters.getEquipmentData(id).equipment_name"
             />
           </template>
         </ItemFigure>
@@ -49,29 +48,19 @@ export default {
   },
   computed: {
     filtedItem () {
-      let res = this.items
+      let res = JSON.parse(JSON.stringify(this.items))
       this.filter.forEach(cond => {
         res = this.filtedByCondition(res, cond)
       })
-      return this.search === '' ? res : res.filter(x => {
-        return x.detail.equipment_name.match(this.search)
-      })
+      return this.search === '' ? res : res.filter(x => this.$store.getters.getEquipmentData(x).equipment_name.match(this.search))
     },
     items () {
-      const _item = []
-      Object.values(this.$store.state.item).map(x=>{
-        if (String(x.id).length === 6 && (String(x.id).split('')[1] === '0' || x.id === 140000)) {
-          _item.push(x)
-        }
-      })
-      return _item.reverse()
+      return this.$store.getters.equipmentIdListEX.map(x => Number(x)).sort((x, y) => y - x)
     }
   },
   methods: {
-    filtedByCondition (obj, cond) {
-      return Object.values(obj).filter(x => {
-        return x.detail[cond] !== 0
-      })
+    filtedByCondition (arr, cond) {
+      return arr.filter(x => this.$store.getters.getEquipmentData(x)[cond] !== 0 )
     }
   }
 }

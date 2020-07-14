@@ -31,24 +31,45 @@ export default {
     QuestReward
   },
   props: {
-    item: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
   computed: {
     fragId () {
-      return this.item.detail.craft_flg ? this.item.craft_by[0][0] : this.item.id
+      return this.$store.getters.getEquipmentData(this.id).craft_flg ? this.$store.getters.getEquipmentCraftBy(this.id)[0][0] : this.id
     }
-  },
-  mounted () {
-    this.findQuest().sort((x, y) => {
-      return Number(y.odds) - Number(x.odds)
-    })
   },
   methods: {
     findQuest () {
-      return this.item.detail.craft_flg ? this.$store.getters.getItemById(this.item.craft_by[0][0]).source : this.item.source
+      const sorted = this.$store.getters.getEquipmentSource(this.fragId).sort((x, y) => y.odds - x.odds)
+      const arrRepeated = []
+      let arrFull = []
+      for (const reward of sorted) {
+        const quests = reward.quest.reduce((t, v) => (t.push(v.quest_id), t), [])
+        arrFull = [...arrFull, ...quests]
+      }
+      arrFull = arrFull.sort((x, y) => x - y)
+      for (let i = 0; i < arrFull.length - 1; i++) {
+        if (arrFull[i] === arrFull[i + 1]) {
+          arrRepeated.push(arrFull[i])
+        }
+      }
+      for (const repeatedQuest of arrRepeated) {
+        for (const reward of sorted) {
+          if (reward.quest.length === 1) {
+            continue
+          } else {
+            for (let i = reward.quest.length - 1; i >= 0; i--) {
+              if (repeatedQuest === reward.quest[i].quest_id) {
+                reward.quest.splice(i, 1)
+              }
+            }
+          }
+        }
+      }
+      return sorted
     }
   }
 }

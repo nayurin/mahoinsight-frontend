@@ -66,7 +66,8 @@ export default {
     route () {
       return this.id !== 999999 && String(this.id).length !== 5 ? {
         name: 'ItemDetail',
-        params: { itemName: this.$store.getters.getCraftedEquipmentNameByItemId(this.id) }
+        // params: { itemName: this.$store.getters.getCraftedEquipmentNameByItemId(this.id) }
+        params: { itemName: this.$store.getters.getEquipmentData(this.id).equipment_name }
       } : null
     },
     src () {
@@ -87,8 +88,7 @@ export default {
           return this.$store.getters.getItemNameById(this.id)
         }
       } else {
-        // const crafted = ['1', '2'].includes(String(this.id).substring(1, 2)) ? this.id - this.id - this.id % 100000 % 10000) % 100000) : this.id
-        const stats = this.$store.getters.getEquipmentStatsById(this.id)
+        const stats = this.$store.getters.getEquipmentStatsById(this.id, true)
         if (stats === {}) return
         let comment = `${this.$store.getters.getCraftedEquipmentNameByItemId(this.id)}<br>`
         for (const key of Object.keys(stats)) {
