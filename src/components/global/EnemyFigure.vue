@@ -159,7 +159,14 @@ export default {
       return this.info.name
     },
     src () {
-      return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${this.unitid}.png`
+      let baseid
+      switch (String(this.unitid)[0]) {
+        case '6':
+          baseid = (this.unitid - this.unitid % 100) / 100 - 5000
+          return `${this.$store.state.CDNBaseURL}/image/enemies/shadow/icon_shadow_${baseid * 100 + 31}.png`
+        default:
+          return `${this.$store.state.CDNBaseURL}/image/enemies/icon_unit_${this.unitid}.png`
+      }
     },
     style () {
       return {

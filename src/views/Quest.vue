@@ -26,6 +26,7 @@
             opacity="0.47"
           />
           <v-tabs
+            v-model="diff_"
             centered
           >
             <v-tab
@@ -54,7 +55,7 @@
         opacity="0.47"
       />
       <v-tabs
-        v-model="area"
+        v-model="x"
         dark
         show-arrows
         background-color="primary"
@@ -63,11 +64,10 @@
         <v-tab
           v-for="(value, key) in listArea[diff]"
           :key="key"
-          @click="onClickOfArea(value.area_id)"
           v-text="value.area_name"
         />
       </v-tabs>
-      <v-tabs-items v-model="area">
+      <v-tabs-items v-model="x">
         <v-tab-item
           v-for="(value, key) in listArea[diff]"
           :key="key"
@@ -91,7 +91,7 @@
             opacity="0.47"
           />
           <v-tabs
-            v-model="quest"
+            v-model="y"
             slider-size="4"
             slider-color="purple"
             vertical
@@ -101,11 +101,10 @@
               v-for="value of listQuest"
               :key="value"
               class="pl-2 pr-2"
-              @click="onClickOfQuest(value)"
-              v-text="$store.getters.getQuestData(value).quest_name"
+              v-text="getQuestName(value)"
             />
           </v-tabs>
-          <v-tabs-items v-model="quest">
+          <v-tabs-items v-model="y">
             <v-tab-item
               v-for="value of listQuest"
               :key="value"
@@ -126,11 +125,11 @@
               small
               rounded
               class="mx-2"
-              @click="y = 0"
+              @click="quest = 0"
             >
               <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
             </v-btn>
-            {{ $store.getters.getQuestData(y).quest_name }}
+            {{ getQuestName(quest) }}
           </v-card-title>
           <v-expansion-panels
             v-model="panel"
@@ -213,8 +212,8 @@
               <v-expansion-panel-header>道具掉落</v-expansion-panel-header>
               <v-expansion-panel-content class="pt-4">
                 <QuestReward
-                  v-if="y"
-                  :id="y"
+                  v-if="quest"
+                  :id="quest"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -242,6 +241,7 @@
         x: 0,
         y: 0,
         diff: 'normal',
+        diff_: 0,
         searchbox: '',
         overlay: false,
         panel: [2],
@@ -259,11 +259,11 @@
         return this.$store.getters.getQuestAreaDataByDiff
       },
       listQuest () {
-        return Object.values(this.listAll[this.diff]).filter(i => i.area_id === Number(this.x)).map(i => i.quest_id)
+        return this.listAll[this.diff].filter(i => i.area_id === Number(this.area)).map(i => i.quest_id)
       },
       info () {
-        const quest = this.$store.getters.getQuestData(this.y)
-        return this.y && quest ? {
+        const quest = this.$store.getters.getQuestData(this.quest)
+        return quest ? {
           体力消耗: quest.stamina,
           每波限时: `${quest.limit_time}s`,
           好感度获得: quest.love,
@@ -275,52 +275,86 @@
       },
       enemy () {
         const enemies = {}
+        const quest = this.$store.getters.getQuestData(this.quest)
         const waves = [
-          this.$store.getters.getQuestData(this.y).wave_group_id_1,
-          this.$store.getters.getQuestData(this.y).wave_group_id_2,
-          this.$store.getters.getQuestData(this.y).wave_group_id_3
+          quest?.wave_group_id_1,
+          quest?.wave_group_id_2,
+          quest?.wave_group_id_3
         ]
         for (let i = 1; i <= 3; i++) {
           enemies[`第${i}波`] = this.$store.getters.getWaveGroupData(waves[i - 1])
         }
+        console.log(enemies)
         return enemies
       },
       zoom () {
         return this.$store.state.mobile ? "0.45" : "0.6"
       },
       showQuestTabs () {
-        if (this.$store.state.mobile && !this.x) return false
-        if (this.$store.state.mobile && this.x && this.y) return false
+        if (this.$store.state.mobile && !this.area) return false
+        if (this.$store.state.mobile && this.area && this.quest) return false
         return true
       },
       showQuestDetails () {
-        return this.y
+        return this.quest ? true : false
+      }
+    },
+    watch: {
+      area (val) {
+        this.x = val % 100 - 1
+      },
+      quest (val) {
+        this.x = (val - val % 100) / 1000 % 100 - 1
+        this.y = val % 100 - 1
+      },
+      x (val) {
+        switch (this.diff) {
+          case 'normal':
+            this.area = 11000 + val + 1
+            break
+          case 'hard':
+            this.area = 12000 + val + 1
+            break
+          case 'other':
+            this.area = 18000 + val + 1
+            break
+          default:
+            break
+        }
+        this.quest = this.area * 1000 + this.y + 1
+      },
+      y (val) {
+        this.quest = this.area * 1000 + val + 1
+      },
+      diff (val) {
+        switch (val) {
+          case 'normal':
+            this.diff_ = 0
+            break
+          case 'hard':
+            this.diff_ = 1
+            break
+          case 'other':
+            this.diff_ = 2
+            break
+          default:
+            break
+        }
       }
     },
     created () {
       if (this.$route.query) {
         this.resolveQuest(this.$route.query.questid)
       }
+      console.log(this.diff)
     },
     methods: {
       onClickOfDiff (diff) {
         if (this.diff === diff) return
         this.diff = diff
         const area = this.listAll[diff][0].area_id
-        this.x = area
-        this.area = this.x
-        this.y = Number(area) * 1000 + 1
-        this.quest = this.y
-      },
-      onClickOfArea (area) {
-        if (this.area === area) return
-        this.x = area
-        this.y = Number(area) * 1000 + 1
-        this.quest = this.y
-      },
-      onClickOfQuest (quest) {
-        if (this.quest === quest) return
-        this.y = quest
+        this.area = area
+        this.quest = Number(area) * 1000 + 1
       },
       onSearchboxFocused () {
         this.overlay = true
@@ -338,8 +372,8 @@
       },
       onSearchboxInputted () {
         if (this.search()) {
-          this.x = this.search().x,
-          this.y = this.search().y,
+          this.area = this.search().area,
+          this.quest = this.search().quest,
           this.diff = this.search().diff
         }
       },
@@ -371,18 +405,34 @@
         }
         return this.$store.getters.getQuestData(id) ? {
           diff: diff,
-          x: Number(id.substring(0, 5)),
-          y: Number(id)
+          area: Number(id.substring(0, 5)),
+          quest: Number(id)
         } : null
+      },
+      getQuestName (id) {
+        const quest = this.$store.getters.getQuestDataByDiff[this.diff].filter(i => i.quest_id === id)[0]
+        if (!quest) return
+        return quest.quest_name
       },
       resolveQuest (id) {
         if (this.$store.getters.getQuestData(id)) {
-          this.x = Number(String(id).substring(0, 5))
-          this.y = Number(id)
+          this.area = Number(String(id).substring(0, 5))
+          this.quest = Number(id)
+          switch (String(this.area).substring(0, 2)) {
+            case '11':
+              this.diff = 'normal'
+              break
+            case '12':
+              this.diff = 'hard'
+              break
+            default:
+              this.diff = 'other'
+          }
         } else {
           const area = this.listAll['normal'][0]?.area_id
-          this.x = area
-          this.y = area * 1000 + 1
+          this.area = area
+          this.quest = area * 1000 + 1
+          this.diff = 'normal'
         }
       },
       listEnemies (group) {
