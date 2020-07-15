@@ -12,7 +12,7 @@
         class="col-auto"
       >
         <PrincessPlate
-          :id="item"
+          :id="Number(item)"
           zoom-ratio="0.5"
           stars
           pieces
@@ -36,9 +36,11 @@
       v-if="this.$store.state.activeProfile"
       no-gutters
     >
-      <v-card-title>
-        添加角色
-      </v-card-title>
+      <v-row>
+        <v-card-title>
+          添加角色
+        </v-card-title>
+      </v-row>
       <v-row>
         <v-col
           v-for="(item, i) in unStoragedPrincess"
@@ -46,7 +48,7 @@
           class="col-auto"
         >
           <PrincessPlate
-            :id="item"
+            :id="Number(item)"
             zoom-ratio="0.5"
             stars
             pieces
@@ -83,7 +85,7 @@ export default {
       return this.profile[this.$store.state.activeProfile] && this.profile[this.$store.state.activeProfile].princess && Object.prototype.toString.call(this.profile[this.$store.state.activeProfile].princess) === '[object Object]' ? Object.keys(this.profile[this.$store.state.activeProfile].princess).map(x => Number(x)) : []
     },
     unStoragedPrincess () {
-      return this.$store.getters.getPrincessIdList.filter(x => !this.storagedPrincess.includes(x))
+      return this.$store.getters.princessIdList.map(x => Number(x)).filter(x => !this.storagedPrincess.includes(x))
     }
   },
   mounted () {

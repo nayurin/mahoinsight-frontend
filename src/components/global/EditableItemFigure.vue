@@ -36,7 +36,7 @@
         </v-col>
         <v-col>
           <v-card-title>
-            {{ $store.getters.getItemNameById(id) }}
+            {{ $store.getters.getEquipmentData(id).equipment_name }}
           </v-card-title>
           <v-card-subtitle
             v-text="comment"
@@ -89,7 +89,7 @@ export default {
   },
   computed: {
     comment () {
-      return this.$store.getters.getItemById(this.id) ? this.$store.getters.getItemById(this.id).detail.description.replace(/\\n/g, '') : ''
+      return this.$store.getters.getEquipmentData(this.id)?.description?.replace(/\\n/g, '') ?? ''
     }
   },
   methods: {

@@ -41,16 +41,16 @@
           class="col-auto pa-5"
         >
           <PrincessFigure
-            :princess="princess"
+            :id="id"
             :zoom-ratio="this.$store.state.mobile ? '0.33' : '0.5'"
           />
         </v-col>
         <v-col>
           <v-card-title>
-            {{ princess.profile.fullname }}
+            {{ $store.getters.getUnitBackground(id) }}
           </v-card-title>
           <v-card-subtitle>
-            {{ princess.profile.voice }}
+            {{ $store.getters.getUnitProfile(id).voice }}
           </v-card-subtitle>
         </v-col>
       </v-row>
@@ -232,22 +232,22 @@ export default {
   },
   computed: {
     princess () {
-      return this.$store.getters.getPrincessById(this.id)
+      return this.$store.getters.getUnitData(this.id)
     },
     name () {
-      return this.princess.status.unit_name
+      return this.princess.unit_name
     },
     src () {
       const rarity = this.rarity
       let id
       if (rarity === -1) {
-        id = this.princess.status.rarity >= 3 ? this.princess.id + 30 : this.princess.id + 10
+        id = this.princess.rarity >= 3 ? this.id + 30 : this.id + 10
       } else if (rarity >= 0 && rarity < 3) {
-        id = this.princess.id + 10
+        id = this.id + 10
       } else if (rarity >= 3 && rarity < 6) {
-        id = this.princess.id + 30
+        id = this.id + 30
       } else if (rarity === 6) {
-        id = this.princess.id + 60
+        id = this.id + 60
       } else {
         return null
       }
@@ -263,13 +263,13 @@ export default {
       return this.$store.state.profile.princess && this.$store.state.profile.princess[String(this.id)] ? this.$store.state.profile.princess[String(this.id)].rarity : -1
     },
     memorypieceid () {
-      return (this.princess.id - this.princess.id % 100) / 100 + 30000
+      return (this.id - this.id % 100) / 100 + 30000
     },
     comment () {
       if (this.$store.state.profile.princess && this.$store.state.profile.princess[String(this.id)]) {
-        return `${this.$store.state.profile.princess[String(this.id)].name}<br><br>★ ${this.$store.state.profile.princess[String(this.id)].rarity}<br>记忆碎片：${this.$store.state.profile.princess[String(this.id)].pieces[0]}<br>纯净记忆碎片：${this.$store.state.profile.princess[String(this.id)].pieces[1]}`
+        return `${this.name}<br><br>★ ${this.$store.state.profile.princess[String(this.id)].rarity}<br>记忆碎片：${this.$store.state.profile.princess[String(this.id)].pieces[0]}<br>纯净记忆碎片：${this.$store.state.profile.princess[String(this.id)].pieces[1]}`
       } else {
-        return `${this.$store.getters.getPrincessById(this.id).status.unit_name}<br><br>未记录角色信息`
+        return `${this.name}<br><br>未记录角色信息`
       }
     }
   },
@@ -299,10 +299,10 @@ export default {
     onUpdate () {
       const profile = this.$store.state.profile
       if (!profile.princess) profile.princess = {}
-      if (!profile.princess[String(this.princess.id)]) profile.princess[String(this.princess.id)] = {}
+      if (!profile.princess[String(this.id)]) profile.princess[String(this.id)] = {}
 
-      const data = profile.princess[String(this.princess.id)]
-      data.name = this.princess.status.unit_name
+      const data = profile.princess[String(this.id)]
+      data.name = this.name
       data.rarity = this.btnrarity + 1
       data.pieces = [this.memorypiece, this.purememorypiece]
       data.ue = this.ue
@@ -327,7 +327,7 @@ export default {
       } else {
         this.$removeLSItem({
           profile: this.$store.state.activeProfile,
-          path: ['princess', String(this.princess.id)]
+          path: ['princess', String(this.id)]
         })
       }
       this.editing = false
@@ -336,7 +336,7 @@ export default {
       switch (param) {
         case 'btnrarity':
           if (this.rarity === -1) {
-            this.btnrarity = this.princess.status.rarity - 1
+            this.btnrarity = this.princess.rarity - 1
           } else {  
             this.btnrarity = this.rarity - 1
           }

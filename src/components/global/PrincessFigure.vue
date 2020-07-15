@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     name () {
-      return this.$store.getters.getUnitData(this.id).unit_name
+      return this.$store.getters.getUnitData(this.id)?.unit_name
     },
     route () {
       return {

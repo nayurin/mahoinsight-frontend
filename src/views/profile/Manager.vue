@@ -307,10 +307,10 @@ export default {
     createDefaultProfile () {
       const profile = {}
       profile.princess = {}
-      for (const chara of Object.values(this.$store.state.chara)) {
-        profile.princess[chara.id] = {
-          name: chara.status.unit_name,
-          rarity: this.rarity || chara.status.rarity,
+      for (const unitid of this.$store.getters.princessIdList) {
+        profile.princess[unitid] = {
+          name: this.$store.getters.getUnitData(unitid).unit_name,
+          rarity: this.rarity || this.$store.getters.getUnitData(unitid).rarity,
           pieces: [0, 0],
           ue: false 
         }
