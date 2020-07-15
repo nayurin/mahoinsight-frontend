@@ -26,7 +26,7 @@
         <v-btn
           small
           block
-          :color="this.princess.status.atk_type === 1 ? 'pink' : 'indigo'"
+          :color="$store.getters.getUnitData(id).atk_type === 1 ? 'pink' : 'indigo'"
           class="pa-0 font-weight-light white--text"
           v-text="name"
         />
@@ -40,8 +40,8 @@
 export default {
   name: 'PrincessFigure',
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     },
     zoomRatio: {
@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     name () {
-      return this.princess.status.unit_name
+      return this.$store.getters.getUnitData(this.id).unit_name
     },
     route () {
       return {
@@ -66,7 +66,7 @@ export default {
       }  
     },
     src () {
-      return `${this.$store.state.CDNBaseURL}/image/character_favicons/fav_push_notif_${this.princess.id}.png`
+      return `${this.$store.state.CDNBaseURL}/image/character_favicons/fav_push_notif_${this.id}.png`
     },
     style () {
       return {

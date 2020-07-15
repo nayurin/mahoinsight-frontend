@@ -143,8 +143,8 @@
 export default {
   name: 'PrincessStatus',
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -199,12 +199,12 @@ export default {
     },
     equipStats () {
       const stats = {}
-      const equipments = this.$store.state.equipSelected.map(x => this.princess.promotion_info[this.$store.getters.curRank({})][`equip_slot_${x + 1}`])
+      const equipments = this.$store.state.equipSelected.map(x => this.$store.getters.getUnitPromotion(this.id, this.$store.getters.curRank({}))[`equip_slot_${x + 1}`])
       for (const equipid of equipments) {
         if (equipid === 999999) continue
-        const item = this.$store.getters.getItemStatsById(equipid)
+        const item = this.$store.getters.getEquipmentStatsById(equipid, false)
         for (const stattype of Object.keys(item)) {
-          if (Object.keys(stats).includes(stattype)) {
+          if (Object.prototype.hasOwnProperty.call(stats, stattype)) {
             stats[stattype] += parseFloat(item[stattype] * 2)
           } else {
             stats[stattype] = parseFloat(item[stattype] * 2)
@@ -213,15 +213,19 @@ export default {
       }
       return stats
     },
+    storyBonus () {
+      const baseid = (this.id - this.id % 100) / 100
+      return this.$store.getters.getCharaStoryStatusEX({ baseid })
+    },
     storyBonusStats () {
       const selectstory = this.selectstory.map(x => x.text)
       const re = /^(.*?)的小故事/
       const bonus = {}
       selectstory.forEach(chara => {
-        const series = Object.keys(this.princess.storybonus).filter(x => chara === x.match(re)[1])
+        const series = Object.keys(this.storyBonus).filter(x => chara === x.match(re)[1])
         series.forEach(story => {
-          for (const type of Object.keys(this.princess.storybonus[story])) {
-            bonus[type] = bonus[type] ? bonus[type] + this.princess.storybonus[story][type] : this.princess.storybonus[story][type]
+          for (const type of Object.keys(this.storyBonus[story])) {
+            bonus[type] = bonus[type] ? bonus[type] + this.storyBonus[story][type] : this.storyBonus[story][type]
           }
         })
       })
@@ -259,7 +263,7 @@ export default {
       const re = /^(.*?)的小故事/
       const set = []
       let colorindex = 0
-      for (const name of Object.keys(this.princess.storybonus).map(x => x.match(re)[1])) {
+      for (const name of Object.keys(this.storyBonus).map(x => x.match(re)[1])) {
         if (!set.includes(name)) {
           set.push(name)
           item.push({ text: name, color: this.colors[colorindex] })
@@ -276,15 +280,15 @@ export default {
       }})
     },
     rarityStatus (rarity, type) {
-      return this.princess.growth.rarity[rarity][type]
+      return this.$store.getters.getUnitRarity(this.id, rarity)[type]
     },
     promotionStatus (rank, type) {
-      return rank === 1 ? 0 : this.princess.growth.promotion[rank][type]
+      return rank === 1 ? 0 : this.$store.getters.getUnitPromotionStatus(this.id, rank)[type]
     },
     princessStatus (level, rank, rarity) {
       const stats = level && rank && rarity ? {
         生命值: this.rarityStatus(rarity, 'hp') + this.promotionStatus(rank, 'hp') + this.rarityStatus(rarity, 'hp_growth') * (this.level + this.rank),
-        索敌半径: this.princess.status.search_area_width,
+        索敌半径: this.$store.getters.getUnitData(this.id)?.search_area_width,
         物理攻击力: this.rarityStatus(rarity, 'atk') + this.promotionStatus(rank, 'atk') + this.rarityStatus(rarity, 'atk_growth') * (this.level + this.rank),
         物理防御力: this.rarityStatus(rarity, 'def') + this.promotionStatus(rank, 'def') + this.rarityStatus(rarity, 'def_growth') * (this.level + this.rank),
         魔法攻击力: this.rarityStatus(rarity, 'magic_str') + this.promotionStatus(rank, 'magic_str') + this.rarityStatus(rarity, 'magic_str_growth') * (this.level + this.rank),
@@ -303,7 +307,7 @@ export default {
         技能值消耗降低: this.rarityStatus(rarity, 'energy_reduce_rate') + this.promotionStatus(rank, 'energy_reduce_rate') + this.rarityStatus(rarity, 'energy_reduce_rate_growth') * (this.level + this.rank)
       } : {
         生命值: NaN,
-        索敌半径: this.princess.status.search_area_width,
+        索敌半径: this.$store.getters.getUnitData(this.id)?.search_area_width,
         物理攻击力: NaN,
         物理防御力: NaN,
         魔法攻击力: NaN,

@@ -69,36 +69,7 @@ export default {
       return questName
     },
     reward () {
-      const rewards = []
-      const waves = [
-        this.$store.getters.getQuestData(this.id)?.wave_group_id_1,
-        this.$store.getters.getQuestData(this.id)?.wave_group_id_2,
-        this.$store.getters.getQuestData(this.id)?.wave_group_id_3
-      ]
-      for (const wavegroupid of waves) {
-        for (const wave of this.$store.getters.getWaveGroupData(wavegroupid)) {
-          [
-            wave.drop_reward_id_1,
-            wave.drop_reward_id_2,
-            wave.drop_reward_id_3,
-            wave.drop_reward_id_4,
-            wave.drop_reward_id_5,
-          ]
-            .filter(x => x)
-            .map(x => {
-            const reward = this.$store.getters.getEnemyRewardData(x)
-            for (let i = 1; i <= 5; i++) {
-              if (reward[`reward_id_${i}`]){
-                rewards.push({
-                  itemid: reward[`reward_id_${i}`],
-                  odds: reward[`odds_${i}`] * wave.odds / 100
-                })
-              }
-            }
-          })
-        }
-      }
-      return rewards
+      return this.$store.getters.getQuestRewardById(this.id)
     }
   },
   methods: {

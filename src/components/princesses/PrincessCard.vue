@@ -63,27 +63,27 @@
 export default {
   name: 'PrincessCard',
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
   computed: {
     sourceURL () {
-      return `${this.$store.state.CDNBaseURL}/image/character_stills/still_unit_${this.princess.id.toString().replace(/01$/, '31')}.png`
+      return `${this.$store.state.CDNBaseURL}/image/character_stills/still_unit_${String(this.id).replace(/01$/, '31')}.png`
     },
     comment () {
-      return this.princess.status.comment.replace(/\\n/g, '<br/>')
+      return this.$store.getters.getUnitData(this.id)?.comment.replace(/\\n/g, '<br/>')
     },
     nact () {
-      return `${this.princess.status.normal_atk_cast_time}s`
+      return `${this.$store.getters.getUnitData(this.id)?.normal_atk_cast_time}s`
     },
     pos () {
       return {
         1: `${this.$store.state.CDNBaseURL}/image/bg/front.png`,
         2: `${this.$store.state.CDNBaseURL}/image/bg/middle.png`,
         3: `${this.$store.state.CDNBaseURL}/image/bg/behind.png`
-      }[this.$store.getters.getPrincessPositionByName(this.princess.status.unit_name)]
+      }[this.$store.getters.getPrincessPosition(this.id)]
     }
   }
 }

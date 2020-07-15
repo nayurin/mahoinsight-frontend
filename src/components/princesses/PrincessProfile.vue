@@ -50,42 +50,44 @@
 export default {
   name: 'PrincessProfile',
   props: {
-    princess: {
-        type: Object,
+    id: {
+        type: Number,
         required: true
       }
   },
   computed: {
     profile () {
+      const profile = this.$store.getters.getUnitProfile(this.id)
       return {
-        全名: this.princess.profile.fullname,
-        年龄: this.princess.profile.age,
-        生日: `${this.princess.profile.birth_month}月${this.princess.profile.birth_day}日`,
-        身高: this.princess.profile.height,
-        体重: this.princess.profile.weight,
-        血型: this.princess.profile.blood_type,
-        爱好: this.princess.profile.favorite,
-        简介: this.princess.profile.catch_copy,
-        种族: this.princess.profile.race,
-        所属: this.princess.profile.guild,
-        声优: this.princess.profile.voice
+        全名: this.$store.getters.getUnitBackground(this.id),
+        年龄: profile.age,
+        生日: `${profile.birth_month}月${profile.birth_day}日`,
+        身高: profile.height,
+        体重: profile.weight,
+        血型: profile.blood_type,
+        爱好: profile.favorite,
+        简介: profile.catch_copy,
+        种族: profile.race,
+        所属: profile.guild,
+        声优: profile.voice
       }
     },
     getFragSource () {
-      const fragId = (this.princess.id - this.princess.id % 100) / 100 + 30000
+      const fragId = (this.id - this.id % 100) / 100 + 30000
       const source = []
       for (const key of Object.keys(this.$store.state.charaFragByTokens)) {
-        if (this.$store.state.charaFragByTokens[key].includes(fragId)) source.push(key)
+        if (this.$store.state.charaFragByTokens[key].includes(fragId)) {
+          source.push(key)
+          break
+        }
       }
-      for (const quest of Object.keys(this.$store.state.quest.hard)) {
-        for (const reward of Object.values(this.$store.state.quest.hard[quest].reward_info)) {
-          for (let i = 1; i <= 5; i++) {
-            if (reward[`reward_id_${i}`] === fragId) {
-              source.push({
-                name: `${this.$store.state.quest.hard[quest].quest_info.quest_name} (H)`,
-                route: {'path': '/quest', 'query': {'questid': this.$store.state.quest.hard[quest].id}}
-              })
-            }
+      for (const quest of this.$store.getters.getQuestDataByDiff.hard) {
+        for (const reward of this.$store.getters.getQuestRewardById(quest.quest_id)) {
+          if (reward.itemid === fragId) {
+            source.push({
+              name: quest.quest_name,
+              route: {'path': '/quest', 'query': {'questid': quest.quest_id }}
+            })
           }
         }
       }

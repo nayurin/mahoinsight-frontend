@@ -1,10 +1,10 @@
 <template>
   <v-banner
-    v-if="intro()"
+    v-if="intro && intro !== 'test'"
     single-line
     elevation=3
     class="pa-3 font-italic font-weight-bold"
-    v-text="intro()"
+    v-text="intro"
   />
 </template>
 
@@ -12,14 +12,14 @@
   export default {
     name: 'PrincessBanner',
     props: {
-      princess: {
-        type: Object,
+      id: {
+        type: Number,
         required: true
       }
     },
-    methods: {
+    computed: {
       intro () {
-        return this.princess.profile.self_text.replace(/\\n/g, '')
+        return this.$store.getters.getUnitProfile(this.id).self_text.replace(/\\n/g, '')
       }
     }
   }

@@ -20,7 +20,7 @@
             class="align-self-center"
           >
             <SkillFigure
-              :id="String(value.icon)"
+              :figure="String(skillData(value).icon_type)"
               zoom-ratio="0.625"
             />
           </v-avatar>
@@ -37,12 +37,12 @@
           />
           <v-card-text
             class="title pa-1"
-            v-text="value.name"
+            v-text="skillData(value).name"
           />
           <v-divider />
           <v-card-text
             class="body-2 pa-1"
-            v-text="value.description"
+            v-text="skillData(value).description"
           />
         </v-col>
         <v-col
@@ -69,8 +69,8 @@ export default {
     SkillFigure
   },
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -89,12 +89,13 @@ export default {
   methods: {
     skill () {
       const skill = {
-        连结爆发: this.princess.skill.union_burst,
-        技能1: this.princess.skill.skill_1,
-        '技能1+': this.princess.skill.skill_1_evo,
-        技能2: this.princess.skill.skill_2,
-        EX技能: this.princess.skill.ex_skill,
-        'EX技能+': this.princess.skill.ex_skill_evo
+        连结爆发: this.$store.getters.getUnitSkillData(this.id).union_burst,
+        '连结爆发+': this.$store.getters.getUnitSkillData(this.id).union_burst_evolution,
+        技能1: this.$store.getters.getUnitSkillData(this.id).main_skill_1,
+        '技能1+': this.$store.getters.getUnitSkillData(this.id).main_skill_evolution_1,
+        技能2: this.$store.getters.getUnitSkillData(this.id).main_skill_2,
+        EX技能: this.$store.getters.getUnitSkillData(this.id).ex_skill_1,
+        'EX技能+': this.$store.getters.getUnitSkillData(this.id).ex_skill_evolution_1
       }
       for (const key of Object.keys(skill)) {
         if (skill[key] === 0) {
@@ -103,15 +104,16 @@ export default {
       }
       return skill
     },
+    skillData (skill) {
+      return this.$store.getters.getSkillData(skill)
+    },
     skillDetail (skill) {
       const detail = []
       let desc = ''
-      if (!skill) {
-        return null
-      }
-      for (let i = 0; i < skill.actions.action_list.length; i++) {
-        const action = skill.actions.action_list[i]
-        const dependAction = skill.actions.depend_action_list[i]
+      skill = this.skillData(skill)
+      for (let i = 1; i <= 7; i++) {
+        const action = this.$store.getters.getSkillAction(skill[`action_${i}`])
+        const dependAction = this.$store.getters.getSkillAction(skill[`depend_action_${i}`]) ?? 0
         desc = action ? this.skillActionDetail(action, dependAction) : ''
         if (desc && desc.detail) detail.push(desc.detail.replace(/\$t/g, desc.target))
       }
@@ -126,7 +128,8 @@ export default {
         dependAction: dependAction,
         unitLevel: this.$store.getters.curLevel,
         unitAtk: this.$store.state.curAtk.atk,
-        unitMAtk: this.$store.state.curAtk.magic_str
+        unitMAtk: this.$store.state.curAtk.magic_str,
+        skillLevel: this.$store.getters.curLevel
       })
     }
   }

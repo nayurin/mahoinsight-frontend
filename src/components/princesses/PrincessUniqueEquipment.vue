@@ -61,8 +61,8 @@
 export default {
   name: 'PrincessUniqueEquipment',
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -97,13 +97,15 @@ export default {
 },
   computed: {
     ueName () {
-      return this.princess.unique_equipment.data.equipment_name
+      return this.$store.getters.getUniqueEquipmentData(this.ueId).equipment_name
     },
     ueDesc () {
-      return this.princess.unique_equipment.data.description.replace(/\\n/g, '')
+      return this.$store.getters.getUniqueEquipmentData(this.ueId).description.replace(/\\n/g, '')
     },
     ueId () {
-      return this.princess.unique_equipment.data.equipment_id
+      const base = (this.id - this.id % 100) / 100
+      const tail = base % 1000
+      return 130000 + tail * 10 + 1
     },
     maxLevel () {
       return this.$store.state.maxUELevel
@@ -128,11 +130,11 @@ export default {
     ueStat (level) {
       const data = {}
       for (const type of Object.keys(this.statsMap)) {
-        if (!this.princess.unique_equipment.data[type] && !this.princess.unique_equipment.enhance_rate[type]) {
+        if (!this.$store.getters.getUniqueEquipmentData(this.ueId)[type] && !this.$store.getters.getUniqueEquipmentEnhanceRate(this.ueId)[type]) {
           continue
         } else {
-          const baseval = this.princess.unique_equipment.data[type]
-          const enhval = this.princess.unique_equipment.enhance_rate[type]
+          const baseval = this.$store.getters.getUniqueEquipmentData(this.ueId)[type]
+          const enhval = this.$store.getters.getUniqueEquipmentEnhanceRate(this.ueId)[type]
           data[this.statsMap[type]] = [baseval, Math.ceil(baseval + enhval * level)]
         }
       }

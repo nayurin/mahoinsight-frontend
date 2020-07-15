@@ -3,8 +3,8 @@
     <v-card-title>★3</v-card-title>
     <v-row no-gutters>
       <v-col
-        v-for="chara of star(3)"
-        :key="chara.id"
+        v-for="id of star(3)"
+        :key="id"
         cols="auto"
       >
         <v-card
@@ -13,7 +13,7 @@
           tile
         >
           <PrincessFigure
-            :princess="chara"
+            :id="id"
             :zoom-ratio="zoom"
           />
         </v-card>
@@ -22,8 +22,8 @@
     <v-card-title>★2</v-card-title>
     <v-row no-gutters>
       <v-col
-        v-for="chara of star(2)"
-        :key="chara.id"
+        v-for="id of star(2)"
+        :key="id"
         cols="auto"
       >
         <v-card
@@ -32,7 +32,7 @@
           tile
         >
           <PrincessFigure
-            :princess="chara"
+            :id="id"
             :zoom-ratio="zoom"
           />
         </v-card>
@@ -41,8 +41,8 @@
     <v-card-title>★1</v-card-title>
     <v-row no-gutters>
       <v-col
-        v-for="chara of star(1)"
-        :key="chara.id"
+        v-for="id of star(1)"
+        :key="id"
         cols="auto"
       >
         <v-card
@@ -51,7 +51,7 @@
           tile
         >
           <PrincessFigure
-            :princess="chara"
+            :id="id"
             :zoom-ratio="zoom"
           />
         </v-card>
@@ -75,9 +75,7 @@ export default {
   },
   methods: {
     star (stars) {
-      return Object.values(this.$store.state.chara).filter(x => {
-        return x.status.rarity === stars
-      })
+      return this.$store.getters.princessIdList.filter(x => this.$store.getters.getUnitData(x).rarity === stars).map(x => Number(x))
     }
   }
 }

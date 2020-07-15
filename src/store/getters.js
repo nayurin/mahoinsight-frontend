@@ -27,11 +27,32 @@ const getters = {
     baseid = Number(baseid)
     const result = {}
     const re = /(.*?)的小故事/
+    const statusmap = {
+      1: "生命值",
+      2: "物理攻击力",
+      3: "物理防御力",
+      4: "魔法攻击力",
+      5: "魔法防御力",
+      6: "物理暴击",
+      7: "魔法暴击",
+      8: "回避",
+      9: "生命值吸收",
+      10: "生命值自动回复",
+      11: "技能值自动回复",
+      14: "技能值上升",
+      15: "回复量上升"
+    }
     const addStories = (id) => {
       for (const story of Object.values(state.database.chara_story_status)) {
         for (let i = 1; i <= 10; i++) {
           if (story[`chara_id_${i}`] === id) {
-            result[story.unlock_story_name] = story
+            const bonusstats = {}
+            for (let i = 1; i <= 5; i++) {
+              if (story[`status_type_${i}`]) {
+                bonusstats[statusmap[story[`status_type_${i}`]]] = story[`status_rate_${i}`]
+              }
+            }
+            result[story.unlock_story_name] = bonusstats
           }
         }
       }
@@ -283,6 +304,16 @@ const getters = {
     return arr
   },
 
+  // get unit promotion's full data by unitid
+  // returns: object[]
+  getUnitPromotionFull: (state) => (unitId) => {
+    const data = {}
+    for (const promotion of Object.values(state.database.unit_promotion).filter(x => x.unit_id === Number(unitId))) {
+      data[promotion.promotion_level] = promotion
+    }
+    return data
+  },
+
   // get raw data of unit_promotion_status by unitid and promotionlevel
   // returns: object
   getUnitPromotionStatus: (state) => (unitId, promotionLevel) => {
@@ -333,13 +364,21 @@ const getters = {
     return Object.values(state.database.quest_data).filter(x => x.area_id === Number(areaId))
   },
 
-  // get position of a princess
+  // get position of a princess by unitid
   // returns: number
-  getPrincessPositionByName: (state) => (unitId) => {
+  getPrincessPosition: (state) => (unitId) => {
     const saw = state.database.unit_data[unitId].search_area_width
     if (saw < state.widthThreshold[0]) return 1
     else if (saw >= state.widthThreshold[1]) return 3
     else return 2
+  },
+
+  //get unitid by unitname
+  // returns: number
+  getPrincessIdByName: (state) => (name) => {
+    const chara = Object.values(state.database.unit_data).filter(x => x.unit_name === name)[0]
+    if (!chara) return
+    return chara.unit_id
   },
 
   // get equipment stats by equipmentid
@@ -525,6 +564,40 @@ const getters = {
     return source
   },
 
+  // get rewards of a quest by questid
+  // returns: object[]
+  getQuestRewardById: (state) => (questId) => {
+    const rewards = []
+    const waves = [
+      state.database.quest_data[questId]?.wave_group_id_1,
+      state.database.quest_data[questId]?.wave_group_id_2,
+      state.database.quest_data[questId]?.wave_group_id_3
+    ]
+    for (const wavegroupid of waves) {
+      for (const wave of Object.values(state.database.wave_group_data).filter(x => x.wave_group_id === wavegroupid)) {
+        [
+          wave.drop_reward_id_1,
+          wave.drop_reward_id_2,
+          wave.drop_reward_id_3,
+          wave.drop_reward_id_4,
+          wave.drop_reward_id_5,
+        ]
+          .filter(x => x)
+          .map(x => {
+          const reward = state.database.enemy_reward_data[x]
+          for (let i = 1; i <= 5; i++) {
+            if (reward[`reward_id_${i}`]){
+              rewards.push({
+                itemid: reward[`reward_id_${i}`],
+                odds: reward[`odds_${i}`] * wave.odds / 100
+              })
+            }
+          }
+        })
+      }
+    }
+    return rewards
+  },
 
   // getPrincessByName: (state) => (name) => {
   //   return state.chara[name]

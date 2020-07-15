@@ -7,7 +7,7 @@
       />
       <v-row
         no-gutters
-        class="ml-4"
+        class="ml-4 pb-4"
       >
         <ItemFigure
           v-for="i in craftBy"

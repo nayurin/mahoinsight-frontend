@@ -31,9 +31,9 @@
 
 <script>
 export default {
-  name: 'PrincessFigure',
+  name: 'SkillFigure',
   props: {
-    id: {
+    figure: {
       type: String,
       required: true
     },
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     src () {
-      return `${this.$store.state.CDNBaseURL}/image/skills/icon_skill_${this.id}.png`
+      return `${this.$store.state.CDNBaseURL}/image/skills/icon_skill_${this.figure}.png`
     },
     style () {
       return {

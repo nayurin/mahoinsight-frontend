@@ -3,7 +3,7 @@
     <v-card-title id="princess-equipment">
       角色装备 [Rank {{ curRank }}]
       <EquipmentSelector
-        :princess="princess"
+        :id="id"
         class="ml-8"
       />
     </v-card-title>
@@ -38,8 +38,8 @@ export default {
     EquipmentSelector
   },
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -48,7 +48,7 @@ export default {
       return this.$store.getters.curRank({})
     },
     promotion () {
-      const promotion = this.princess.promotion_info
+      const promotion = this.$store.getters.getUnitPromotionFull(this.id)
       for (let i = this.curRank; i >= 1; i--) {
         if (!promotion[i]) {
           this.$set(promotion, i, this.unknownRank)
@@ -71,5 +71,5 @@ export default {
       }
     }
   }
-}
+} 
 </script>

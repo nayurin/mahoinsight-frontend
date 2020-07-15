@@ -284,7 +284,6 @@
         for (let i = 1; i <= 3; i++) {
           enemies[`第${i}波`] = this.$store.getters.getWaveGroupData(waves[i - 1])
         }
-        console.log(enemies)
         return enemies
       },
       zoom () {
@@ -346,7 +345,6 @@
       if (this.$route.query) {
         this.resolveQuest(this.$route.query.questid)
       }
-      console.log(this.diff)
     },
     methods: {
       onClickOfDiff (diff) {

@@ -6,7 +6,7 @@
     <v-row>
       <v-col class="pr-1">
         <PrincessBanner
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
     </v-row>
@@ -16,21 +16,21 @@
         class="col-12 col-lg-8 pr-1"
       >
         <PrincessCard
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
       <v-col
         class="col-12 col-lg-2 px-1"
       >
         <PrincessProfile
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
       <v-col
         class="col-12 col-lg-2 px-1"
       >
         <PrincessStoryBonus
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
     </v-row>
@@ -39,7 +39,7 @@
         class="pr-3 col-12 col-lg-auto"
       >
         <PrincessAP
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
     </v-row>
@@ -48,14 +48,14 @@
         class="col-12 col-lg-6"
       >
         <PrincessEquipment
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
       <v-col
         class="col-12 col-lg-6 pr-1"
       >
         <PrincessStatus
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
     </v-row>
@@ -64,14 +64,14 @@
     >
       <v-col class="col-12 pr-1">
         <PrincessUniqueEquipment
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col class="col-12 pr-1">
         <PrincessSkill
-          :princess="princess"
+          :id="princess"
         />
       </v-col>
     </v-row>
@@ -104,7 +104,7 @@ export default {
   },
   computed: {
     princess () {
-      return this.$store.getters.getPrincessByName(this.name)
+      return this.$store.getters.getPrincessIdByName(this.name)
     },
     name () {
       return this.$route.params.princessName

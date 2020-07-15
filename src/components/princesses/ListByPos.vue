@@ -11,8 +11,8 @@
     </v-row>
     <v-row no-gutters>
       <v-col
-        v-for="chara of front"
-        :key="chara.id"
+        v-for="id of front"
+        :key="id"
         cols="auto"
       >
         <v-card
@@ -21,7 +21,7 @@
           tile
         >
           <PrincessFigure
-            :princess="chara"
+            :id="id"
             :zoom-ratio="zoom"
           />
         </v-card>
@@ -38,8 +38,8 @@
     </v-row>
     <v-row no-gutters>
       <v-col
-        v-for="chara of middle"
-        :key="chara.id"
+        v-for="id of middle"
+        :key="id"
         cols="auto"
       >
         <v-card
@@ -48,7 +48,7 @@
           tile
         >
           <PrincessFigure
-            :princess="chara"
+            :id="id"
             :zoom-ratio="zoom"
           />
         </v-card>
@@ -65,8 +65,8 @@
     </v-row>
     <v-row no-gutters>
       <v-col
-        v-for="chara of behind"
-        :key="chara.id"
+        v-for="id of behind"
+        :key="id"
         cols="auto"
       >
         <v-card
@@ -75,7 +75,7 @@
           tile
         >
           <PrincessFigure
-            :princess="chara"
+            :id="id"
             :zoom-ratio="zoom"
           />
         </v-card>
@@ -101,19 +101,13 @@ export default {
   },
   computed: {
     front () {
-      return Object.values(this.$store.state.chara).filter(x => {
-        return x.status.search_area_width < this.$store.state.widthThreshold[0]
-      })
+      return this.$store.getters.princessIdList.filter(x => this.$store.getters.getUnitData(x).search_area_width < this.$store.state.widthThreshold[0]).map(x => Number(x))
     },
     middle () {
-      return Object.values(this.$store.state.chara).filter(x => {
-        return x.status.search_area_width >= this.$store.state.widthThreshold[0] && x.status.search_area_width < this.$store.state.widthThreshold[1]
-      })
+      return this.$store.getters.princessIdList.filter(x => this.$store.getters.getUnitData(x).search_area_width >= this.$store.state.widthThreshold[0] && this.$store.getters.getUnitData(x).search_area_width < this.$store.state.widthThreshold[1]).map(x => Number(x))
     },
     behind () {
-      return Object.values(this.$store.state.chara).filter(x => {
-        return x.status.search_area_width >= this.$store.state.widthThreshold[1]
-      })
+      return this.$store.getters.princessIdList.filter(x => this.$store.getters.getUnitData(x).search_area_width >= this.$store.state.widthThreshold[1]).map(x => Number(x))
     },
     zoom () {
       return this.$store.state.mobile ? "0.35" : "0.6"

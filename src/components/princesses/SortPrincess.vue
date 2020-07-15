@@ -1,8 +1,8 @@
 <template>
   <v-row no-gutters>
     <v-col
-      v-for="(chara, key) of sorted"
-      :key="key"
+      v-for="(id, i) of sorted"
+      :key="i"
       cols="auto"
     >
       <v-card
@@ -11,7 +11,7 @@
         tile
       >
         <PrincessFigure
-          :princess="chara"
+          :id="id"
           :zoom-ratio="zoom"
         >
           <template v-slot:add>
@@ -20,7 +20,7 @@
               small
               outlined
               class="px-2"
-              v-text="profile(chara)"
+              v-text="profile(id)"
             />
           </template>
         </PrincessFigure>
@@ -49,27 +49,28 @@ export default {
   },
   computed: {
     up2down () {
-      return Object.values(this.$store.state.chara).sort((x, y) => {
-        x = Number(x.profile[this.sortby]) || 10000000
-        y = Number(y.profile[this.sortby]) || 10000000
+      const list = JSON.parse(JSON.stringify(this.$store.getters.princessIdList.map(x => Number(x))))
+      return list.sort((x, y) => {
+        x = Number(this.$store.getters.getUnitProfile(x)[this.sortby]) || 10000000
+        y = Number(this.$store.getters.getUnitProfile(y)[this.sortby]) || 10000000
         return y - x
       })
     },
     down2up () {
-      return Object.values(this.$store.state.chara).sort((x, y) => {
-        x = Number(x.profile[this.sortby]) || 10000000
-        y = Number(y.profile[this.sortby]) || 10000000
+      const list = JSON.parse(JSON.stringify(this.$store.getters.princessIdList.map(x => Number(x))))
+      return list.sort((x, y) => {
+        x = Number(this.$store.getters.getUnitProfile(x)[this.sortby]) || 10000000
+        y = Number(this.$store.getters.getUnitProfile(y)[this.sortby]) || 10000000
         return x - y
       })
     },
     sorted () {
+      const list = JSON.parse(JSON.stringify(this.$store.getters.princessIdList.map(x => Number(x))))
       switch (this.sortby) {
         case 'saw':
-          return this.sort ? Object.values(this.$store.state.chara).sort((x, y) => {
-            return Number(x.status.search_area_width) - Number(y.status.search_area_width)
-          }) : Object.values(this.$store.state.chara).sort((x, y) => {
-            return Number(y.status.search_area_width) - Number(x.status.search_area_width)
-          })
+          return this.sort ?
+          list.sort((x, y) => this.$store.getters.getUnitData(x).search_area_width - this.$store.getters.getUnitData(y).search_area_width) :
+          list.sort((x, y) => this.$store.getters.getUnitData(y).search_area_width - this.$store.getters.getUnitData(x).search_area_width)
         default:
           return this.sort ? this.down2up : this.up2down
       }
@@ -79,16 +80,16 @@ export default {
     }
   },
   methods: {
-    profile (obj) {
+    profile (id) {
       switch (this.sortby) {
         case 'age':
-        return `${obj.profile.age}岁`
+        return `${this.$store.getters.getUnitProfile(id).age}岁`
         case 'weight':
-          return `${obj.profile.weight}kg`
+          return `${this.$store.getters.getUnitProfile(id).weight}kg`
         case 'height':
-          return `${obj.profile.height}cm`
+          return `${this.$store.getters.getUnitProfile(id).height}cm`
         case 'saw':
-          return obj.status.search_area_width
+          return this.$store.getters.getUnitData(id).search_area_width
         default:
           return
       }

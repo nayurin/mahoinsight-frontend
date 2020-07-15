@@ -18,8 +18,8 @@
 export default {
   name: 'EquipmentSelector',
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     },
     from: {
@@ -73,7 +73,7 @@ export default {
       }
     },
     promotion () {
-      const promotion = this.princess.promotion_info
+      const promotion = this.$store.getters.getUnitPromotionFull(this.id)
       if (!Object.prototype.hasOwnProperty.call(promotion, String(this.rank))) {
         this.$set(promotion, this.rank, this.unknownRank)
       }

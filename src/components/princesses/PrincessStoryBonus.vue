@@ -56,8 +56,8 @@
 export default {
   name: 'PrincessStoryBonus',
   props: {
-    princess: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -72,11 +72,13 @@ export default {
   methods: {
     storyFilter () {
       const re = /^(.*)的小故事(.*)$/
-      for (const story of Object.keys(this.princess.storybonus)) {
+      const baseid = (this.id - this.id % 100) / 100
+      const storybonus = this.$store.getters.getCharaStoryStatusEX({ baseid })
+      for (const story of Object.keys(storybonus)) {
         if (story.match(re) && story.match(re)[1] && !Object.prototype.hasOwnProperty.call(this.stories, story.match(re)[1])) {
-          this.$set(this.stories, story.match(re)[1], { [story.match(re)[2]]: this.princess.storybonus[story] })
+          this.$set(this.stories, story.match(re)[1], { [story.match(re)[2]]: storybonus[story] })
         } else if (story.match(re) && Object.keys(this.stories).includes(story.match(re)[1])) {
-          this.$set(this.stories[story.match(re)[1]], story.match(re)[2], this.princess.storybonus[story])
+          this.$set(this.stories[story.match(re)[1]], story.match(re)[2], storybonus[story])
         }
       }
     }
