@@ -122,8 +122,8 @@
             @blur="rankfrom = rankfrom === '' ? $store.state.maxRank : rankfrom"
           />
           <EquipmentSelector
+            :id="id"
             from
-            :princess="princess"
             class="mx-5"
           />
         </v-col>
@@ -138,8 +138,8 @@
             @blur="rankto = rankto === '' ? $store.state.maxRank : rankto"
           />
           <EquipmentSelector
+            :id="id"
             to
-            :princess="princess"
             class="mx-5"
           />
         </v-col>

@@ -78,20 +78,23 @@ export default {
             arr_1_frag = [],
             arr_2_main = [],
             arr_3_other = []
-      for (const item of this.reward) {
-        if (item.itemid === this.target) {
-          arr_0_target.push(item)
-          continue
+      for (const itemgroup of this.reward) {
+        for (const item of itemgroup) {
+          if (!item.itemid) continue
+          if (item.itemid === this.target) {
+            arr_0_target.push(item)
+            continue
+          }
+          if (String(item.itemid).length === 5 && String(item.itemid).substring(0, 1) === "3") {
+            arr_1_frag.push(item)
+            continue
+          }
+          if (String(item.itemid).length === 5 && String(item.itemid).substring(0, 1) !== "3") {
+            arr_3_other.push(item)
+            continue
+          }
+          arr_2_main.push(item)
         }
-        if (String(item.itemid).length === 5 && String(item.itemid).substring(0, 1) === "3") {
-          arr_1_frag.push(item)
-          continue
-        }
-        if (String(item.itemid).length === 5 && String(item.itemid).substring(0, 1) !== "3") {
-          arr_3_other.push(item)
-          continue
-        }
-        arr_2_main.push(item)
       }
       return arr_0_target.concat(arr_1_frag).concat(arr_2_main.sort((x, y) => { return y.odds - x.odds })).concat(arr_3_other)
     }

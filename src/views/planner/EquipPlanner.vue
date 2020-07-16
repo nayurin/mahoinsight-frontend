@@ -47,7 +47,7 @@
                 <v-chip
                   label
                   color="primary"
-                  v-text="$store.getters.getPrincessNameById(Number(chara))"
+                  v-text="charaName(chara)"
                 />
               </v-col>
               <v-col
@@ -245,9 +245,9 @@
               class="col-auto pa-0"
             >
               <EditableItemFigure 
-                :id="Number(item.id)"
-                @update="onUpdate(item.id, itemAmount)"
-                @remove="onRemove(item.id)"
+                :id="Number(item)"
+                @update="onUpdate(item, itemAmount)"
+                @remove="onRemove(item)"
               >
                 <template v-slot:content>
                   <v-row
@@ -356,6 +356,13 @@
           >
             上一步
           </v-btn>
+          <v-btn
+            v-if="completed"
+            color="success"
+            @click="reInit"
+          >
+            清除统计
+          </v-btn>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -435,7 +442,7 @@
                 color="primary"
                 link
                 @click="routeToQuest(quests[i])"
-                v-text="$store.getters.getQuestNameById(quests[i])"
+                v-text="questName(quests[i])"
               />
             </v-col>
             <v-col class="col-auto">
@@ -508,7 +515,7 @@ export default {
       rules: {
         required: value => !!value || '数量不能为空',
         range: value => value > 0 || '数量不能为负',
-      },
+      }
     }
   },
   computed: {
@@ -516,7 +523,7 @@ export default {
       return Object.keys(this.profile).length && this.profile.princess && Object.prototype.toString.call(this.profile.princess) === '[object Object]' ? Object.keys(this.profile.princess).map(x => Number(x)) : []
     },
     fullPrincess () {
-      return this.$store.getters.getPrincessIdList
+      return this.$store.getters.princessIdList.map(x => Number(x))
     },
     profile () {
       return this.$store.state.profile
@@ -537,16 +544,10 @@ export default {
       }
     },
     fullItem () {
-      const _item = []
-      Object.values(this.$store.state.item).map(x=>{
-        if (String(x.id).length === 6 && (String(x.id).split('')[1] === '0' || x.id === 140000)) {
-          _item.push(x)
-        }
-      })
-      return _item.reverse()
+      return this.$store.getters.equipmentIdListEX.map(x => Number(x)).sort((x, y) => y - x)
     },
     filtedItem () {
-      return this.searchbox === '' ? [] : this.fullItem.filter(x => x.detail.equipment_name.match(this.searchbox))
+      return this.searchbox === '' ? [] : this.fullItem.filter(x => this.$store.getters.getEquipmentData(x)?.equipment_name.match(this.searchbox))
     },
     multiplier () {
       if (!this.bonus2x && !this.bonus3x) return 1
@@ -589,7 +590,7 @@ export default {
             }
           } else {
             if (this.mainPiece) {
-              const craftby = this.findItem(itemid).craft_by
+              const craftby = this.findCraft(itemid)
               craftby.forEach(item => {
                 if ((item[0] - itemid) % 10000 === 0) {
                   if (Object.prototype.hasOwnProperty.call(this.reqPieces, item[0])) {
@@ -633,6 +634,16 @@ export default {
         setTimeout(() => resolve(), t)
       })
     },
+    questName (id) {
+      for (const diff of Object.values(this.$store.getters.getQuestDataByDiff)) {
+        for (const quest of diff) {
+          if (quest.quest_id === id) return quest.quest_name
+        }
+      }
+    },
+    charaName (id) {
+      return this.$store.getters.getUnitData(id)?.unit_name ?? '其他'
+    },
     mergeRequirements () {
       this.mergedReq = {}
       for (const itemset of Object.values(this.requirement)) {
@@ -647,11 +658,11 @@ export default {
       }
     },
     onUpdate (id, amount) {
-      this.$set(this.mergedReq, id, Number(amount))
+      this.$set(this.requirement, 'manual', {...this.requirement.manual, ...{ [id]: Number(amount) }})
       this.itemAmount = 1
     },
     onRemove (id) {
-      this.$delete(this.mergedReq, id)
+      if (this.requirement.manual) this.$delete(this.requirement.manual, id)
       this.itemAmount = 1
     },
     routeToQuest (questid) {
@@ -665,7 +676,7 @@ export default {
     },
     parseSourcesEfficiency (id, amount) {
       const sources = []
-      const equipSource = this.$store.getters.getItemById(id).source
+      const equipSource = this.$store.getters.getEquipmentSource(id)
       equipSource.forEach(source => {
         source.quest.forEach(quest => {
           if (quest.area_id % 1000 <= this.$store.state.furthestArea) {
@@ -689,11 +700,12 @@ export default {
       delete items[this.sortByAmount(items)[0]]
       sources.forEach(source => {
         const rewards = this.$store.getters.getQuestRewardById(source.id)
-        for (const reward of Object.values(rewards)) {
-          for (let i = 1; i <= 5; i++) {
-            if (Object.prototype.hasOwnProperty.call(items, String(reward[`reward_id_${i}`]))) {
-              source.efficiency += (reward.drop_count * reward[`reward_num_${i}`] * reward[`odds_${i}`]) / this.$store.getters.getQuestInfoById(source.id).stamina
-              source.times = !source.times || source.times > items[String(reward[`reward_id_${i}`])] ? items[String(reward[`reward_id_${i}`])] : source.times
+        for (const rewardgroup of Object.values(rewards)) {
+          for (const reward of rewardgroup) {
+            if (!reward.itemid) continue
+            if (Object.prototype.hasOwnProperty.call(items, String(reward.itemid))) {
+              source.efficiency += (reward.drop_count * reward.itemid * reward.odds) / this.$store.getters.getQuestData(source.id).stamina
+              source.times = !source.times || source.times > items[String(reward.itemid)] ? items[String(reward.itemid)] : source.times
             }
           }
         }
@@ -709,7 +721,7 @@ export default {
         const targetQuest = this.questPriority(this.parseSourcesEfficiency(item, amount), this.reqPieces)[0]
         await this.sleep(500)
         
-        const once = this.$store.getters.getLootSimulation({
+        const once = this.lootSimulation({
           questid: targetQuest.id,
           times: targetQuest.times,
           multiplier: this.multiplier
@@ -743,7 +755,11 @@ export default {
     equips4Promotion () {
       if (!this.dim5Group.chara) return
       const chara = this.dim5Group.chara
-      const promotion = this.$store.getters.getPrincessById(chara).promotion_info
+      const promotion = JSON.parse(JSON.stringify(this.$store.getters.getUnitPromotionFull(chara)))
+      for (const promote of Object.values(promotion)) {
+        delete promote.promotion_level
+        delete promote.unit_id
+      }
       const rFrom = Number(this.dim5Group.rFrom)
       const rTo = Number(this.dim5Group.rTo)
       const eFrom = rFrom ? this.dim5Group.eFrom.map(x => promotion[rFrom][`equip_slot_${x + 1}`]) : eFrom
@@ -817,22 +833,25 @@ export default {
         }
       }
     },
-    findItem (id) {
-      return this.$store.getters.getItemById(id)
+    findEquipment (id) {
+      return this.$store.getters.getEquipmentData(id)
+    },
+    findCraft (id) {
+      return this.$store.getters.getEquipmentCraftBy(id)
     },
     isCraft (id) {
-      return this.findItem(id) && this.findItem(id).detail.craft_flg === 1 ? true : false 
+      return this.findEquipment(id)?.craft_flg === 1
     },
     _craft (arr) {
       for (let i = 0; i < arr.length; i++) {
         if (this.isCraft(arr[i][0])) {
-          arr[i] = this._craft(this.findItem(arr[i][0]).craft_by)
+          arr[i] = this._craft(this.findCraft(arr[i][0]))
         }
       }
       return arr
     },
     craftBy (id) {
-      const by = this._craft(this.findItem(id).craft_by).flat(Infinity)
+      const by = this._craft(this.findCraft(id)).flat(Infinity)
       const item = [], amount = [], combined = []
       for (let i = 0; i < by.length; i = i + 2) {
         if (item.indexOf(by[i]) !== -1) {
@@ -846,6 +865,66 @@ export default {
         combined.push([item[i], amount[i]])
       }
       return combined      
+    },
+    lootSimulation ({ questid, times = 1, multiplier = 1 }) {
+      const rewards = this.$store.getters.getQuestRewardById(questid)
+      const stamina = this.$store.getters.getQuestData(questid).stamina
+      const loots = {}
+      const lootDivider = (reward) => {
+        const arr = [0]
+        let odds = 0
+        for (let i = 0; i < reward.length; i++) {
+          odds += reward[i].odds
+          arr.push(odds)
+        }
+        return arr
+      }
+      for (let t = 0; t < times; t++) {
+        rewards.forEach(reward => {
+          const divider = lootDivider(reward)
+          const rand = Math.random() * divider[divider.length - 1]
+          for (let i = 0; i < divider.length - 1; i++) {
+            if (rand >= divider[i] && rand < divider[i + 1]) {
+              if (reward[i].itemid && reward[i].reward_num) {
+                if (Object.prototype.hasOwnProperty.call(loots, reward[i].itemid)) {
+                  loots[reward[i].itemid] += reward[i].reward_num * multiplier
+                } else {
+                  loots[reward[i].itemid] = reward[i].reward_num * multiplier
+                }
+              }
+              break
+            }
+          }
+        }) 
+      }
+      
+      return {
+        loots,
+        stamina,
+        times
+      }
+    },
+    reInit () {
+      this.step = 1
+      this.fromProfile = false
+      this.mainPiece = false
+      this.editing = false
+      this.pending = false
+      this.completed = false
+      this.summary = false
+      this.searchbox = ''
+      this.itemAmount = 1
+      this.times = 0
+      this.bonus2x = false
+      this.bonus3x = false
+      this.lootsTotal = {}
+      this.comments = []
+      this.rewards = []
+      this.quests = []
+      this.requirement = {}
+      this.mergedReq = {}
+      this.reqPieces = {}
+      this.stamina = 0
     }
   }
 }

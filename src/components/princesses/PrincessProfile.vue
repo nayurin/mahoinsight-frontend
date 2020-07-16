@@ -82,12 +82,14 @@ export default {
         }
       }
       for (const quest of this.$store.getters.getQuestDataByDiff.hard) {
-        for (const reward of this.$store.getters.getQuestRewardById(quest.quest_id)) {
-          if (reward.itemid === fragId) {
-            source.push({
-              name: quest.quest_name,
-              route: {'path': '/quest', 'query': {'questid': quest.quest_id }}
-            })
+        for (const rewardgroup of this.$store.getters.getQuestRewardById(quest.quest_id)) {
+          for (const reward of rewardgroup) {
+            if (reward.itemid === fragId) {
+              source.push({
+                name: quest.quest_name,
+                route: {'path': '/quest', 'query': {'questid': quest.quest_id }}
+              })
+            }
           }
         }
       }
