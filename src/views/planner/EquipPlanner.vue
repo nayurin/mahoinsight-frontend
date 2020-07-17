@@ -82,8 +82,8 @@
             </v-col>
             <v-col class="col-auto">
               <v-switch
-                v-model="syncModify"
-                label="同步修改所有已选择角色"
+                v-model="syncModifySelected"
+                label="同步修改已选择的全部角色"
                 color="purple darken-2"
                 class="mx-5"
               >
@@ -98,7 +98,31 @@
                       </v-icon>
                     </template>
                     <span
-                      v-html="`启用此开关会在编辑角色信息时将该角色的【Rank】和【装备位置】同步给全部已经选择的角色。<br>请注意：该功能有可能导致【删除】所有已配置的角色，请务必小心操作。`"
+                      v-html="`启用此开关在编辑角色信息时，会将该角色的【Rank】和【装备位置】同步给【已经选择】的全部角色。<br>请注意：该功能有可能导致【删除】所有已配置的角色，请务必小心操作。`"
+                    />
+                  </v-tooltip>
+                </template>
+              </v-switch>
+            </v-col>
+            <v-col class="col-auto">
+              <v-switch
+                v-model="syncModifyProfile"
+                label="同步修改用户档案的全部角色"
+                color="red"
+                class="mx-5"
+              >
+                <template v-slot:append>
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        mdi-information-outline
+                      </v-icon>
+                    </template>
+                    <span
+                      v-html="`启用此开关在编辑角色信息时，会将该角色的【Rank】和【装备位置】同步给【用户档案】的全部角色。<br>请注意：该功能有可能导致【删除】所有已配置的角色，请务必小心操作。`"
                     />
                   </v-tooltip>
                 </template>
@@ -142,7 +166,7 @@
                 <PrincessPlate
                   :id="item"
                   fromto
-                  :syncflag="syncModify"
+                  :syncflag="syncModifySelected || syncModifyProfile"
                   zoom-ratio="0.5"
                 />
               </v-col>
@@ -528,7 +552,8 @@ export default {
       pending: false,
       completed: false,
       summary: false,
-      syncModify: false,
+      syncModifySelected: false,
+      syncModifyProfile: false,
       searchbox: '',
       itemAmount: 1,
       times: 0,
@@ -550,13 +575,13 @@ export default {
   },
   computed: {
     storagedPrincess () {
-      return Object.keys(this.profile).length && this.profile.princess && Object.prototype.toString.call(this.profile.princess) === '[object Object]' ? Object.keys(this.profile.princess).map(x => Number(x)) : []
+      return this.profile?.princess && Object.prototype.toString.call(this.profile.princess) === '[object Object]' ? Object.keys(this.profile.princess).map(x => Number(x)) : []
     },
     fullPrincess () {
       return this.$store.getters.princessIdList.map(x => Number(x))
     },
     profile () {
-      return this.$store.state.profile
+      return this.$store.state.profile[this.$store.state.activeProfile]
     },
     startbutton () {
       let text = '开始计算'
@@ -596,9 +621,17 @@ export default {
     },
     dim5Group: {
       handler (cur, prev) {
-        if (this.syncModify) {
-          for (const chara of Object.keys(this.requirement)) {
-            if (chara === 'manual') continue
+        if (this.syncModifyProfile || this.syncModifySelected) {
+          let charaList = []
+          if (this.syncModifySelected) {
+            charaList = [...charaList, ...Object.keys(this.requirement).filter(x => x !== 'manual')]
+          }
+          if (this.syncModifyProfile) {
+            charaList = [...charaList, ...this.storagedPrincess]
+          }
+          charaList.push(cur.chara)
+          charaList = Array.from(new Set(charaList.map(x => Number(x))))
+          for (const chara of charaList) {
             this.equips4Promotion({
               chara: chara,
               rFrom: cur.rFrom,
@@ -606,9 +639,6 @@ export default {
               eFrom: cur.eFrom,
               eTo: cur.eTo
             })
-          }
-          if (!Object.prototype.hasOwnProperty.call(this.requirement, cur.chara)) {
-            this.equips4Promotion({...cur})
           }
         } else {
           if (Object.keys(cur).filter(x => cur[x] !== prev[x]).length) {
@@ -800,20 +830,15 @@ export default {
     },
     equips4Promotion ({ chara, rFrom, rTo, eFrom, eTo }) {
       if (!chara) return
-      // const chara = this.dim5Group.chara
       const promotion = JSON.parse(JSON.stringify(this.$store.getters.getUnitPromotionFull(chara)))
       for (const promote of Object.values(promotion)) {
         delete promote.promotion_level
         delete promote.unit_id
       }
-      // const rFrom = Number(this.dim5Group.rFrom)
-      // const rTo = Number(this.dim5Group.rTo)
-      // const eFrom = rFrom ? this.dim5Group.eFrom.map(x => promotion[rFrom][`equip_slot_${x + 1}`]) : eFrom
-      // const eTo = rTo ? JSON.parse(JSON.stringify(this.dim5Group.eTo)).map(x => promotion[rTo][`equip_slot_${x + 1}`]) : eTo
       rFrom = Number(rFrom)
       rTo = Number(rTo)
-      eFrom = rFrom ? eFrom.map(x => promotion[rFrom][`equip_slot_${x + 1}`]) : eFrom
-      eTo = rTo ? eTo.map(x => promotion[rTo][`equip_slot_${x + 1}`]) : eTo
+      eFrom = rFrom ? eFrom.map(x => promotion[rFrom] ? promotion[rFrom][`equip_slot_${x + 1}`] : 999999) : eFrom
+      eTo = rTo ? eTo.map(x => promotion[rTo] ? promotion[rTo][`equip_slot_${x + 1}`] : 999999) : eTo
       const checkValid = () => {
         if (rFrom && rTo) {
           if (rFrom < 1 || rFrom > this.$store.state.maxRank) return false

@@ -1,17 +1,34 @@
 <template>
-  <v-btn-toggle
-    v-model="select"
-    multiple
+  <v-row
+    no-gutters
   >
-    <v-btn
-      v-for="(icon, i) in icons"
-      :key="i"
-      :disabled="icon.disabled"
-      small
-    >
-      <v-icon>{{ icon.name }}</v-icon>
-    </v-btn>
-  </v-btn-toggle>
+    <v-col class="col-auto">
+      <v-btn-toggle
+        v-model="select"
+        multiple
+      >
+        <v-tooltip
+          v-for="(icon, i) in icons"
+          :key="i"
+          top
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              :disabled="icon.disabled"
+              small
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>{{ icon.name }}</v-icon>
+            </v-btn>
+          </template>
+          <span
+            v-html="comment(i)"
+          />
+        </v-tooltip>
+      </v-btn-toggle>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -125,6 +142,21 @@ export default {
           this.$set(this.icons[i - 1], 'disabled', false)
         }
       }
+    },
+    comment (index) {
+      const equipid = this.promotion[String(this.rank)][`equip_slot_${index + 1}`]
+      const selected = this.select.includes(index) ? "【已装备】" : "【未装备】"
+      let comment
+      if (!equipid || equipid === 999999) {
+        return "暂未开放"
+      } else {
+        comment = `${this.$store.getters.getEquipmentData(equipid).equipment_name} ${selected}<br>`
+        const stats = this.$store.getters.getEquipmentStatsById(equipid)
+        for (const statskey of Object.keys(stats)) {
+          comment += `<br>${statskey}：${stats[statskey]}`
+        }
+      }
+      return comment
     }
   }
 }

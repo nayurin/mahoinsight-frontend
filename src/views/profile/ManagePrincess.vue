@@ -105,7 +105,7 @@ export default {
         } catch {
           return
         }
-        this.$store.commit('updateState', { key: 'profile', value: this.profile[this.$store.state.activeProfile] })
+        this.$store.commit('updateState', { key: 'profile', value: this.profile })
       }
     },
     addNewProfile ({ data = {} }) {

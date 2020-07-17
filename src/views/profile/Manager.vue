@@ -55,7 +55,7 @@
                       v-if="!isActive(key)"
                       text
                       color="primary"
-                      @click="$setLSItem({ pos: '{}', key: 'active', value: key})"
+                      @click="activateProfile(key)" 
                     >
                       激活
                     </v-btn>
@@ -226,6 +226,10 @@ export default {
         result = null
       }
       return result
+    },
+    activateProfile (name) {
+      this.$setLSItem({ pos: '{}', key: 'active', value: name})
+      this.active = name
     },
     addNewProfile ({ data = {} }) {
       let seq

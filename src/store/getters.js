@@ -1,11 +1,11 @@
 const getters = {
   curRank: state => ({ from=false, to=false }) => {
     if (from && !to) {
-      return state.rankFrom ? state.rankFrom : state.maxRank
+      return state.rankFrom || state.maxRank
     } else if (to && !from) {
-      return state.rankTo ? state.rankTo : state.maxRank
+      return state.rankTo || state.maxRank
     } else {
-      return state.curRank ? state.curRank : state.maxRank
+      return state.curRank || state.maxRank
     }
   },
 
