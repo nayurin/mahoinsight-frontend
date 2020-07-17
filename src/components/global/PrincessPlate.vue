@@ -52,6 +52,14 @@
           <v-card-subtitle>
             {{ $store.getters.getUnitProfile(id).voice }}
           </v-card-subtitle>
+          <v-chip
+            v-show="syncflag"
+            label
+            color="success"
+            class="text--white font-weight-thin mx-3"
+          >
+            同步修改：已启用
+          </v-chip>
         </v-col>
       </v-row>
 
@@ -208,6 +216,10 @@ export default {
       default: false
     },
     fromto: {
+      type: Boolean,
+      default: false
+    },
+    syncflag: {
       type: Boolean,
       default: false
     }
