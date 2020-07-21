@@ -1,19 +1,22 @@
 <template>
   <v-container
-    v-if="findPromote().length"
+    v-if="findPromote.length"
   >
     <v-card-title id="item-requirement">
       角色需求
     </v-card-title>
     <v-row>
       <v-col
-        v-for="(promoted, i) in findPromote()"
+        v-for="(promoted, i) in findPromote"
         :key="i"
-        cols="auto"        
+        class="col-auto pa-0 ma-0"
       >
-        <v-card>
+        <v-card
+          v-if="exist(promoted.unitId)"
+          class="ma-2"
+        >
           <PrincessFigure
-            :princess="promoted.unitId"
+            :id="promoted.unitId"
             zoom-ratio="0.7"
           >
             <template v-slot:add>
@@ -56,34 +59,17 @@ export default {
       required: true
     }
   },
-  methods: {
+  computed: {
     findPromote () {
-      // const temp = []
-      // let ret = []
-      // let count = 1
-      // for (const chara of Object.keys(this.$store.state.chara)) {
-      //   for (const promoteLevel of Object.keys(this.$store.state.chara[chara].promotion_info)) {
-      //     for (let i = 1; i <= 6; i++) {
-      //       if (this.$store.state.chara[chara].promotion_info[promoteLevel]['equip_slot_' + i] === this.item.id) {
-      //         temp.push([chara, promoteLevel])
-      //       }
-      //     }
-      //   }
-      // }
-      // for (let i = 0; i < temp.length - 1; i++) {
-      //   if (JSON.stringify(temp[i]) === JSON.stringify(temp[i + 1])) {
-      //     ++count
-      //   } else {
-      //     ret.push([...temp[i], count])
-      //     count = 1
-      //   }
-      // }
-      // temp.length > 0 ? ret.push([...temp.pop(), count]) : ret = []
-      // return ret
       return this.$store.getters.getUnitPromotionEX(this.id)
-    },
+    }    
+  },
+  methods: {
     rankColor (rank) {
       return this.$store.getters.getRankColor(rank)
+    },
+    exist (unitId) {
+      return this.$store.getters.getUnitData(unitId) ? true : false
     }
   }
 }

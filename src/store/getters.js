@@ -291,7 +291,7 @@ const getters = {
     Object.values(state.database.unit_promotion).map(x => {
       let count = 0
       for (let i = 1; i <= 6; i++) {
-        if (x[`equip_slot_${i}` === Number(equipmentId)]) count++
+        if (x[`equip_slot_${i}`] === Number(equipmentId)) count++
       }
       if (count) {
         arr.push({
