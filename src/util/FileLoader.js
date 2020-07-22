@@ -1,9 +1,10 @@
-import path from 'path'
+// import path from 'path'
 
-class ObjectBox {
-  constructor (name) {
+class FileLoader {
+  constructor (file) {
     this.objects = {}
-    this.cachefile = path.join('/cached', `${name}.json`)
+    // this.cachefile = path.join('/cached', `${name}.json`)
+    this.cachefile = file
   }
 
   loadSync () {
@@ -36,4 +37,4 @@ class ObjectBox {
   }
 }
 
-export default ObjectBox
+export default FileLoader

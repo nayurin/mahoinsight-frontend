@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import state from '@/store/state'
 import getters from '@/store/getters'
-import ObjectBox from '@/util/ObjectBox'
+import FileLoader from '@/util/FileLoader'
 
 Vue.use(Vuex)
 
@@ -13,9 +13,9 @@ export default new Vuex.Store({
   mutations: {
     // deprecated, use the async one instead
     loadObjects (state, type) {
-      const box = new ObjectBox(type)
-      box.loadSync()
-      state[type] = box.objects
+      const loader = new FileLoader(type)
+      loader.loadSync()
+      state[type] = loader.objects
     },
 
     // update vuex state props excludes database tables
@@ -24,15 +24,22 @@ export default new Vuex.Store({
     },
 
     // update vuex state of database tables
-    updateDatabase (state, { key, value }) {
-      state.database[key] = value
+    updateDatabase (state, { key, value, database }) {
+      if (database) {
+        if (!Object.prototype.hasOwnProperty.call(state.database, database)) {
+          state.database[database] = {}
+        }
+        state.database[database][key] = value
+      } else {
+        state.database[key] = value
+      }
     }
   },
   actions: {
     // async func of load single file object
     loadObjects (context, type) {
-      const box = new ObjectBox(type)
-      box.loadAsync().then(resp => {
+      const loader = new FileLoader(type)
+      loader.loadAsync().then(resp => {
         context.commit('updateState', { key: type, value: resp })
       }).catch(e => {
         console.log(e)
@@ -42,43 +49,40 @@ export default new Vuex.Store({
     // async func of load files with Promise.all()
     loadAll (context) {
       const list = [
-        'gameevents',
-        'clan_battle_map_data',
-        'clan_battle_boss_group',
-        'clan_battle_period',
-        'clan_battle_period_rank_reward',
-        'wave_group_data',
-        'enemy_parameter',
-        'unit_enemy_data',
-        'enemy_reward_data',
-        'resist_data',
-        'unit_attack_pattern',
-        'unit_skill_data',
-        'unit_data',
-        'unit_profile',
-        'unit_background',
-        'unit_rarity',
-        'unit_promotion',
-        'unit_promotion_status',
-        'chara_story_status',
-        'skill_data',
-        'skill_action',
-        'item_data',
-        'equipment_data',
-        'equipment_craft',
-        'unique_equipment_data',
-        'unique_equipment_enhance_rate',
-        'quest_data',
-        'quest_area_data'
+        {
+          name: 'Ingame Events',
+          source: '/cached/gameevents.json'
+        },
+        {
+          name: 'FullDatabase CN',
+          source: '/cached/master.json',
+          database: {
+            name: 'master',
+            singletable: false
+          }
+        },
+        {
+          name: 'unit_promotion JP',
+          source: '/cached/ng_master/unit_promotion.json',
+          database: {
+            name: 'ng',
+            singletable: true,
+            table: 'unit_promotion'
+          }
+        }
       ].map(x => {
-        const box = new ObjectBox(x)
-        return box.loadAsync().then(resp => {
-          switch (x) {
-            case 'gameevents':
+        const loader = new FileLoader(x.source)
+        return loader.loadAsync().then(resp => {
+          if (x.database) {
+            if (x.database.singletable) {
+              context.commit('updateDatabase', { key: x.database.table, value: resp, database: x.database.name })
+            } else {
+              context.commit('updateDatabase', { key: x.database.name, value: resp })
+            }
+          } else {
+            if (x.name === 'Ingame Events') {
               context.commit('updateState', { key: 'events', value: resp })
-              break
-            default:
-              context.commit('updateDatabase', { key: x, value: resp })
+            }
           }
         })
       })

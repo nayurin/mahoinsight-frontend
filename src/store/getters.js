@@ -16,7 +16,7 @@ const getters = {
   // get raw data of chara_story_status by storyid
   // returns: object
   getCharaStoryStatus: (state) => (storyId) => {
-    return state.database.chara_story_status[storyId]
+    return state.database['master'].chara_story_status[storyId]
   },
 
   // packaged methods of get story bonus by chara name or chara baseid
@@ -43,7 +43,7 @@ const getters = {
       15: "回复量上升"
     }
     const addStories = (id) => {
-      for (const story of Object.values(state.database.chara_story_status)) {
+      for (const story of Object.values(state.database['master'].chara_story_status)) {
         for (let i = 1; i <= 10; i++) {
           if (story[`chara_id_${i}`] === id) {
             const bonusstats = {}
@@ -62,7 +62,7 @@ const getters = {
       addStories(baseid)
     } else {
       let _baseid
-      for (const story of Object.values(state.database.chara_story_status)) {
+      for (const story of Object.values(state.database['master'].chara_story_status)) {
         if (story.unlock_story_name.match(re)[1] === name) {
           _baseid = (story.story_id - story.story_id % 1000) / 1000
           break
@@ -78,19 +78,19 @@ const getters = {
   // get raw data of clan_battle_boss_group by clanbattlebossgroupid and ordernum
   // returns: object
   getClanBattleBossGroup: (state) => (clanBattleBossGroupId, orderNum) => {
-    return state.database.clan_battle_boss_group[`${clanBattleBossGroupId}#${orderNum}`]
+    return state.database['master'].clan_battle_boss_group[`${clanBattleBossGroupId}#${orderNum}`]
   },
 
   // get raw data of clan_battle_map_data by clanbattleid
   // returns: object[]
   getClanBattleMapData: (state) => (clanBattleId) => {
-    return Object.values(state.database.clan_battle_map_data).filter(x => x.clan_battle_id === Number(clanBattleId))
+    return Object.values(state.database['master'].clan_battle_map_data).filter(x => x.clan_battle_id === Number(clanBattleId))
   },
 
   // get raw data of clan_battle_period by clanbattleid
   // returns: object
   getClanBattlePeriod: (state) => (clanBattleId) => {
-    return state.database.clan_battle_period[`${clanBattleId}#1`]
+    return state.database['master'].clan_battle_period[`${clanBattleId}#1`]
   },
 
   // get reward itemid from clan_battle_period_rank_reward by clanbattleid
@@ -98,7 +98,7 @@ const getters = {
   getClanBattlePeriodRankReward: (state) => (clanBattleId) => {
     clanBattleId = Number(clanBattleId)
     let reward = []
-    const rankList = Object.values(state.database.clan_battle_period_rank_reward).filter(x => x.clan_battle_id === clanBattleId)
+    const rankList = Object.values(state.database['master'].clan_battle_period_rank_reward).filter(x => x.clan_battle_id === clanBattleId)
     if (rankList.length) {
       reward.push(rankList[0].reward_id_1, rankList[0].reward_id_2, rankList[0].reward_id_3)
     } else {
@@ -143,25 +143,25 @@ const getters = {
   // get raw data of enemy_parameter by enemyid
   // returns: object
   getEnemyParameter: (state) => (enemyId) => {
-    return state.database.enemy_parameter[enemyId]
+    return state.database['master'].enemy_parameter[enemyId]
   },
 
   // get raw data of enemy_reward_data by droprewardid
   // returns: object
   getEnemyRewardData: (state) => (dropRewardId) => {
-    return state.database.enemy_reward_data[dropRewardId]
+    return state.database['master'].enemy_reward_data[dropRewardId]
   },
 
   // get raw data of equipment_craft by equipmentid
   // returns: object
   getEquipmentCraft: (state) => (equipmentId) => {
-    return state.database.equipment_craft[equipmentId]
+    return state.database['master'].equipment_craft[equipmentId]
   },
 
   // get array-format equipment craft data by equipmentid
   // returns: [number, number][]
   getEquipmentCraftBy: (state) => (equipmentId) => {
-    const craft = state.database.equipment_craft[equipmentId]
+    const craft = state.database['master'].equipment_craft[equipmentId]
     if (!craft) return []
     const by = []
     for (let i = 1; i <= 10; i++) {
@@ -175,31 +175,31 @@ const getters = {
   // get raw data of equipment_data by equipmentid
   // returns: object
   getEquipmentData: (state) => (equipmentId) => {
-    return state.database.equipment_data[equipmentId]
+    return state.database['master'].equipment_data[equipmentId]
   },
 
   // get raw data of item_data by itemid
   // returns: object
   getItemData: (state) => (itemId) => {
-    return state.database.item_data[itemId]
+    return state.database['master'].item_data[itemId]
   },
 
   // get raw data of quest_area_data by areaid
   // returns: object
   getQuestAreaData: (state) => (areaId) => {
-    return state.database.quest_area_data[areaId]
+    return state.database['master'].quest_area_data[areaId]
   },
 
   // get raw data of quest_data by questid
   // returns: object
   getQuestData: (state) => (questId) => {
-    return state.database.quest_data[questId]
+    return state.database['master'].quest_data[questId]
   },
 
   // get resistance of resiststatusid
   // returns: object
   getResistData: (state) => (resistStatusId) => {
-    const resist = state.database.resist_data[resistStatusId]
+    const resist = state.database['master'].resist_data[resistStatusId]
     return {
       减速: resist?.ailment_1,
       加速: resist?.ailment_2,
@@ -227,68 +227,68 @@ const getters = {
   // get raw data of skill_action by actionid
   // returns: object
   getSkillAction: (state) => (actionId) => {
-    return state.database.skill_action[actionId]
+    return state.database['master'].skill_action[actionId]
   },
 
   // get raw data of skill_data by skillid
   // returns: object
   getSkillData: (state) => (skillId) => {
-    return state.database.skill_data[skillId]
+    return state.database['master'].skill_data[skillId]
   },
 
   // get raw data of unique_equipment_data by equipmentid
   // returns: object
   getUniqueEquipmentData: (state) => (equipmentId) => {
-    return state.database.unique_equipment_data[equipmentId]
+    return state.database['master'].unique_equipment_data[equipmentId]
   },
 
   // get raw data of unique_equipment_enhance_rate by equipmentid
   // returns: object
   getUniqueEquipmentEnhanceRate: (state) => (equipmentId) => {
-    return state.database.unique_equipment_enhance_rate[equipmentId]
+    return state.database['master'].unique_equipment_enhance_rate[equipmentId]
   },
 
   // get raw data of unit_attack_pattern by unit_id
   // returns: object[]
   getUnitAttackPattern: (state) => (unitId) => {
-    return Object.values(state.database.unit_attack_pattern).filter(x => x.unit_id === Number(unitId))
+    return Object.values(state.database['master'].unit_attack_pattern).filter(x => x.unit_id === Number(unitId))
   },
 
   // get chara fullname by unitid
   // returns: string
   getUnitBackground: (state) => (unitId) => {
-    return state.database.unit_background[unitId]?.unit_name
+    return state.database['master'].unit_background[unitId]?.unit_name
   },
 
   // get raw data of unit_data by unitid
   // returns: object
   getUnitData: (state) => (unitId) => {
-    return state.database.unit_data[unitId]
+    return state.database['master'].unit_data[unitId]
   },
 
   // get raw data of unit_enemy_data by unitid
   // returns: object
   getUnitEnemyData: (state) => (unitId) => {
-    return state.database.unit_enemy_data[unitId]
+    return state.database['master'].unit_enemy_data[unitId]
   },
 
   // get raw data of unit_profile by unitid
   // returns: object
   getUnitProfile: (state) => (unitId) => {
-    return state.database.unit_profile[unitId]
+    return state.database['master'].unit_profile[unitId]
   },
 
   // get raw data of unit_promotion by unitid and promotionlevel
   // returns: object
   getUnitPromotion: (state) => (unitId, promotionLevel) => {
-    return state.database.unit_promotion[`${unitId}#${promotionLevel}`]
+    return state.database['master'].unit_promotion[`${unitId}#${promotionLevel}`]
   },
 
   // get unitid, promotionlevel and amounts of promotion data with equipmentid
   // return: object[]
   getUnitPromotionEX: (state) => (equipmentId) => {
     const arr = []
-    Object.values(state.database.unit_promotion).map(x => {
+    Object.values(state.database['master'].unit_promotion).map(x => {
       let count = 0
       for (let i = 1; i <= 6; i++) {
         if (x[`equip_slot_${i}`] === Number(equipmentId)) count++
@@ -308,7 +308,17 @@ const getters = {
   // returns: object
   getUnitPromotionFull: (state) => (unitId) => {
     const data = {}
-    for (const promotion of Object.values(state.database.unit_promotion).filter(x => x.unit_id === Number(unitId))) {
+    for (const promotion of Object.values(state.database['master'].unit_promotion).filter(x => x.unit_id === Number(unitId))) {
+      data[promotion.promotion_level] = promotion
+    }
+    return data
+  },
+
+  // get unit promotion's full data by unitid within database ng
+  // returns: object
+  getUnitPromotionFullNG: (state) => (unitId) => {
+    const data = {}
+    for (const promotion of Object.values(state.database['ng'].unit_promotion).filter(x => x.unit_id === Number(unitId))) {
       data[promotion.promotion_level] = promotion
     }
     return data
@@ -317,57 +327,57 @@ const getters = {
   // get raw data of unit_promotion_status by unitid and promotionlevel
   // returns: object
   getUnitPromotionStatus: (state) => (unitId, promotionLevel) => {
-    return state.database.unit_promotion_status[`${unitId}#${promotionLevel}`]
+    return state.database['master'].unit_promotion_status[`${unitId}#${promotionLevel}`]
   },
 
   // get raw data of unit_rarity by unitid and rarity
   // returns: object
   getUnitRarity: (state) => (unitId, rarity) => {
-    return state.database.unit_rarity[`${unitId}#${rarity}`]
+    return state.database['master'].unit_rarity[`${unitId}#${rarity}`]
   },
 
   // get raw data of unit_skill_data by unitid
   // returns: object
   getUnitSkillData: (state) => (unitId) => {
-    return state.database.unit_skill_data[unitId]
+    return state.database['master'].unit_skill_data[unitId]
   },
 
   // get raw data of wave_group_data by unitid
   // returns: object[]
   getWaveGroupData: (state) => (waveGroupId) => {
-    return Object.values(state.database.wave_group_data).filter(x => x.wave_group_id === Number(waveGroupId))
+    return Object.values(state.database['master'].wave_group_data).filter(x => x.wave_group_id === Number(waveGroupId))
   },
 
   // returns: string[]
   princessIdList: (state) => {
-    return Object.keys(state.database.unit_data).filter(x => x.substring(0, 2) === '10')
+    return Object.keys(state.database['master'].unit_data).filter(x => x.substring(0, 2) === '10')
   },
 
   // returns: string[]
   equipmentIdList: (state) => {
-    return Object.keys(state.database.equipment_data)
+    return Object.keys(state.database['master'].equipment_data)
   },
 
   // filtered equipments which need not craft
   // returns: string[]
   equipmentIdListEX: (state) => {
-    return Object.keys(state.database.equipment_data).filter(x => x[1] === '0')
+    return Object.keys(state.database['master'].equipment_data).filter(x => x[1] === '0')
   },
 
   // returns: string[]
   questIdList: (state) => {
-    return Object.keys(state.database.quest_data)
+    return Object.keys(state.database['master'].quest_data)
   },
 
   // returns: object[]
   getQuestsByAreaId: (state) => (areaId) => {
-    return Object.values(state.database.quest_data).filter(x => x.area_id === Number(areaId))
+    return Object.values(state.database['master'].quest_data).filter(x => x.area_id === Number(areaId))
   },
 
   // get position of a princess by unitid
   // returns: number
   getPrincessPosition: (state) => (unitId) => {
-    const saw = state.database.unit_data[unitId].search_area_width
+    const saw = state.database['master'].unit_data[unitId].search_area_width
     if (saw < state.widthThreshold[0]) return 1
     else if (saw >= state.widthThreshold[1]) return 3
     else return 2
@@ -376,7 +386,7 @@ const getters = {
   //get unitid by unitname
   // returns: number
   getPrincessIdByName: (state) => (name) => {
-    const chara = Object.values(state.database.unit_data).filter(x => x.unit_name === name)[0]
+    const chara = Object.values(state.database['master'].unit_data).filter(x => x.unit_name === name)[0]
     if (!chara) return
     return chara.unit_id
   },
@@ -388,16 +398,16 @@ const getters = {
     switch (String(equipmentId)[1]) {
       case '1': case '2':
         if (ignoreCraftFlag) {
-          equip = state.database.equipment_data[`${Number(equipmentId) % 10000 + 100000}`]
+          equip = state.database['master'].equipment_data[`${Number(equipmentId) % 10000 + 100000}`]
         } else {
           return {}
         }
         break
       case '3':
-        equip = state.database.unique_equipment_data[equipmentId]
+        equip = state.database['master'].unique_equipment_data[equipmentId]
         break
       default:
-        equip = state.database.equipment_data[equipmentId]
+        equip = state.database['master'].equipment_data[equipmentId]
     }
     const stats = {
       生命值: equip?.hp,
@@ -433,16 +443,16 @@ const getters = {
       if ([91001, 91002].includes(Number(id))) {
         return '宝石'
       } else {
-        return state.database.item_data[id]?.item_name
+        return state.database['master'].item_data[id]?.item_name
       }
     } else if (String(id).length === 6) {
       switch (String(id)[1]) {
         case '1': case '2':
-          return state.database.equipment_data[`${Number(id) % 10000 + 100000}`]?.equipment_name
+          return state.database['master'].equipment_data[`${Number(id) % 10000 + 100000}`]?.equipment_name
         case '3':
-          return state.database.unique_equipment_data[id]?.equipment_name
+          return state.database['master'].unique_equipment_data[id]?.equipment_name
         default:
-          return state.database.equipment_data[id]?.equipment_name
+          return state.database['master'].equipment_data[id]?.equipment_name
       }
     }
   },
@@ -456,10 +466,10 @@ const getters = {
   // get enemy details by enemyid
   // returns: object
   getEnemyDetailsByEnemyId: (state) => (enemyId) => {
-    const unitid = state.database.enemy_parameter[enemyId]?.unit_id
+    const unitid = state.database['master'].enemy_parameter[enemyId]?.unit_id
     if (!unitid) return {}
-    const skill = state.database.unit_skill_data[unitid]
-    const parameter = {...state.database.enemy_parameter[enemyId], ...state.database.unit_enemy_data[unitid]}
+    const skill = state.database['master'].unit_skill_data[unitid]
+    const parameter = {...state.database['master'].enemy_parameter[enemyId], ...state.database['master'].unit_enemy_data[unitid]}
     return {
       skill,
       parameter
@@ -469,12 +479,12 @@ const getters = {
   // get unit skill details by unitid
   // returns: object
   getUnitSkillDataEX: (state) => (unitId) => {
-    const unitSkill = JSON.parse(JSON.stringify(state.database.unit_skill_data[unitId]))
+    const unitSkill = JSON.parse(JSON.stringify(state.database['master'].unit_skill_data[unitId]))
     if (!unitSkill) return
     delete unitSkill.unit_id
     for (const key of Object.keys(unitSkill)) {
       if (unitSkill[key]) {
-        unitSkill[key] = state.database.skill_data[unitSkill[key]]
+        unitSkill[key] = state.database['master'].skill_data[unitSkill[key]]
       } else {
         delete unitSkill[key]
       }
@@ -486,9 +496,9 @@ const getters = {
   // returns: object
   getQuestDataByDiff: (state) => {
     return {
-      normal: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
-      hard: Object.values(state.database.quest_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.quest_name = `${y.quest_name}(H)`; return y }),
-      other: Object.values(state.database.quest_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2)))
+      normal: Object.values(state.database['master'].quest_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
+      hard: Object.values(state.database['master'].quest_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.quest_name = `${y.quest_name}(H)`; return y }),
+      other: Object.values(state.database['master'].quest_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2)))
     }
   },
 
@@ -496,24 +506,24 @@ const getters = {
   // returns: object
   getQuestAreaDataByDiff: (state) => {
     return {
-      normal: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
-      hard: Object.values(state.database.quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.area_name = `${y.area_name}(H)`; return y }),
-      other: Object.values(state.database.quest_area_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2))) 
+      normal: Object.values(state.database['master'].quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
+      hard: Object.values(state.database['master'].quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.area_name = `${y.area_name}(H)`; return y }),
+      other: Object.values(state.database['master'].quest_area_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2))) 
     }
   },
 
   // get equipment id by equipment name
   // returns: number
   getEquipmentIdByName: (state) => (name) => {
-    return Object.values(state.database.equipment_data).filter(x => x.equipment_name === name).map(x => x.equipment_id)[0]
+    return Object.values(state.database['master'].equipment_data).filter(x => x.equipment_name === name).map(x => x.equipment_id)[0]
   },
 
   // get equipment source by equipmentid
   // returns: object[]
   getEquipmentSource: (state) => (equipmentId) => {
-    if (state.database.equipment_data[equipmentId].craft_flg) return
+    if (state.database['master'].equipment_data[equipmentId].craft_flg) return
     const source = []
-    Object.values(state.database.enemy_reward_data)
+    Object.values(state.database['master'].enemy_reward_data)
       .filter(x => {
         return [
           x.reward_id_1,
@@ -533,11 +543,11 @@ const getters = {
             data.quest = []
           }
         }
-        for (const wavegroup of Object.values(state.database.wave_group_data)) {
+        for (const wavegroup of Object.values(state.database['master'].wave_group_data)) {
           for (let i = 1; i <= 5; i++) {
             if (wavegroup[`drop_reward_id_${i}`] === reward.drop_reward_id) {
               data.odds *= wavegroup.odds / 100
-              const quest = Object.values(state.database.quest_data).filter(y => [
+              const quest = Object.values(state.database['master'].quest_data).filter(y => [
                 y.wave_group_id_1,
                 y.wave_group_id_2,
                 y.wave_group_id_3
@@ -569,12 +579,12 @@ const getters = {
   getQuestRewardById: (state) => (questId) => {
     const rewards = []
     const waves = [
-      state.database.quest_data[questId]?.wave_group_id_1,
-      state.database.quest_data[questId]?.wave_group_id_2,
-      state.database.quest_data[questId]?.wave_group_id_3
+      state.database['master'].quest_data[questId]?.wave_group_id_1,
+      state.database['master'].quest_data[questId]?.wave_group_id_2,
+      state.database['master'].quest_data[questId]?.wave_group_id_3
     ]
     for (const wavegroupid of waves) {
-      for (const wave of Object.values(state.database.wave_group_data).filter(x => x.wave_group_id === wavegroupid)) {
+      for (const wave of Object.values(state.database['master'].wave_group_data).filter(x => x.wave_group_id === wavegroupid)) {
         [
           wave.drop_reward_id_1,
           wave.drop_reward_id_2,
@@ -584,7 +594,7 @@ const getters = {
         ]
           .filter(x => x)
           .map(x => {
-            const reward = state.database.enemy_reward_data[x]
+            const reward = state.database['master'].enemy_reward_data[x]
             const combinedReward = []
             for (let i = 1; i <= 5; i++) {
               if (reward[`odds_${i}`]){
