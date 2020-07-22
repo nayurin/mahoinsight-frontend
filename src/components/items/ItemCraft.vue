@@ -91,7 +91,7 @@ export default {
     },
     craftTo () {
       const to = []
-      for (const itemid of Object.keys(this.$store.state.database.equipment_data).filter(x => x[1] === '0')) {
+      for (const itemid of Object.keys(this.$store.state.database['master'].equipment_data).filter(x => x[1] === '0')) {
         if (
           this._craft(this.findCraft(itemid))
             .flat(Infinity)
