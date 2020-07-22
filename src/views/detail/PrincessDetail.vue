@@ -60,7 +60,7 @@
       </v-col>
     </v-row>
     <v-row
-      v-if="Object.prototype.hasOwnProperty.call(princess, 'unique_equipment')"
+      v-if="ue"
     >
       <v-col class="col-12 pr-1">
         <PrincessUniqueEquipment
@@ -108,6 +108,12 @@ export default {
     },
     name () {
       return this.$route.params.princessName
+    },
+    ue () {
+      const base = (this.princess - this.princess % 100) / 100
+      const tail = base % 1000
+      const ueid = 130000 + tail * 10 + 1
+      return this.$store.getters.getUniqueEquipmentData(ueid)
     }
   }
 }
