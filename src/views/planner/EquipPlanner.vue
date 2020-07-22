@@ -798,7 +798,7 @@ export default {
               times: amount
             })
           } else {
-            if (quest.area_id % 1000 <= this.$store.state.furthestArea) {
+            if (quest.area_id < 13000 && quest.area_id % 1000 <= this.$store.state.furthestArea) {
               sources.push({
                 id: quest.quest_id,
                 drop_count: source.drop_count,
