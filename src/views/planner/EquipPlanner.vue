@@ -168,8 +168,7 @@
               >
                 <PrincessPlate
                   :id="item"
-                  :key="renderSwitcher"
-                  :fromto="ngFlag ? 'ng' : 'master'"
+                  fromto
                   zoom-ratio="0.5"
                 />
               </v-col>
@@ -190,8 +189,7 @@
               >
                 <PrincessPlate
                   :id="item"
-                  :key="renderSwitcher"
-                  :fromto="ngFlag ? 'ng' : 'master'"
+                  fromto
                   :syncflag="syncModifySelected || syncModifyProfile"
                   zoom-ratio="0.5"
                 />
@@ -594,16 +592,10 @@ export default {
       reqPieces: {},
       stamina: 0,
       ngFlag: false,
-      renderSwitcher: 0,
       rules: {
         required: value => !!value || '数量不能为空',
         range: value => value > 0 || '数量不能为负',
       }
-    }
-  },
-  provide () {
-    return {
-      getNGFlag: () => this.ngFlag
     }
   },
   computed: {
@@ -648,8 +640,8 @@ export default {
     }
   },
   watch: {
-    ngFlag () {
-      this.renderSwitcher++
+    ngFlag (val) {
+      this.$store.commit('updateState', { key: 'ngFlag', value: val })
     },
     lootsTotal () {
       document.getElementById('planner-container').scrollIntoView({
@@ -1054,6 +1046,10 @@ export default {
       this.reqPieces = {}
       this.stamina = 0
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('updateState', { key: 'ngFlag', value: false })
+    next()
   }
 }
 </script>

@@ -254,8 +254,8 @@ export default {
       default: false
     },
     fromto: {
-      type: String,
-      default: ''
+      type: Boolean,
+      default: false
     },
     syncflag: {
       type: Boolean,
@@ -269,7 +269,7 @@ export default {
       rules: {
         required: value => !!value || 'Rank 不能为空',
         range: value => {
-          const rank = this.fromto === 'ng' ? this.$store.state.maxRank + 1 : this.$store.state.maxRank
+          const rank = this.$store.state.ngFlag ? this.$store.state.maxRank + 1 : this.$store.state.maxRank
           return value > 0 && value <= rank || '无效的 Rank 等级'
         }
       },

@@ -39,7 +39,8 @@ const state = {
   loaded: false,
   activeProfile: null,
   profile: {},
-  lastUpdatedChara: 0
+  lastUpdatedChara: 0,
+  ngFlag: false
 }
 
 export default state

@@ -48,7 +48,6 @@ export default {
       default: false,
     }
   },
-  inject: ['getNGFlag'],
   data () {
     return {
       select: [0, 1, 2, 3, 4, 5],
@@ -105,7 +104,7 @@ export default {
       return promotion
     },
     ngFlag () {
-      return this.getNGFlag()
+      return this.$store.state.ngFlag
     }
   },
   watch: {
