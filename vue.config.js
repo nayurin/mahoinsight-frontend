@@ -23,6 +23,6 @@ module.exports = {
       })
     config
       .plugin('workbox')
-        .use(InjectManifest, [{ swSrc: './src/workers/sw.js', dontCacheBustURLsMatching: /.[a-f0-9]{8}./, maximumFileSizeToCacheInBytes: 4 * 1024 * 1024 }])
+        .use(InjectManifest, [{ swSrc: './src/workers/sw.js', dontCacheBustURLsMatching: /.[a-f0-9]{8}./, maximumFileSizeToCacheInBytes: 8 * 1024 * 1024 }])
   }
 }
