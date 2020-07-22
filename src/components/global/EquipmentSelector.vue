@@ -48,6 +48,7 @@ export default {
       default: false,
     }
   },
+  inject: ['getNGFlag'],
   data () {
     return {
       select: [0, 1, 2, 3, 4, 5],
@@ -90,7 +91,7 @@ export default {
       }
     },
     promotion () {
-      const promotion = this.$store.getters.getUnitPromotionFull(this.id)
+      const promotion = this.ngFlag ? this.$store.getters.getUnitPromotionFullNG(this.id) : this.$store.getters.getUnitPromotionFull(this.id)
       if (!Object.prototype.hasOwnProperty.call(promotion, String(this.rank))) {
         this.$set(promotion, this.rank, this.unknownRank)
       }
@@ -102,6 +103,9 @@ export default {
         promotion[`equip_slot_${x}`] = 999999
       })
       return promotion
+    },
+    ngFlag () {
+      return this.getNGFlag()
     }
   },
   watch: {

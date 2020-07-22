@@ -128,6 +128,30 @@
                 </template>
               </v-switch>
             </v-col>
+            <v-col class="col-auto">
+              <v-switch
+                v-model="ngFlag"
+                label="未来视"
+                color="indigo"
+                class="mx-5"
+              >
+                <template v-slot:append>
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        mdi-information-outline
+                      </v-icon>
+                    </template>
+                    <span
+                      v-html="ngComment"
+                    />
+                  </v-tooltip>
+                </template>
+              </v-switch>
+            </v-col>
           </v-row>
           <v-card
             v-if="fromProfile"
@@ -144,7 +168,8 @@
               >
                 <PrincessPlate
                   :id="item"
-                  fromto
+                  :key="renderSwitcher"
+                  :fromto="ngFlag ? 'ng' : 'master'"
                   zoom-ratio="0.5"
                 />
               </v-col>
@@ -165,7 +190,8 @@
               >
                 <PrincessPlate
                   :id="item"
-                  fromto
+                  :key="renderSwitcher"
+                  :fromto="ngFlag ? 'ng' : 'master'"
                   :syncflag="syncModifySelected || syncModifyProfile"
                   zoom-ratio="0.5"
                 />
@@ -567,10 +593,17 @@ export default {
       mergedReq: {},
       reqPieces: {},
       stamina: 0,
+      ngFlag: false,
+      renderSwitcher: 0,
       rules: {
         required: value => !!value || '数量不能为空',
         range: value => value > 0 || '数量不能为负',
       }
+    }
+  },
+  provide () {
+    return {
+      getNGFlag: () => this.ngFlag
     }
   },
   computed: {
@@ -609,9 +642,15 @@ export default {
       if (this.bonus2x) return 2
       if (this.bonus3x) return 3
       return null
+    },
+    ngComment () {
+      return `未来视的生效范围：【Rank ${this.$store.state.maxRank + 1} 以内】<br>请注意：启用未来视后，在计算装备获取时，会解除限制【不超过第 ${this.$store.state.furthestArea} 章】<br>与此同时，解除限制会导致计算量增加从而使得【CPU 消耗上升】，开始模拟后【可能】会造成浏览器响应迟缓的现象，请耐心等待`
     }
   },
   watch: {
+    ngFlag () {
+      this.renderSwitcher++
+    },
     lootsTotal () {
       document.getElementById('planner-container').scrollIntoView({
         behavior: "smooth",
@@ -755,7 +794,7 @@ export default {
       const equipSource = this.$store.getters.getEquipmentSource(id)
       equipSource.forEach(source => {
         source.quest.forEach(quest => {
-          if (quest.area_id % 1000 <= this.$store.state.furthestArea) {
+          if (this.ngFlag) {
             sources.push({
               id: quest.quest_id,
               drop_count: source.drop_count,
@@ -766,6 +805,19 @@ export default {
               efficiency: (source.drop_count * source.reward_num * source.odds) / quest.stamina,
               times: amount
             })
+          } else {
+            if (quest.area_id % 1000 <= this.$store.state.furthestArea) {
+              sources.push({
+                id: quest.quest_id,
+                drop_count: source.drop_count,
+                reward_num: source.reward_num,
+                name: quest.quest_name,
+                stamina: quest.stamina,
+                odds: source.odds,
+                efficiency: (source.drop_count * source.reward_num * source.odds) / quest.stamina,
+                times: amount
+              })
+            }
           }
         })
       })
@@ -830,7 +882,8 @@ export default {
     },
     equips4Promotion ({ chara, rFrom, rTo, eFrom, eTo }) {
       if (!chara) return
-      const promotion = JSON.parse(JSON.stringify(this.$store.getters.getUnitPromotionFull(chara)))
+      const promotion = this.ngFlag ? JSON.parse(JSON.stringify(this.$store.getters.getUnitPromotionFullNG(chara))) : JSON.parse(JSON.stringify(this.$store.getters.getUnitPromotionFull(chara)))
+      const maxRank = this.ngFlag ? this.$store.state.maxRank + 1 : this.$store.state.maxRank
       for (const promote of Object.values(promotion)) {
         delete promote.promotion_level
         delete promote.unit_id
@@ -841,8 +894,8 @@ export default {
       eTo = rTo ? eTo.map(x => promotion[rTo] ? promotion[rTo][`equip_slot_${x + 1}`] : 999999) : eTo
       const checkValid = () => {
         if (rFrom && rTo) {
-          if (rFrom < 1 || rFrom > this.$store.state.maxRank) return false
-          if (rTo < 1 || rTo > this.$store.state.maxRank) return false
+          if (rFrom < 1 || rFrom > maxRank) return false
+          if (rTo < 1 || rTo > maxRank) return false
           if (rFrom > rTo) return false
           if (rFrom === rTo) {
             for (const item of eFrom) {
