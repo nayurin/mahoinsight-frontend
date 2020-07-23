@@ -119,16 +119,6 @@ export default {
               type: 'bugfix'
             }
           ]
-        },
-        {
-          version: '0.8.0',
-          date: '2020-07-22T03:00:00.000Z',
-          logs: [
-            {
-              content: '修改数据缓存文件的构成形式并修改workbox最大可缓存文件大小以匹配新的完整数据缓存',
-              type: 'refactor'
-            }
-          ]
         }
       ].map(x => {
         x.active = x.current ?? false
