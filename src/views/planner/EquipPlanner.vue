@@ -91,6 +91,8 @@
                   <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon
+                        small
+                        class="mt-1"
                         v-bind="attrs"
                         v-on="on"
                       >
@@ -115,6 +117,8 @@
                   <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon
+                        small
+                        class="mt-1"
                         v-bind="attrs"
                         v-on="on"
                       >
@@ -139,6 +143,8 @@
                   <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon
+                        small
+                        class="mt-1"
                         v-bind="attrs"
                         v-on="on"
                       >
@@ -636,7 +642,7 @@ export default {
       return null
     },
     ngComment () {
-      return `未来视的生效范围：【Rank ${this.$store.state.maxRank + 1} 以内】<br>请注意：启用未来视后，在计算装备获取时，会解除限制【不超过第 ${this.$store.state.furthestArea} 章】<br>与此同时，解除限制会导致计算量增加从而使得【CPU 消耗上升】，开始模拟后【可能】会造成浏览器响应迟缓的现象，请耐心等待`
+      return `未来视的生效范围：【Rank ${this.$store.state.maxRank + 1} 以内】<br>请注意：启用未来视后，在计算装备获取时，会解除限制【不超过第 ${this.$store.state.furthestArea} 章】<br>与此同时，解除限制会导致计算量增加从而使【CPU 负载上升】，开始模拟后【可能】会造成浏览器响应迟缓的现象，请耐心等待`
     }
   },
   watch: {

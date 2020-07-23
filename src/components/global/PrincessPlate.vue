@@ -136,6 +136,7 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
+                    small
                     v-bind="attrs"
                     v-on="on"
                   >
@@ -171,6 +172,7 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
+                    small
                     v-bind="attrs"
                     v-on="on"
                   >

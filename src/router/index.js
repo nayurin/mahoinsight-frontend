@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/home/Home'
 
 import About from '@/views/about/Connect'
+import Changelog from '@/views/about/Changelog'
 import Joinus from '@/views/about/Joinus'
 import Issue from '@/views/about/Issue'
 import Link from '@/views/about/Link'
@@ -152,7 +153,7 @@ const routes = [
         component: Calculator,
         meta: {
           title: '排名奖励计算器',
-          icon: 'pcr-icon-batte-rank-calculation',
+          icon: 'pcr-icon-battle-rank-calculation',
           breadcrumb: [
             {
               name: 'Calculator',
@@ -294,6 +295,21 @@ const routes = [
           breadcrumb: [
             {
               name: 'Joinus',
+              disabled: true
+            }
+          ],
+        }
+      },
+      {
+        path: 'changelog',
+        name: 'Changelog',
+        component: Changelog,
+        meta: {
+          title: '更新记录',
+          icon: 'pcr-icon-about-changelog',
+          breadcrumb: [
+            {
+              name: 'Changelog',
               disabled: true
             }
           ],
