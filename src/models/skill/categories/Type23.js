@@ -17,11 +17,14 @@ export default {
     const ifType = ifTypeMap[ifValue]
     const singleFlag = Number(action.target_count) === 1
 
+    // 2020.7.26 add: 水狼的条件分支证明了 positive 分支是 action_detail_2，而 negative 分支是 action_detail_3
+    // 那么应该理解为：positive 分支判断异常状态不存在 而 negative 分支判断异常状态存在？ 这里和初音笔记的 positive 和 negative 分支说明有一些区别
+
     const positive = (ifThen) => {
       if (ifThen === 0) return ''
 
       if (ifType) {
-        return singleFlag ? `如果 $t 处于 ${ifType[1]} 状态，对其使用 ${ifThen % 100}` : `如果任意一个 $t 处于 ${ifType[1]} 状态，对其使用 ${ifThen % 100}`
+        return singleFlag ? `如果 $t 不处于 ${ifType[1]} 状态，对其使用 ${ifThen % 10}` : `如果任意一个 $t 不处于 ${ifType[1]} 状态，对其使用 ${ifThen % 10}`
       } else {
         switch (true) {
           case ifValue >= 600 && ifValue < 700:
@@ -43,7 +46,7 @@ export default {
       if (ifThen === 0) return ''
       
       if (ifType) {
-        return singleFlag ? `如果 $t 不处于 ${ifType[1]} 状态，对其使用 ${ifThen % 100}` : `如果任意一个 $t 不处于 ${ifType[1]} 状态，对其使用 ${ifThen % 100}`
+        return singleFlag ? `如果 $t 处于 ${ifType[1]} 状态，对其使用 ${ifThen % 10}` : `如果任意一个 $t 处于 ${ifType[1]} 状态，对其使用 ${ifThen % 10}`
       } else {
         switch (true) {
           case ifValue >= 600 && ifValue < 700:
@@ -71,8 +74,7 @@ export default {
       case ifValue >= 600 && ifValue < 900:
       case ifValue >= 901 && ifValue < 1000:
       case ifValue === 1300:
-        // 和初音笔记不一致 初音笔记的positive分支是action_detail_2 而negative分支是action_detail_3
-        detail = `条件分支：${[positive(Number(action.action_detail_3)), negative(Number(action.action_detail_2))].filter(x => x).join('，')}`
+        detail = `条件分支：${[positive(Number(action.action_detail_2)), negative(Number(action.action_detail_3))].filter(x => x).join('，')}`
         break
       case ifValue >= 0 && ifValue < 100:
         if (Number(action.action_detail_2 !== 0) && Number(action.action_detail_3 !== 0)) {
