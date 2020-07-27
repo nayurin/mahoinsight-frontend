@@ -88,7 +88,7 @@ export default {
         {
           current: true,
           version: '0.9.1',
-          date: '',
+          date: '2020-07-27T06:20:00.000Z',
           logs: [
             {
               content: '修改条件分支的动作解释',
