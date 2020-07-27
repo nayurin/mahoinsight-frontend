@@ -16,6 +16,7 @@
           zoom-ratio="0.5"
           stars
           pieces
+          equips
         />
       </v-col>
     </v-row>
@@ -52,6 +53,7 @@
             zoom-ratio="0.5"
             stars
             pieces
+            equips
           />
         </v-col>
       </v-row>
@@ -124,6 +126,11 @@ export default {
         })
       }
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('updateState', { key: 'equipSelected', value: [] })
+    this.$store.commit('updateState', { key: 'curRank', value: 0 })
+    next()
   }
 }
 </script>

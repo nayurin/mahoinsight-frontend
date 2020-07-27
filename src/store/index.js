@@ -33,6 +33,15 @@ export default new Vuex.Store({
       } else {
         state.database[key] = value
       }
+    },
+
+    // update vuex state of plate's context
+    updateContext (state, { key, value }) {
+      if (value) {
+        Vue.set(state.context, key, {...state.context[key], ...value})
+      } else {
+        Vue.delete(state.context, key)
+      }
     }
   },
   actions: {

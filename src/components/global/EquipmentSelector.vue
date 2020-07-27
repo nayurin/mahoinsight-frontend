@@ -82,11 +82,11 @@ export default {
   computed: {
     rank () {
       if (this.from && !this.to) {
-        return this.$store.getters.curRank({ from: true })
+        return this.activeProfileChara?.rank ?? this.$store.getters.curRank({ from: true })
       } else if (this.to && !this.from) {
-        return this.$store.getters.curRank({ to: true })
+        return this.activeProfileChara?.rank ?? this.$store.getters.curRank({ to: true })
       } else {
-        return this.$store.getters.curRank({})
+        return this.activeProfileChara?.rank ?? this.$store.getters.curRank({})
       }
     },
     promotion () {
@@ -105,18 +105,33 @@ export default {
     },
     ngFlag () {
       return this.$store.state.ngFlag
+    },
+    activeProfileChara () {
+      return this.$store.state.profile[this.$store.state.activeProfile]?.princess ? this.$store.state.profile[this.$store.state.activeProfile]?.princess[String(this.id)] : null
+    },
+    activeProfileEquipSlot () {
+      return this.activeProfileChara?.equipment?.filter(x => x !== 999999).map(x => {
+        for (let i = 1; i <= 6; i++) {
+          if (this.$store.getters.getUnitPromotion(this.id, this.rank)[`equip_slot_${i}`] === Number(x)) {
+            return i - 1
+          }
+        }
+      })
     }
   },
   watch: {
     rank (cur, prev) {
-      if (Number(cur) !== Number(prev)) this.setEquipBtn()
+      if (Number(cur) !== Number(prev)) {
+        this.select = [0, 1, 2, 3, 4, 5]
+        this.setEquipBtn()
+      }
     },
     select (cur, prev) {
       if (JSON.stringify(cur) !== JSON.stringify(prev)) {
         if (this.from && !this.to) {
-          this.$store.commit('updateState', { key: 'equipSelectedFrom', value: cur })
+          this.$store.commit('updateContext', { key: String(this.id), value: { eFrom: cur }})
         } else if (this.to && !this.from) {
-          this.$store.commit('updateState', { key: 'equipSelectedTo', value: cur })
+          this.$store.commit('updateContext', { key: String(this.id), value: { eTo: cur }})
         } else {
           this.$store.commit('updateState', { key: 'equipSelected', value: cur })
         }
@@ -128,16 +143,29 @@ export default {
   },
   methods: {
     init () {
-      this.$store.commit('updateState', { key: 'curRank', value: this.$store.state.maxRank })
-      this.$store.commit('updateState', { key: 'rankFrom', value: this.$store.state.maxRank })
-      this.$store.commit('updateState', { key: 'rankTo', value: this.$store.state.maxRank })
-      this.$store.commit('updateState', { key: 'equipSelected', value: this.select })
-      this.$store.commit('updateState', { key: 'equipSelectedFrom', value: this.select })
-      this.$store.commit('updateState', { key: 'equipSelectedTo', value: this.select })
+      this.select = !this.to && this.activeProfileEquipSlot ? this.activeProfileEquipSlot : [0, 1, 2, 3, 4, 5]
+      if (this.from && !this.to) {
+        this.$store.commit('updateContext', { key: String(this.id), value: {
+          eFrom: this.select,
+          // rFrom: String(this.$store.state.maxRank)
+        }})
+      } else if (this.to && !this.from) {
+        this.$store.commit('updateContext', { key: String(this.id), value: {
+          eTo: this.select,
+          // rTo: String(this.$store.state.maxRank)
+        }})
+      } else {
+        if (this.activeProfileChara?.rank) {
+          this.$store.commit('updateState', { key: 'curRank', value: this.activeProfileChara.rank })
+        } else {
+          this.$store.commit('updateState', { key: 'curRank', value: String(this.$store.state.maxRank) })
+        }
+        this.$store.commit('updateState', { key: 'equipSelected', value: this.select })
+      }
       this.setEquipBtn()
     },
     setEquipBtn () {
-      this.select = [0, 1, 2, 3, 4, 5]
+      this.select = !this.to && this.activeProfileEquipSlot ? this.activeProfileEquipSlot : [0, 1, 2, 3, 4, 5]
       for (let i = 1; i <= 6; i++) {
         if (this.promotion[String(this.rank)][`equip_slot_${i}`] === 999999) {
           this.$set(this.icons[i - 1], 'disabled', true)

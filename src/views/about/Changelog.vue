@@ -87,6 +87,28 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.1',
+          date: '',
+          logs: [
+            {
+              content: '修改条件分支的动作解释',
+              type: 'bugfix'
+            },
+            {
+              content: '修复团队战boss技能的数据错误',
+              type: 'bugfix'
+            },
+            {
+              content: '【角色管理】新增保存装备功能',
+              type: 'improvement'
+            },
+            {
+              content: '【刷图规划】支持导入用户档案中的角色',
+              type: 'improvement'
+            }
+          ]
+        },
+        {
           version: '0.9.0',
           date: '2020-07-23T03:00:00.000Z',
           logs: [

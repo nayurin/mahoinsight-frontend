@@ -44,11 +44,19 @@
               <v-col
                 class="col-12 py-2"
               >
-                <v-chip
-                  label
+                <v-btn
+                  small
                   color="primary"
-                  v-text="charaName(chara)"
-                />
+                  @click="onRemoveChara(chara)"
+                >
+                  {{ charaName(chara) }}
+                  <v-icon
+                    small
+                    right
+                  >
+                    mdi-close
+                  </v-icon>
+                </v-btn>
               </v-col>
               <v-col
                 v-for="(amount, itemid) in equips"
@@ -208,6 +216,13 @@
           >
             下一步
           </v-btn>
+          <v-btn
+            v-if="fromProfile"
+            text
+            @click="importStoragedChara"
+          >
+            导入全部角色
+          </v-btn>
         </v-stepper-content>
   
         <v-stepper-content step="2">
@@ -229,8 +244,8 @@
               >
                 <EditableItemFigure 
                   :id="Number(itemid)"
-                  @update="onUpdate(itemid, amount)"
-                  @remove="onRemove(itemid)"
+                  @update="onUpdateItem(itemid, amount)"
+                  @remove="onRemoveItem(itemid)"
                 >
                   <template v-slot:content>
                     <v-row
@@ -329,8 +344,8 @@
             >
               <EditableItemFigure 
                 :id="Number(item)"
-                @update="onUpdate(item, itemAmount)"
-                @remove="onRemove(item)"
+                @update="onUpdateItem(item, itemAmount)"
+                @remove="onRemoveItem(item)"
               >
                 <template v-slot:content>
                   <v-row
@@ -621,12 +636,14 @@ export default {
       return text
     },
     dim5Group () {
+      const lastUpdatedChara = this.$store.state.lastUpdatedChara
+      const ctx = this.$store.state.context[lastUpdatedChara]
       return {
-        rFrom: this.$store.state.rankFrom,
-        rTo: this.$store.state.rankTo,
-        eFrom: this.$store.state.equipSelectedFrom,
-        eTo: this.$store.state.equipSelectedTo,
-        chara: this.$store.state.lastUpdatedChara
+        rFrom: ctx?.rFrom ?? String(this.$store.state.maxRank),
+        rTo: ctx?.rTo ?? String(this.$store.state.maxRank),
+        eFrom: ctx?.eFrom ?? [],
+        eTo: ctx?.eTo ?? [],
+        chara: lastUpdatedChara ?? '0'
       }
     },
     fullItem () {
@@ -770,13 +787,16 @@ export default {
         }
       }
     },
-    onUpdate (id, amount) {
+    onUpdateItem (id, amount) {
       this.$set(this.requirement, 'manual', {...this.requirement.manual, ...{ [id]: Number(amount) }})
       this.itemAmount = 1
     },
-    onRemove (id) {
+    onRemoveItem (id) {
       if (this.requirement.manual) this.$delete(this.requirement.manual, id)
       this.itemAmount = 1
+    },
+    onRemoveChara (id) {
+      this.$delete(this.requirement, id)
     },
     routeToQuest (questid) {
       this.$router.push({
@@ -888,10 +908,11 @@ export default {
       }
       rFrom = Number(rFrom)
       rTo = Number(rTo)
-      eFrom = rFrom ? eFrom.map(x => promotion[rFrom] ? promotion[rFrom][`equip_slot_${x + 1}`] : 999999) : eFrom
-      eTo = rTo ? eTo.map(x => promotion[rTo] ? promotion[rTo][`equip_slot_${x + 1}`] : 999999) : eTo
+      eFrom = eFrom && rFrom ? eFrom.map(x => promotion[rFrom] ? promotion[rFrom][`equip_slot_${x + 1}`] : 999999) : eFrom
+      eTo = eTo && rTo ? eTo.map(x => promotion[rTo] ? promotion[rTo][`equip_slot_${x + 1}`] : 999999) : eTo
       const checkValid = () => {
         if (rFrom && rTo) {
+          if (rFrom === -1 && rTo === -1) return true
           if (rFrom < 1 || rFrom > maxRank) return false
           if (rTo < 1 || rTo > maxRank) return false
           if (rFrom > rTo) return false
@@ -905,16 +926,16 @@ export default {
             }
           }
         } else {
-          if (!rFrom && !rTo) return true
-          else return false
+          return false
         }
         return true
       }
       const flag = checkValid()
       if (!flag) return
-      if (!rFrom && !rTo) {
+      if (rFrom === -1 && rTo === -1) {
         if (Object.prototype.hasOwnProperty.call(this.requirement, chara)) {
           this.$delete(this.requirement, chara)
+          this.$store.commit('updateContext', { key: String(this.id) })
         }
         return
       }
@@ -1051,6 +1072,24 @@ export default {
       this.mergedReq = {}
       this.reqPieces = {}
       this.stamina = 0
+    },
+    importStoragedChara () {
+      this.requirement = {}
+      for (const chara of this.storagedPrincess) {
+        this.equips4Promotion({
+          chara: chara,
+          rFrom: this.profile.princess[chara].rank,
+          rTo: this.ngFlag ? String(this.$store.state.maxRank + 1) : String(this.$store.state.maxRank),
+          eFrom: this.profile.princess[chara].equipment.filter(x => x !== 999999).map(x => {
+            for (let i = 1; i <= 6; i++) {
+              if (this.$store.getters.getUnitPromotion(chara, this.profile.princess[chara].rank)[`equip_slot_${i}`] === Number(x)) {
+                return i - 1
+              }
+            }
+          }),
+          eTo: [0, 1, 2, 3, 4, 5]
+        })
+      }
     }
   },
   beforeRouteLeave (to, from, next) {

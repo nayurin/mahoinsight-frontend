@@ -68,24 +68,55 @@
         no-gutters
         class="d-flex align-center"
       >
-        <span
-          class="title pl-5 pr-2"
-        >
-          ★
-        </span>
-        <v-btn-toggle
+        <v-rating
           v-model="btnrarity"
-          mandatory
-          shaped
-          class="px-0"
-        >
-          <v-btn
-            v-for="(icon, i) in starsicon"
-            :key="i"
+          dense
+          hover
+          small
+          color="yellow darken-2"
+          class="mx-5"
+        />
+      </v-row>
+
+      <v-row
+        v-if="equips"
+        no-gutters
+        class="my-6 mb-2"
+      >
+        <v-col>
+          <v-text-field
+            v-model="rank"
+            dense
+            :rules="[rules.required, rules.range]"
+            label="当前 Rank 和装备配置"
+            prefix="Rank"
+            class="mx-5"
           >
-            <v-icon>{{ icon }}</v-icon>
-          </v-btn>
-        </v-btn-toggle>
+            <template
+              v-if="!$store.state.mobile"
+              v-slot:append
+            >
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    small
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    mdi-information-outline
+                  </v-icon>
+                </template>
+                <span
+                  v-html="commentFromto('none')"
+                />
+              </v-tooltip>
+            </template>
+          </v-text-field>
+          <EquipmentSelector
+            :id="id"
+            class="mx-5"
+          />
+        </v-col>
       </v-row>
 
       <v-row
@@ -127,7 +158,6 @@
             label="From"
             prefix="Rank"
             class="mx-5"
-            @blur="rankfrom = rankfrom === '' ? $store.state.maxRank : rankfrom"
           >
             <template
               v-if="!$store.state.mobile"
@@ -163,7 +193,6 @@
             label="To"
             prefix="Rank"
             class="mx-5"
-            @blur="rankto = rankto === '' ? $store.state.maxRank : rankto"
           >
             <template
               v-if="!$store.state.mobile"
@@ -259,6 +288,10 @@ export default {
       type: Boolean,
       default: false
     },
+    equips: {
+      type: Boolean,
+      default: false
+    },
     syncflag: {
       type: Boolean,
       default: false
@@ -280,8 +313,7 @@ export default {
       purememorypiece: 0,
       btnrarity: 0,
       starsicon: ['mdi-numeric-1', 'mdi-numeric-2','mdi-numeric-3','mdi-numeric-4','mdi-numeric-5'],
-      rankfrom: 0,
-      rankto: 0,
+      rank: 0,
       ue: false,
       prev: {},
       datasource: ''
@@ -294,14 +326,27 @@ export default {
     name () {
       return this.princess.unit_name
     },
-    profile () {
-      return this.$store.state.profile
+    activeProfileChara () {
+      return this.$store.state.profile[this.$store.state.activeProfile]?.princess ? this.$store.state.profile[this.$store.state.activeProfile]?.princess[String(this.id)] : null
     },
-    activeProfile () {
-      return this.$store.state.activeProfile
+    rankfrom: {
+      get () {
+        return this.$store.state.context[this.id]?.rFrom ?? this.activeProfileChara?.rank ?? String(this.$store.state.maxRank)
+      },
+      set (val) {
+        this.$store.commit('updateContext', { key: String(this.id), value: { rFrom: String(val) }})
+      }
+    },
+    rankto: {
+      get () {
+        return this.$store.state.context[this.id]?.rTo ?? String(this.$store.state.maxRank)
+      },
+      set (val) {
+        this.$store.commit('updateContext', { key: String(this.id), value: { rTo: String(val) }})
+      }
     },
     src () {
-      const rarity = this.rarity
+      const rarity = this.activeProfileChara?.rarity ?? -1
       let id
       if (rarity === -1) {
         id = this.princess.rarity >= 3 ? this.id + 30 : this.id + 10
@@ -322,41 +367,53 @@ export default {
         width: `${this.origWidth * parseFloat(this.zoomRatio)}px`
       }
     },
-    rarity () {
-      return this.profile[this.activeProfile]?.princess && this.profile[this.activeProfile]?.princess[String(this.id)] ? this.profile[this.activeProfile].princess[String(this.id)].rarity : -1
-    },
     memorypieceid () {
       return (this.id - this.id % 100) / 100 + 30000
     },
     comment () {
-      if (this.profile[this.activeProfile]?.princess && this.profile[this.activeProfile]?.princess[String(this.id)]) {
-        return `${this.name}<br><br>★ ${this.profile[this.activeProfile].princess[String(this.id)].rarity}<br>记忆碎片：${this.profile[this.activeProfile].princess[String(this.id)].pieces[0]}<br>纯净记忆碎片：${this.profile[this.activeProfile].princess[String(this.id)].pieces[1]}`
+      if (this.activeProfileChara) {
+        const curEquipment = this.activeProfileChara.equipment?.reduce((t, v) => {
+          if (this.$store.getters.getEquipmentData(v)) t += `【${this.$store.getters.getEquipmentData(v).equipment_name}】`
+          return t
+        }, '') || '无'
+        return `${this.name} ★ ${this.activeProfileChara.rarity}<br><br>Rank ${this.activeProfileChara.rank}<br>已装备：${curEquipment}<br>记忆碎片：${this.activeProfileChara.pieces[0]}<br>纯净记忆碎片：${this.activeProfileChara.pieces[1]}`
       } else {
         return `${this.name}<br><br>未记录角色信息`
       }
     }
   },
   watch: {
-    rankfrom (val) {
-      this.$store.commit('updateState', { key: 'rankFrom', value: String(val) })
-    },
-    rankto (val) {
-      this.$store.commit('updateState', { key: 'rankTo', value: String(val) })
+    // rankfrom (val) {
+    //   if (val === '-1') {
+    //     this.$store.commit('updateContext', { key: String(this.id), value: { rFrom: this.activeProfileChara?.rank ?? String(this.$store.state.maxRank) }})
+    //   }
+    // },
+    // rankto (val) {
+    //   if (val === '-1') {
+    //     this.$store.commit('updateContext', { key: String(this.id), value: { rTo: String(this.$store.state.maxRank) }})
+    //   }
+    // },
+    rank (val) {
+      this.$store.commit('updateState', { key: 'curRank', value: String(val) })
     },
     editing (val) {
-      if (val) {
-        if (this.fromto) {
-          this.prev = {
-            rFrom: this.$store.state.rankFrom,
-            rTo: this.$store.state.rankTo,
-            eFrom: this.$store.state.equipSelectedFrom,
-            eTo: this.$store.state.equipSelectedTo
+      if (this.fromto) {
+        if (val) {
+          this.prev = this.$store.state.context[this.id] ? JSON.parse(JSON.stringify(this.$store.state.context[this.id])) : {
+            rFrom: String(this.$store.state.maxRank),
+            rTo: String(this.$store.state.maxRank),
+            eFrom: [0, 1, 2, 3, 4, 5],
+            eTo: [0, 1, 2, 3, 4, 5]
           }
         }
-        this.$store.commit('updateState', { key: 'rankFrom', value: String(this.rankfrom) })
-        this.$store.commit('updateState', { key: 'rankTo', value: String(this.rankto) })
-        this.$store.commit('updateState', { key: 'lastUpdatedChara', value: this.id })
+        this.$store.commit('updateContext', { key: String(this.id), value: {
+          rFrom: String(this.rankfrom),
+          rTo: String(this.rankto)
+        }})
+      } else {
+        this.$store.commit('updateState', { key: 'curRank', value: String(this.rank) })
       }
+      this.$store.commit('updateState', { key: 'lastUpdatedChara', value: String(this.id) })
     }
   },
   created () {
@@ -364,6 +421,9 @@ export default {
     this.syncData('pieces')
     if (this.fromto) {
       this.syncData('fromto')
+    }
+    if (this.equips) {
+      this.syncData('equips')
     }
   },
   methods: {
@@ -378,43 +438,46 @@ export default {
           commentRank = `【To】表示目标Rank，点击左侧区域修改`
           break
         default:
-          return
+          commentRank = ''
       }
-      return `${commentRank}<br><br>${commentEquip}`
+      return commentRank ? `${commentRank}<br><br>${commentEquip}` : commentEquip
     },
     onUpdate () {
-      const princess = this.profile[this.activeProfile]?.princess ?? {}
+      const princess = this.$store.state.profile[this.$store.state.activeProfile]?.princess ?? {}
       if (!princess[String(this.id)]) princess[String(this.id)] = {}
-
       const data = princess[String(this.id)]
+
       data.name = this.name
-      data.rarity = this.btnrarity + 1
+      data.rarity = this.btnrarity
       data.pieces = [this.memorypiece, this.purememorypiece]
       data.ue = this.ue
+      data.rank = this.fromto ? data.rank : this.rank
+      data.equipment = this.fromto ?
+        data.equipment :
+        this.$store.state.equipSelected.map(x => String(this.$store.getters.getUnitPromotion(this.id, this.rank)[`equip_slot_${x + 1}`])).filter(x => x !== '999999')
       
-      if (this.activeProfile && !this.fromto) {
+      if (this.$store.state.profile[this.$store.state.activeProfile] && !this.fromto) {
         this.$setLSItem({
-          profile: this.activeProfile,
+          profile: this.$store.state.activeProfile,
           key: 'princess',
           value: princess
         })
       }
-
-      this.$store.commit('updateState', { key: 'lastUpdatedChara', value: this.id })
-      this.$store.commit('updateState', { key: 'rankFrom', value: String(this.rankfrom) })
-      this.$store.commit('updateState', { key: 'rankTo', value: String(this.rankto) })
-
+      
+      this.$store.commit('updateState', { key: 'lastUpdatedChara', value: String(this.id) })
       this.editing = false
     },
     onRemove () {
       if (this.fromto) {
-        this.$store.commit('updateState', { key: 'lastUpdatedChara', value: this.id })
-        this.$store.commit('updateState', { key: 'rankFrom', value: null })
-        this.$store.commit('updateState', { key: 'rankTo', value: null })
+        this.$store.commit('updateContext', { key: String(this.id), value: {
+          rFrom: '-1',
+          rTo: '-1'
+        }})
+        this.$store.commit('updateState', { key: 'lastUpdatedChara', value: String(this.id) })
       } else {
         if (this.$store.state.activeProfile) {
           this.$removeLSItem({
-            profile: this.activeProfile,
+            profile: this.activeProfileChara,
             path: ['princess', String(this.id)]
           })
         }
@@ -423,32 +486,29 @@ export default {
     },
     onCancel () {
       if (this.fromto) {
-        this.$store.commit('updateState', { key: 'equipSelectedFrom', value: this.prev.eFrom })
-        this.$store.commit('updateState', { key: 'equipSelectedTo', value: this.prev.eTo })
-        this.$store.commit('updateState', { key: 'rankFrom', value: String(this.prev.rFrom) })
-        this.$store.commit('updateState', { key: 'rankTo', value: String(this.prev.rTo) })
-        this.$store.commit('updateState', { key: 'lastUpdatedChara', value: this.id })
+        this.$store.commit('updateContext', { key: String(this.id), value: this.prev })
+        this.$store.commit('updateState', { key: 'lastUpdatedChara', value: String(this.id) })
       }
       this.editing = false
     },
     syncData (param) {
       switch (param) {
         case 'btnrarity':
-          if (this.rarity === -1) {
-            this.btnrarity = this.princess.rarity - 1
-          } else {  
-            this.btnrarity = this.rarity - 1
-          }
+          this.btnrarity = this.activeProfileChara?.rarity ?? this.princess.rarity
           break
         case 'pieces':
-          this.memorypiece = this.profile[this.activeProfile]?.princess ? this.profile[this.activeProfile]?.princess[String(this.id)]?.pieces[0] ?? '0' : '0'
-          this.purememorypiece = this.profile[this.activeProfile]?.princess ? this.profile[this.activeProfile]?.princess[String(this.id)]?.pieces[0] ?? '0' : '0'
+          this.memorypiece = this.activeProfileChara?.princess ? this.activeProfileChara?.princess[String(this.id)]?.pieces[0] ?? '0' : '0'
+          this.purememorypiece = this.activeProfileChara?.princess ? this.activeProfileChara?.princess[String(this.id)]?.pieces[0] ?? '0' : '0'
           break
         case 'fromto':
-          this.rankfrom = this.$store.getters.curRank({ from: true })
-          this.rankto = this.$store.getters.curRank({ to: true })
-          this.$store.commit('updateState', { key: 'rankFrom', value: String(this.rankfrom) })
-          this.$store.commit('updateState', { key: 'rankTo', value: String(this.rankto) })
+          this.$store.commit('updateContext', { key: String(this.id), value: {
+            rFrom: this.activeProfileChara?.rank ?? String(this.$store.state.maxRank),
+            rTo: String(this.$store.state.maxRank)
+          }})
+          break
+        case 'equips':
+          this.rank = this.activeProfileChara?.rank ?? this.$store.getters.curRank({})
+          this.$store.commit('updateState', { key: 'curRank', value: String(this.rank) })
           break
         default:
           break

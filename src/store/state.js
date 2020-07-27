@@ -11,10 +11,10 @@ const state = {
   curLevel: 0,
   curAtk: {},
   equipSelected: [],
-  equipSelectedFrom: [],
-  equipSelectedTo: [],
-  rankFrom: 0,
-  rankTo: 0,
+  // equipSelectedFrom: [],
+  // equipSelectedTo: [],
+  // rankFrom: 0,
+  // rankTo: 0,
   rankColor: {
     1: 'blue',
     2: 'brown',
@@ -40,7 +40,8 @@ const state = {
   activeProfile: null,
   profile: {},
   lastUpdatedChara: 0,
-  ngFlag: false
+  ngFlag: false,
+  context: {}
 }
 
 export default state
