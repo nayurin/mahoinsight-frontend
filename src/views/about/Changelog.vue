@@ -87,6 +87,16 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.1.1',
+          date: '2020-07-30T10:40:00.000Z',
+          logs: [
+            {
+              content: '修复角色属性计算异常',
+              type: 'bugfix'
+            }
+          ]
+        },
+        {
           version: '0.9.1',
           date: '2020-07-27T06:20:00.000Z',
           logs: [

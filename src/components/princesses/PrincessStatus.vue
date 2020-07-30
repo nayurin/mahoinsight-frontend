@@ -171,7 +171,7 @@ export default {
     },
     rank: {
       get () {
-        return this.$store.getters.curRank({})
+        return Number(this.$store.getters.curRank({}))
       },
       set (value) {
         if (parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.$store.state.maxRank) {
@@ -182,7 +182,7 @@ export default {
     },
     level: {
       get () {
-        return this.$store.getters.curLevel
+        return Number(this.$store.getters.curLevel)
       },
       set (value) {
         if (parseInt(Number(value)) > 0 && parseInt(Number(value)) <= this.$store.state.maxLevel) {
@@ -286,6 +286,9 @@ export default {
       return rank === 1 ? 0 : this.$store.getters.getUnitPromotionStatus(this.id, rank)[type]
     },
     princessStatus (level, rank, rarity) {
+      level = Number(level)
+      rank = Number(rank)
+      rarity = Number(rarity)
       const stats = level && rank && rarity ? {
         生命值: this.rarityStatus(rarity, 'hp') + this.promotionStatus(rank, 'hp') + this.rarityStatus(rarity, 'hp_growth') * (this.level + this.rank),
         索敌半径: this.$store.getters.getUnitData(this.id)?.search_area_width,

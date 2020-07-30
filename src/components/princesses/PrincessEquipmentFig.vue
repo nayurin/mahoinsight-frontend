@@ -8,7 +8,7 @@
       :class="$store.state.mobile ? 'mobile--1st' : ''"
     >
       <ItemFigure
-        :id="this.equips.equip_slot_1"
+        :id="equips.equip_slot_1"
         zoom-ratio="0.625"
       />
     </div>
@@ -17,7 +17,7 @@
       :class="$store.state.mobile ? 'mobile--2nd' : ''"
     >
       <ItemFigure
-        :id="this.equips.equip_slot_2"
+        :id="equips.equip_slot_2"
         zoom-ratio="0.625"
       />
     </div>
@@ -26,7 +26,7 @@
       :class="$store.state.mobile ? 'mobile--3rd' : ''"
     >
       <ItemFigure
-        :id="this.equips.equip_slot_3"
+        :id="equips.equip_slot_3"
         zoom-ratio="0.625"
       />
     </div>
@@ -35,7 +35,7 @@
       :class="$store.state.mobile ? 'mobile--4th' : ''"
     >
       <ItemFigure
-        :id="this.equips.equip_slot_4"
+        :id="equips.equip_slot_4"
         zoom-ratio="0.625"
       />
     </div>
@@ -44,7 +44,7 @@
       :class="$store.state.mobile ? 'mobile--5th' : ''"
     >
       <ItemFigure
-        :id="this.equips.equip_slot_5"
+        :id="equips.equip_slot_5"
         zoom-ratio="0.625"
       />
     </div>
@@ -53,7 +53,7 @@
       :class="$store.state.mobile ? 'mobile--6th' : ''"
     >
       <ItemFigure
-        :id="this.equips.equip_slot_6"
+        :id="equips.equip_slot_6"
         zoom-ratio="0.625"
       />
     </div>
