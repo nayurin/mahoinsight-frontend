@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     baseAnchor () {
-      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/
+      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})(:\d{1,2})?$/
       const GMT8Time = new Date().getTime() - ((-480 - new Date().getTimezoneOffset()) * 1000 * 60)
       for (let event of this.$store.state.events.cn) {
         event = JSON.parse(JSON.stringify(event))
@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     eventsfilterCN () {
-      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/
+      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})(:\d{1,2})?$/
       for (let event of this.$store.state.events.cn) {
         event = JSON.parse(JSON.stringify(event))
         let starttime = event.start.match(re).splice(1, 5), endtime = event.end.match(re).splice(1, 5)

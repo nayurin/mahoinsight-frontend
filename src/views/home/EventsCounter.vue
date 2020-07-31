@@ -104,7 +104,7 @@ export default {
       const now = new Date()
       const tzoffset = -480 - now.getTimezoneOffset()
       const GMT8Time = now.getTime() - (tzoffset * 1000 * 60)
-      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/
+      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})(:\d{1,2})?$/
       for (let i in this.$store.state.events.cn) {
         const event = this.$store.state.events.cn[i]
         if (event.start.match(re) && event.end.match(re)) {

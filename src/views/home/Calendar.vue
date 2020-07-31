@@ -199,7 +199,7 @@ export default {
     },
     updateRange () {
       const events = []
-      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/
+      const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})(:\d{1,2})?$/
       const now = new Date()
       const tzoffset = -480 - now.getTimezoneOffset()
 
