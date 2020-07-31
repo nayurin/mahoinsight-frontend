@@ -21,3 +21,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# temporary files of unit test such like snapshots and reports
+/tests/unit/specs/__snapshots__
