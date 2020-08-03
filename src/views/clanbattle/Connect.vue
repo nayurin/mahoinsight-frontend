@@ -26,7 +26,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('loadObjects', { file: '/cached/1/master/enemy_parameter.json', database: 'outdated' })
+    this.$store.dispatch('loadObjects', { file: '/cached/outdated/enemy_parameter.json', database: 'outdated' })
   },
   methods: {
     mixinTableData (table) {
