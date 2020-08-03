@@ -66,7 +66,6 @@ export default {
     route () {
       return this.id !== 999999 && String(this.id).length !== 5 ? {
         name: 'ItemDetail',
-        // params: { itemName: this.$store.getters.getCraftedEquipmentNameByItemId(this.id) }
         params: { itemName: this.$store.getters.getEquipmentData(this.id)?.equipment_name }
       } : null
     },

@@ -45,6 +45,11 @@ yarn build
 yarn preview
 ```
 
+### 本地执行单元测试
+```
+yarn test
+```
+
 ### 项目个性化配置
 请参考 vue-cli 的 [配置指南](https://cli.vuejs.org/config/)
 
