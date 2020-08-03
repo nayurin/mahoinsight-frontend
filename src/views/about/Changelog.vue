@@ -87,11 +87,25 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.1.2',
+          date: '2020-08-03T09:33:30.448Z',
+          logs: [
+            {
+              content: '团队战Boss属性异常',
+              type: 'bugfix'
+            },
+            {
+              content: '来自数据库的静态数据重构为响应式数据',
+              type: 'refactor'
+            }
+          ]
+        },
+        {
           version: '0.9.1.1',
           date: '2020-07-30T10:40:00.000Z',
           logs: [
             {
-              content: '修复角色属性计算异常',
+              content: '角色属性计算异常',
               type: 'bugfix'
             }
           ]
@@ -101,11 +115,11 @@ export default {
           date: '2020-07-27T06:20:00.000Z',
           logs: [
             {
-              content: '修改条件分支的动作解释',
+              content: '条件分支的动作解释',
               type: 'bugfix'
             },
             {
-              content: '修复团队战boss技能的数据错误',
+              content: '团队战boss技能的数据错误',
               type: 'bugfix'
             },
             {
@@ -123,15 +137,15 @@ export default {
           date: '2020-07-23T03:00:00.000Z',
           logs: [
             {
-              content: '修改数据缓存文件的构成形式并修改workbox最大可缓存文件大小以匹配新的完整数据缓存',
+              content: '数据缓存文件的构成形式并修改workbox最大可缓存文件大小以匹配新的完整数据缓存',
               type: 'refactor'
             },
             {
-              content: '修改缓存数据导入、获取和调用的内部API以适应新的数据',
+              content: '缓存数据导入、获取和调用的内部API以适应新的数据',
               type: 'refactor'
             },
             {
-              content: '新增【更新记录】页，以查看版本更新和修改记录',
+              content: '【更新记录】页，以查看版本更新和修改记录',
               type: 'feature'
             },
             {
@@ -139,15 +153,15 @@ export default {
               type: 'improvement'
             },
             {
-              content: '修复素材规划中未能正确过滤【圣迹探索】关卡的异常',
+              content: '素材规划中未能正确过滤【圣迹探索】关卡的异常',
               type: 'bugfix'
             },
             {
-              content: '修复不能被合成的装备【设计图或碎片】显示【可以合成的装备】异常的问题',
+              content: '不能被合成的装备【设计图或碎片】显示【可以合成的装备】异常的问题',
               type: 'bugfix'
             },
             {
-              content: '修复角色的【专用装备】不能正确被显示的异常',
+              content: '角色的【专用装备】不能正确被显示的异常',
               type: 'bugfix'
             }
           ]
