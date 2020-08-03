@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import state from '@/store/state'
 import getters from '@/store/getters'
 import FileLoader from '@/util/FileLoader'
+import path from 'path'
 
 Vue.use(Vuex)
 
@@ -12,26 +13,36 @@ export default new Vuex.Store({
   getters,
   mutations: {
     // deprecated, use the async one instead
-    loadObjects (state, type) {
-      const loader = new FileLoader(type)
+    loadObjects (state, file) {
+      const loader = new FileLoader(file)
       loader.loadSync()
-      state[type] = loader.objects
+      Vue.set(state, file, loader.objects)
     },
 
     // update vuex state props excludes database tables
     updateState (state, { key, value }) {
-      state[key] = value
+      Vue.set(state, key, value)
     },
 
     // update vuex state of database tables
     updateDatabase (state, { key, value, database }) {
       if (database) {
         if (!Object.prototype.hasOwnProperty.call(state.database, database)) {
-          state.database[database] = {}
+          Vue.set(state.database, database, {})
         }
-        state.database[database][key] = value
+        Vue.set(state.database[database], key, value)
       } else {
-        state.database[key] = value
+        Vue.set(state.database, key, value)
+      }
+    },
+
+    // insert a row in a vuex database table
+    // THIS METHOD WILL ONLY INSERT AN NEW ROW AND WILL NOT UPDATE AN EXISTED ROW
+    insertDatabaseRow (state, { key, value, database, table }) {
+      if (state.database[database] && state.database[database][table]) {
+        if (!Object.prototype.hasOwnProperty.call(state.database[database][table], key)) {
+          Vue.set(state.database[database][table], key, value)
+        }
       }
     },
 
@@ -46,10 +57,17 @@ export default new Vuex.Store({
   },
   actions: {
     // async func of load single file object
-    loadObjects (context, type) {
-      const loader = new FileLoader(type)
+    loadObjects (context, { file, database }) {
+      const loader = new FileLoader(file)
       loader.loadAsync().then(resp => {
-        context.commit('updateState', { key: type, value: resp })
+        if (database) {
+          const separatedName = path.basename(file).split('.')
+          if (separatedName.length > 1) separatedName.pop()
+          const tblName = separatedName.join('_')
+          context.commit('updateDatabase', { key: tblName, value: resp, database: database })
+        } else {
+          context.commit('updateState', { key: file, value: resp })
+        }
       }).catch(e => {
         console.log(e)
       })

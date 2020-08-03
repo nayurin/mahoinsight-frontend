@@ -1,9 +1,6 @@
-// import path from 'path'
-
 class FileLoader {
   constructor (file) {
     this.objects = {}
-    // this.cachefile = path.join('/cached', `${name}.json`)
     this.cachefile = file
   }
 
@@ -21,6 +18,7 @@ class FileLoader {
     const OK = document.location.protocol === 'file:' ? 0 : 200
     const DONE = 4
     return new Promise((resolve, reject) => {
+      if (!this.cachefile) reject('Error: No specified file')
       xhr.onreadystatechange = () => {
         if (xhr.readyState === DONE) {
           if (xhr.status === OK) {
