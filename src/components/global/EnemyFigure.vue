@@ -32,7 +32,7 @@
             no-gutters
           >
             <v-btn
-              :color="info.atk_type === 1 ? 'pink' : 'indigo'"
+              :color="atkType === 1 ? 'pink' : 'indigo'"
               small
               block
               class="pa-0 white--text"
@@ -51,11 +51,11 @@
             v-text="info.name"
           />
           <v-chip
-            :color="info.atk_type === 1 ? 'pink' : 'indigo'"
+            :color="atkType === 1 ? 'pink' : 'indigo'"
             label
             small
             class="white--text"
-            v-text="info.atk_type === 1 ? '物理' : '魔法'"
+            v-text="atkType === 1 ? '物理' : '魔法'"
           />
           <v-card-actions
             v-if="$store.state.mobile"
@@ -176,6 +176,9 @@ export default {
     },
     info () {
       return this.$store.getters.getEnemyParameter(this.enemyid)
+    },
+    atkType () {
+      return this.$store.getters.getUnitEnemyData(this.unitid).atk_type
     },
     comment () {
       return this.$store.getters.getUnitEnemyData(this.unitid).comment.replace(/\\n/g, '')

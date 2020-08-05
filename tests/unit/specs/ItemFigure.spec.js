@@ -103,7 +103,7 @@ describe('ItemFigure.vue', () => {
     // expect(wrapper.html()).toMatchSnapshot()
 
     const link = wrapper.get('a.v-card--link')
-    expect(link.attributes('href')).toBe('#/item/detail/%E9%93%81%E5%89%91')
+    expect(link.attributes('href')).toBe(`#/item/detail/${encodeURI('铁剑')}`)
 
     const img = wrapper.get('.v-image')
     expect(img.attributes('aria-label')).toBe('铁剑')
