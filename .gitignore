@@ -23,4 +23,4 @@ yarn-error.log*
 *.sw?
 
 # temporary files of unit test such like snapshots and reports
-/tests/unit/specs/__snapshots__
+__snapshots__

@@ -36,6 +36,39 @@ describe('ItemFigure.vue', () => {
     }) 
   }
 
+  // it('render from a correct figure source', () => {
+  //   const wrapper = mountWrapper(shallowMount, {
+  //     mocks: {
+  //       $store: {
+  //         state: {
+  //           CDNBaseURL: ''
+  //         },
+  //         getters: {
+  //           getEquipmentStatsById (...args) {
+  //             return {}
+  //           },
+  //           getCraftedEquipmentNameByItemId (...args) {
+  //             return '铁剑'
+  //           },
+  //           getEquipmentData (...args) {
+  //             return {
+  //               equipment_name: '铁剑'
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     propsData: {
+  //       id: 101011
+  //     }
+  //   })
+
+  //   expect(wrapper.html()).toMatchSnapshot()
+
+  //   const img = wrapper.get('v-img-stub')
+  //   expect(img.attributes('src')).toBe(`${wrapper.vm.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${wrapper.props('id')}.png`)
+  // })
+
   it('render a figure without route', () => {
     const wrapper = mountWrapper(mount, {
       mocks: {
@@ -68,7 +101,7 @@ describe('ItemFigure.vue', () => {
     expect(wrapper.html()).not.toContain('</a>')
 
     const img = wrapper.get('.v-image')
-    expect(img.attributes('aria-label')).toBe('铁剑')
+    expect(img.attributes('aria-label')).toBe(wrapper.vm.$store.getters.getEquipmentData().equipment_name)
     expect(img.attributes('role')).toBe('img')
   })
 
@@ -103,10 +136,10 @@ describe('ItemFigure.vue', () => {
     // expect(wrapper.html()).toMatchSnapshot()
 
     const link = wrapper.get('a.v-card--link')
-    expect(link.attributes('href')).toBe(`#/item/detail/${encodeURI('铁剑')}`)
+    expect(link.attributes('href')).toBe(`#/item/detail/${encodeURI(wrapper.vm.$store.getters.getEquipmentData().equipment_name)}`)
 
     const img = wrapper.get('.v-image')
-    expect(img.attributes('aria-label')).toBe('铁剑')
+    expect(img.attributes('aria-label')).toBe(wrapper.vm.$store.getters.getEquipmentData().equipment_name)
     expect(img.attributes('role')).toBe('img')
   })
 })

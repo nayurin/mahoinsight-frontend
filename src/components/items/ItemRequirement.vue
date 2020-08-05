@@ -17,26 +17,31 @@
         >
           <PrincessFigure
             :id="promoted.unitId"
-            zoom-ratio="0.7"
+            zoom-ratio="0.6"
           >
             <template v-slot:add>
-              <v-col>
-                <v-chip
-                  class="ml-1 pa-2"
-                  :color="rankColor(promoted.promotionLevel)"
-                  label
-                  small
-                  text-color="white"
-                >
-                  Rank {{ promoted.promotionLevel }}
-                  <v-icon
-                    v-if="promoted.amount !== 1"
-                    right
+              <v-row
+                class="d-flex justify-center align-center"
+                no-gutters
+              >
+                <v-col class="ma-0 pa-0">
+                  <v-btn
+                    class="ma-0 pa-0 white--text"
+                    :color="rankColor(promoted.promotionLevel)"
+                    block
+                    small
+                    text-color="white"
                   >
-                    mdi-numeric-{{ promoted.amount }}-box-multiple-outline
-                  </v-icon>
-                </v-chip>
-              </v-col>
+                    Rank {{ promoted.promotionLevel }}
+                    <v-icon
+                      v-if="promoted.amount !== 1"
+                      right
+                    >
+                      mdi-numeric-{{ promoted.amount }}-box-multiple-outline
+                    </v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </template>
           </PrincessFigure>
         </v-card>

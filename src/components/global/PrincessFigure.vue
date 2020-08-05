@@ -31,8 +31,8 @@
           v-text="name"
         />
       </v-col>
-      <slot name="add" />
     </v-row>
+    <slot name="add" />
   </v-card>
 </template>
 
