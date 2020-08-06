@@ -18,7 +18,10 @@ module.exports = {
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
   },
   testMatch: [
-    '<rootDir>/tests/unit/specs/*.spec.js'
+    '<rootDir>/tests/unit/specs/*.spec.js',
+    '<rootDir>/tests/unit/specs/components/global/*.spec.js',
+    '<rootDir>/tests/unit/specs/components/items/*.spec.js',
+    // '<rootDir>/tests/unit/specs/components/items/ItemRequirement.spec.js'
   ],
   testPathIgnorePatterns: [],
   setupFiles: ['<rootDir>/tests/unit/setup.js'],
