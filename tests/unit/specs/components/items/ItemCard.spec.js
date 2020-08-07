@@ -10,11 +10,6 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
-const $route = {
-  name: 'ItemDetail',
-  path: '/item/detail/:itemName'
-}
-
 describe('ItemCard.vue', () => {
   let vuetify
 
@@ -52,7 +47,7 @@ describe('ItemCard.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const title = wrapper.get('v-card-title-stub')
     expect(title.text()).toBe(wrapper.vm.$store.getters.getEquipmentData().equipment_name)
@@ -80,7 +75,7 @@ describe('ItemCard.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const img = wrapper.get('v-img-stub')
     expect(img.attributes('src')).toBe(`${wrapper.vm.$store.state.CDNBaseURL}/image/equipments/icon_equipment_${wrapper.props('id')}.png`)
@@ -109,7 +104,7 @@ describe('ItemCard.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const desc = wrapper.get('.v-card > .v-card__text')
     expect(desc.text()).toBe(wrapper.vm.$store.getters.getEquipmentData().description.replace(/\\n/g, ''))

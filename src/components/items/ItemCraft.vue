@@ -1,10 +1,11 @@
 <template>
   <v-container class="pa-0">
-    <v-card v-if="isCraft(id)">
+    <v-card v-if="needCraft(id)">
       <v-card-title
         id="item-craft"
-        v-text="`合成所需的素材`"
-      />
+      >
+        合成所需的素材
+      </v-card-title>
       <v-row
         no-gutters
         class="ml-4 pb-4"
@@ -26,11 +27,12 @@
         </ItemFigure>
       </v-row>
     </v-card>
-    <v-card v-if="!isCraft(id)">
+    <v-card v-if="!needCraft(id)">
       <v-card-title
         id="item-craft"
-        v-text="`能够合成的装备`"
-      />
+      >
+        能够合成的装备
+      </v-card-title>
       <v-row
         no-gutters
         class="ml-4 pb-4"
@@ -105,12 +107,12 @@ export default {
     }
   },
   methods: {
-    isCraft (id) {
+    needCraft (id) {
       return this.findEquipment(id)?.craft_flg === 1
     },
     _craft (arr) {
       for (let i = 0; i < arr.length; i++) {
-        if (this.isCraft(arr[i][0])) {
+        if (this.needCraft(arr[i][0])) {
           arr[i] = this._craft(this.findCraft(arr[i][0]))
         }
       }

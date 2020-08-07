@@ -10,11 +10,6 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
-const $route = {
-  name: 'ItemDetail',
-  path: '/item/detail/:itemName'
-}
-
 describe('ItemRequirement.vue', () => {
   let vuetify
 
@@ -61,7 +56,7 @@ describe('ItemRequirement.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const pFigure = wrapper.get('princessfigure-stub')
     expect(pFigure.attributes('id')).toBe(String(wrapper.vm.$store.getters.getUnitPromotionEX()[0].unitId))
@@ -99,7 +94,7 @@ describe('ItemRequirement.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const rankLabel = wrapper.findAll('button.v-btn').at(1)
     expect(rankLabel.classes()).toContain(wrapper.vm.$store.getters.getRankColor())
@@ -145,7 +140,7 @@ describe('ItemRequirement.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const charaCardList = wrapper.findAll('div.v-card > router-link-stub')
     expect(charaCardList.length).toBe(wrapper.vm.$store.getters.getUnitPromotionEX().length)

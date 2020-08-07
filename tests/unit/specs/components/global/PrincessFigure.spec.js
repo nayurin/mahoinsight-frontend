@@ -58,7 +58,7 @@ describe('PrincessFigure.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const link = wrapper.get('a.v-card--link')
     expect(link.attributes('href')).toBe(`#/princess/detail/${encodeURI('珠希')}`)
@@ -94,7 +94,7 @@ describe('PrincessFigure.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const link = wrapper.get('a.v-card--link')
     expect(link.attributes('href')).toBe(`#/princess/detail/${encodeURI('真步')}`)

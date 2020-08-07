@@ -54,7 +54,7 @@ describe('EnemyFigure.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const img = wrapper.get('v-img-stub')
     expect(img.attributes('src')).toBe(`/image/enemies/icon_unit_${wrapper.vm.$store.getters.getEnemyParameter().unit_id}.png`)
@@ -100,7 +100,7 @@ describe('EnemyFigure.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     wrapper.findAll('v-list-item-stub').wrappers.forEach(list => {
       const statsName = list.get('v-list-item-stub > v-chip-stub:first-child').text()

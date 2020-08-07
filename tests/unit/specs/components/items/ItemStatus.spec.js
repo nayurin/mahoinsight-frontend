@@ -10,11 +10,6 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
-const $route = {
-  name: 'ItemDetail',
-  path: '/item/detail/:itemName'
-}
-
 describe('ItemStatus.vue', () => {
   let vuetify
 
@@ -50,7 +45,7 @@ describe('ItemStatus.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     wrapper.findAll('v-list-item-stub').wrappers.forEach(listitem => {
       const statsType = listitem.get('v-list-item-stub > v-btn-stub:first-child').text()
@@ -78,7 +73,7 @@ describe('ItemStatus.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
     expect(wrapper.html()).toBe('')
   })
 })

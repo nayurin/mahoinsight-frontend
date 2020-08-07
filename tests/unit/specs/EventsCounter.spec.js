@@ -94,7 +94,7 @@ describe('EventsCounter.vue', () => {
       },
       stubs: ['Calendar']
     })
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const title = wrapper.get('.v-chip__content > span')
     const textblock = wrapper.get('.v-card > .v-tooltip > .v-chip')
@@ -113,7 +113,7 @@ describe('EventsCounter.vue', () => {
       },
       stubs: ['Calendar']
     })
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const title = wrapper.get('.v-chip__content > span')
     const textblock = wrapper.get('.v-card > .v-tooltip > .v-chip')
@@ -161,7 +161,7 @@ describe('EventsCounter.vue', () => {
       stubs: ['Calendar']
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const title = wrapper.get('.v-chip__content > span')
     const textblock = wrapper.get('.v-card > .v-tooltip > .v-chip')
@@ -179,7 +179,7 @@ describe('EventsCounter.vue', () => {
       stubs: ['Calendar']
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const title = wrapper.get('.v-chip__content > span')
     const textblock = wrapper.get('.v-card > .v-tooltip > .v-chip')
@@ -197,7 +197,7 @@ describe('EventsCounter.vue', () => {
       stubs: ['Calendar']
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const title = wrapper.get('.v-chip__content > span')
     const textblock = wrapper.get('.v-card > .v-tooltip > .v-chip')

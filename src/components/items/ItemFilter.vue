@@ -48,11 +48,11 @@ export default {
   },
   computed: {
     filtedItem () {
-      let res = JSON.parse(JSON.stringify(this.items))
+      let items = JSON.parse(JSON.stringify(this.items))
       this.filter.forEach(cond => {
-        res = this.filtedByCondition(res, cond)
+        items = this.filtedByCondition(items, cond)
       })
-      return this.search === '' ? res : res.filter(x => this.$store.getters.getEquipmentData(x).equipment_name.match(this.search))
+      return this.search === '' ? items : items.filter(x => this.$store.getters.getEquipmentData(x).equipment_name.match(this.search))
     },
     items () {
       return this.$store.getters.equipmentIdListEX.map(x => Number(x)).sort((x, y) => y - x)
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     filtedByCondition (arr, cond) {
-      return arr.filter(x => this.$store.getters.getEquipmentData(x)[cond] !== 0 )
+      return arr.filter(x => this.$store.getters.getEquipmentData(x)[cond] && this.$store.getters.getEquipmentData(x)[cond] !== 0 )
     }
   }
 }

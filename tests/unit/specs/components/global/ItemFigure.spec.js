@@ -97,7 +97,7 @@ describe('ItemFigure.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
     expect(wrapper.html()).not.toContain('</a>')
 
     const img = wrapper.get('.v-image')
@@ -133,7 +133,7 @@ describe('ItemFigure.vue', () => {
       }
     })
 
-    // expect(wrapper.html()).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
 
     const link = wrapper.get('a.v-card--link')
     expect(link.attributes('href')).toBe(`#/item/detail/${encodeURI(wrapper.vm.$store.getters.getEquipmentData().equipment_name)}`)
