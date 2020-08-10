@@ -87,6 +87,16 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.1.3',
+          date: '2020-08-10T03:55:51.557Z',
+          logs: [
+            {
+              content: '角色管理页面删除功能异常',
+              type: 'bugfix'
+            }
+          ]
+        },
+        {
           version: '0.9.1.2',
           date: '2020-08-03T09:33:30.448Z',
           logs: [

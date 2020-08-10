@@ -383,16 +383,6 @@ export default {
     }
   },
   watch: {
-    // rankfrom (val) {
-    //   if (val === '-1') {
-    //     this.$store.commit('updateContext', { key: String(this.id), value: { rFrom: this.activeProfileChara?.rank ?? String(this.$store.state.maxRank) }})
-    //   }
-    // },
-    // rankto (val) {
-    //   if (val === '-1') {
-    //     this.$store.commit('updateContext', { key: String(this.id), value: { rTo: String(this.$store.state.maxRank) }})
-    //   }
-    // },
     rank (val) {
       this.$store.commit('updateState', { key: 'curRank', value: String(val) })
     },
@@ -477,7 +467,7 @@ export default {
       } else {
         if (this.$store.state.activeProfile) {
           this.$removeLSItem({
-            profile: this.activeProfileChara,
+            profile: this.$store.state.activeProfile,
             path: ['princess', String(this.id)]
           })
         }
