@@ -22,7 +22,7 @@ describe('ItemCard.vue', () => {
       vuetify,
       localVue,
       ...options
-    }) 
+    })
   }
 
   it('render an item card with a title of item name', () => {
