@@ -133,7 +133,7 @@ export default {
         if (!t) {
           return v.promotionLevel
         } else {
-          return t - v > 0 ? v.promotionLevel : t
+          return t - v.promotionLevel > 0 ? v.promotionLevel : t
         }
       }, 0)
       return this.$store.getters.get1stEquipmentList(true).includes(id) ? level + 1 : level
