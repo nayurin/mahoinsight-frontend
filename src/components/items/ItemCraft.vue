@@ -50,8 +50,12 @@
             <template v-slot:under>
               <v-card-text
                 class="pa-2 caption text-center"
-                v-text="$store.getters.getEquipmentData(id).equipment_name"
-              />
+              >
+                <span>{{ $store.getters.getEquipmentData(id).equipment_name }}</span>
+                <br>
+                <span>Rank </span>
+                <span class="font-weight-bold">{{ equipmentPromotionLevel(id) }}</span>
+              </v-card-text>
             </template>
           </ItemFigure>
         </v-col>
@@ -123,6 +127,16 @@ export default {
     },
     findCraft (id) {
       return this.$store.getters.getEquipmentCraftBy(id)
+    },
+    equipmentPromotionLevel (id) {
+      const level = Object.values(this.$store.getters.getUnitPromotionEX(id, true)).reduce((t, v) => {
+        if (!t) {
+          return v.promotionLevel
+        } else {
+          return t - v > 0 ? v.promotionLevel : t
+        }
+      }, 0)
+      return this.$store.getters.get1stEquipmentList(true).includes(id) ? level + 1 : level
     }
   }
 }

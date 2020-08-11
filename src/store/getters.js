@@ -290,9 +290,10 @@ const getters = {
 
   // get unitid, promotionlevel and amounts of promotion data with equipmentid
   // return: object[]
-  getUnitPromotionEX: (state) => (equipmentId) => {
+  getUnitPromotionEX: (state) => (equipmentId, ng=false) => {
     const arr = []
-    Object.values(state.database['master'].unit_promotion).map(x => {
+    const database = ng ? state.database['ng'] : state.database['master']
+    Object.values(database.unit_promotion).map(x => {
       let count = 0
       for (let i = 1; i <= 6; i++) {
         if (x[`equip_slot_${i}`] === Number(equipmentId)) count++
@@ -615,6 +616,17 @@ const getters = {
       }
     }
     return rewards
+  },
+
+  // get a list of equipment which is used to be the 1st position in rank promotion
+  // returns: number[]
+  get1stEquipmentList: (state) => (ng=false) => {
+    const database = ng ? state.database['ng'] : state.database['master']
+    const data = Object.values(database.unit_promotion)
+      .filter(x => String(x.unit_id)[0] === '1')
+      .reduce((t, v) => (t.push(v.equip_slot_1), t), [])
+      .filter(x => x !== 999999)
+    return Array.from(new Set(data))
   }
 }
 

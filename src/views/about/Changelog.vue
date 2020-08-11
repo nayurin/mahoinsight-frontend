@@ -87,19 +87,13 @@ export default {
       changelogs: [
         {
           current: true,
-          version: '0.9.1.3',
-          date: '2020-08-10T03:55:51.557Z',
+          version: '0.9.2',
+          date: '2020-08-11T06:06:42.083Z',
           logs: [
             {
-              content: '角色管理页面删除功能异常',
+              content: '角色属性计算异常',
               type: 'bugfix'
-            }
-          ]
-        },
-        {
-          version: '0.9.1.2',
-          date: '2020-08-03T09:33:30.448Z',
-          logs: [
+            },
             {
               content: '团队战Boss属性异常',
               type: 'bugfix'
@@ -107,16 +101,18 @@ export default {
             {
               content: '来自数据库的静态数据重构为响应式数据',
               type: 'refactor'
-            }
-          ]
-        },
-        {
-          version: '0.9.1.1',
-          date: '2020-07-30T10:40:00.000Z',
-          logs: [
+            },
             {
-              content: '角色属性计算异常',
+              content: '角色管理页面删除功能异常',
               type: 'bugfix'
+            },
+            {
+              content: '【能够合成的装备】显示Rank等级',
+              type: 'improvement'
+            },
+            {
+              content: '新增单元测试配置和相关用例',
+              type: 'other'
             }
           ]
         },
