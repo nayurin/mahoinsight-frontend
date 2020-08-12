@@ -87,6 +87,16 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.2.1',
+          date: '2020-08-12T03:23:22.675Z',
+          logs: [
+            {
+              content: '【绯红铠甲】的路由导航异常',
+              type: 'bugfix'
+            }
+          ]
+        },
+        {
           version: '0.9.2',
           date: '2020-08-11T06:06:42.083Z',
           logs: [
