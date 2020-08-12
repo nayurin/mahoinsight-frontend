@@ -14,7 +14,7 @@ localVue.use(VueRouter)
 
 const $route = {
   name: 'ItemDetail',
-  path: '/item/detail/:itemName'
+  path: '/item/detail/:itemName/:itemId'
 }
 
 describe('ItemFigure.vue', () => {
@@ -136,7 +136,7 @@ describe('ItemFigure.vue', () => {
     expect(wrapper.html()).toMatchSnapshot()
 
     const link = wrapper.get('a.v-card--link')
-    expect(link.attributes('href')).toBe(`#/item/detail/${encodeURI(wrapper.vm.$store.getters.getEquipmentData().equipment_name)}`)
+    expect(link.attributes('href')).toBe(`#/item/detail/${encodeURI(wrapper.vm.$store.getters.getEquipmentData().equipment_name)}/${wrapper.props('id')}`)
 
     const img = wrapper.get('.v-image')
     expect(img.attributes('aria-label')).toBe(wrapper.vm.$store.getters.getEquipmentData().equipment_name)

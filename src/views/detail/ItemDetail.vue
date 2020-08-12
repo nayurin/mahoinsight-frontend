@@ -49,10 +49,7 @@ export default {
   },
   computed: {
     equipId () {
-      return this.$store.getters.getEquipmentIdByName(this.equipName)
-    },
-    equipName () {
-      return this.$route.params.itemName
+      return Number(this.$route.params.itemId)
     }
   }
 }

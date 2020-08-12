@@ -66,7 +66,7 @@ const routes = [
     }
   },
   {
-    path: '/item/detail/:itemName',
+    path: '/item/detail/:itemName/:itemId',
     name: 'ItemDetail',
     component: ItemDetail,
     props: true,
