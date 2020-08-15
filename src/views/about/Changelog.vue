@@ -91,7 +91,7 @@ export default {
           date: '2020-08-15T02:10:59.512Z',
           logs: [
             {
-              content: '【绯红铠甲】的路由导航异常',
+              content: '【规划】无论哪个Rank都无法选取左上角装备的异常',
               type: 'bugfix'
             }
           ]
