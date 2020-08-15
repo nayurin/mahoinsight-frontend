@@ -82,9 +82,9 @@ export default {
   computed: {
     rank () {
       if (this.from && !this.to) {
-        return this.activeProfileChara?.rank ?? this.$store.getters.curRank({ from: true })
+        return this.$store.state.context[this.id].rFrom ?? this.$store.getters.curRank({ from: true })
       } else if (this.to && !this.from) {
-        return this.activeProfileChara?.rank ?? this.$store.getters.curRank({ to: true })
+        return this.$store.state.context[this.id].rTo ?? this.$store.getters.curRank({ to: true })
       } else {
         return this.activeProfileChara?.rank ?? this.$store.getters.curRank({})
       }
