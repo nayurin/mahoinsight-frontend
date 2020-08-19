@@ -87,21 +87,19 @@ export default {
       changelogs: [
         {
           current: true,
-          version: '0.9.2.2',
-          date: '2020-08-15T02:10:59.512Z',
-          logs: [
-            {
-              content: '【规划】无论哪个Rank都无法选取左上角装备的异常',
-              type: 'bugfix'
-            }
-          ]
-        },
-        {
-          version: '0.9.2.1',
-          date: '2020-08-12T03:23:22.675Z',
+          version: '0.9.3',
+          date: '2020-08-19T03:18:31.785Z',
           logs: [
             {
               content: '【绯红铠甲】的路由导航异常',
+              type: 'bugfix'
+            },
+            {
+              content: '【规划】无论哪个Rank都无法选取左上角装备的异常',
+              type: 'bugfix'
+            },
+            {
+              content: '【时间线】国服活动筛选异常',
               type: 'bugfix'
             }
           ]
