@@ -62,20 +62,20 @@ export default {
         jp: []
       },
       offset: 60 * 60 * 24 * 60 * 1000,
-      msToDays: 60 * 60 * 24 * 1000
+      msToDays: 60 * 60 * 24 * 1000,
+      GMT8Time: new Date().getTime() - ((-480 - new Date().getTimezoneOffset()) * 1000 * 60)
     }
   },
   computed: {
     baseAnchor () {
       const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})(:\d{1,2})?$/
-      const GMT8Time = new Date().getTime() - ((-480 - new Date().getTimezoneOffset()) * 1000 * 60)
       for (let event of this.$store.state.events.cn) {
         event = JSON.parse(JSON.stringify(event))
         let starttime = event.start.match(re).splice(1, 5), endtime = event.end.match(re).splice(1, 5)
         starttime[1] -= 1, endtime[1] -= 1
         starttime = new Date(...starttime).getTime()
         endtime = new Date(...endtime).getTime()
-        if (GMT8Time - starttime >= 0 && GMT8Time - endtime < 0) {
+        if (this.GMT8Time - starttime >= 0 && this.GMT8Time - endtime < 0) {
           if (event.anchorid) {
             return {
               id: event.anchorid,
@@ -101,13 +101,16 @@ export default {
       const re = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})(:\d{1,2})?$/
       for (let event of this.$store.state.events.cn) {
         event = JSON.parse(JSON.stringify(event))
-        let starttime = event.start.match(re).splice(1, 5), endtime = event.end.match(re).splice(1, 5)
-        starttime[1] -= 1, endtime[1] -= 1
-        event.starttime = new Date(...starttime)
-        endtime = new Date(...endtime)
-        event.duration = [2, 3, 4].includes(endtime.getHours()) ? Math.floor((endtime.getTime() - event.starttime) / this.msToDays) : Math.ceil((endtime.getTime() - event.starttime) / this.msToDays)
-        if (this.baseAnchor.starttime - event.starttime <= 0) {
-          if (Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) this.events.cn.push(event)
+        if (!Object.prototype.hasOwnProperty.call(this.eventstype, event.category)) {
+          continue
+        }
+        let [starttime, endtime] = [event.start.match(re).splice(1, 5), event.end.match(re).splice(1, 5)]
+          .map(x => (x[1] -= 1, x))
+          .map(x => new Date(...x))
+        event.starttime = starttime.getTime()
+        event.duration = [2, 3, 4].includes(endtime.getHours()) ? Math.floor((endtime.getTime() - starttime.getTime()) / this.msToDays) : Math.ceil((endtime.getTime() - starttime.getTime()) / this.msToDays)
+        if ((this.GMT8Time - starttime.getTime() >= 0 && this.GMT8Time - endtime.getTime() < 0) || (this.baseAnchor.starttime - event.starttime <= 0)) {
+          this.events.cn.push(event)
         }
       }
     },
