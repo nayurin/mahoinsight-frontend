@@ -37,7 +37,7 @@ export default new Vuex.Store({
     },
 
     // insert a row in a vuex database table
-    // THIS METHOD WILL ONLY INSERT AN NEW ROW AND WILL NOT UPDATE AN EXISTED ROW
+    // ATTENTION: THIS METHOD WILL ONLY INSERT AN NEW ROW AND WILL NOT UPDATE AN EXISTED ROW
     insertDatabaseRow (state, { key, value, database, table }) {
       if (state.database[database] && state.database[database][table]) {
         if (!Object.prototype.hasOwnProperty.call(state.database[database][table], key)) {
@@ -53,6 +53,14 @@ export default new Vuex.Store({
       } else {
         Vue.delete(state.context, key)
       }
+    },
+
+    // update vuex state of active user profile
+    updateActiveProfile (state, { id, value }) {
+      if (!state.profile[state.activeProfile]) return
+      console.log(state.profile[state.activeProfile].princess[id])
+      console.log(value)
+      Vue.set(state.profile[state.activeProfile].princess, id, {...state.profile[state.activeProfile].princess[id], ...value})
     }
   },
   actions: {

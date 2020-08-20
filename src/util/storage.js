@@ -18,7 +18,7 @@ export default {
         val = JSON.stringify({ key: value })
       } else {
         val = JSON.parse(pStr)
-        val[key] = value
+        val[key] = {...val[key], ...value}
         val = JSON.stringify(val)
       }
       return set(profile, val)

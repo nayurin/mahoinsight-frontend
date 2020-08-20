@@ -461,6 +461,60 @@
           >
             清除统计
           </v-btn>
+          <v-dialog
+            v-model="apply2profile"
+            :max-width="$store.state.mobile ? '400' : '600'"
+            :scrollable="$store.state.mobile"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-show="completed"
+                color="secondary"
+                text
+                v-bind="attrs"
+                v-on="on"
+              >
+                应用到用户档案
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-subtitle class="mt-3">
+                是否更新以下配置方案到用户档案？
+              </v-card-subtitle>
+              <v-row
+                v-for="(set, chara) in planset"
+                :key="chara"
+                no-gutters
+                class="px-3 d-flex align-center"
+              >
+                <v-col class="col-auto">
+                  <v-chip
+                    label
+                    color="primary"
+                  >
+                    {{ $store.getters.getUnitData(chara).unit_name }}
+                  </v-chip>
+                </v-col>
+                <v-col>
+                  <v-card-text v-html="appliedCharaSetInfo(chara, set)" />
+                </v-col>
+              </v-row>
+              <v-card-actions>
+                <v-btn
+                  color="secondary"
+                  @click="applyPlanningSets"
+                >
+                  应用
+                </v-btn>
+                <v-btn
+                  text
+                  @click="apply2profile = false"
+                >
+                  取消
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -612,7 +666,9 @@ export default {
       mergedReq: {},
       reqPieces: {},
       stamina: 0,
+      planset: {},
       ngFlag: false,
+      apply2profile: false,
       rules: {
         required: value => !!value || '数量不能为空',
         range: value => value > 0 || '数量不能为负',
@@ -675,6 +731,7 @@ export default {
     },
     dim5Group: {
       handler (cur, prev) {
+        console.log(this.profile?.princess)
         if (this.syncModifyProfile || this.syncModifySelected) {
           let charaList = []
           if (this.syncModifySelected) {
@@ -906,6 +963,18 @@ export default {
         delete promote.promotion_level
         delete promote.unit_id
       }
+      const charaset = this.ngFlag && Number(rTo) > this.$store.state.maxRank ? {
+        rTo: String(rTo),
+        eTo: [0, 1, 2, 3, 4, 5],
+        rFrom: String(rFrom),
+        eFrom
+      } : {
+        rTo: String(rTo),
+        eTo,
+        rFrom: String(rFrom),
+        eFrom
+      }
+
       rFrom = Number(rFrom)
       rTo = Number(rTo)
       eFrom = eFrom && rFrom ? eFrom.map(x => promotion[rFrom] ? promotion[rFrom][`equip_slot_${x + 1}`] : 999999) : eFrom
@@ -935,11 +1004,13 @@ export default {
       if (rFrom === -1 && rTo === -1) {
         if (Object.prototype.hasOwnProperty.call(this.requirement, chara)) {
           this.$delete(this.requirement, chara)
+          this.$delete(this.planset, chara)
           this.$store.commit('updateContext', { key: String(this.id) })
         }
         return
       }
       this.$set(this.requirement, chara, {})
+      this.$set(this.planset, chara, charaset)
       if (rFrom === rTo) {
         for (const item of eTo) {
           if (Object.prototype.hasOwnProperty.call(this.requirement[chara], item)) {
@@ -1072,6 +1143,9 @@ export default {
       this.mergedReq = {}
       this.reqPieces = {}
       this.stamina = 0
+      this.planset = {}
+      this.ngFlag = false
+      this.apply2profile = false
     },
     importStoragedChara () {
       this.requirement = {}
@@ -1090,6 +1164,48 @@ export default {
           eTo: [0, 1, 2, 3, 4, 5]
         })
       }
+    },
+    appliedCharaSetInfo (charaid, set) {
+      const equipArr = set.eTo
+        .map(x => {
+          const equipid = this.$store.getters.getUnitPromotion(charaid, set.rTo)[`equip_slot_${x + 1}`]
+          return equipid === 999999 ? equipid : `${this.$store.getters.getEquipmentData(equipid)?.equipment_name}(${x + 1})`
+        })
+        .filter(x => x !== 999999)
+      const equipStr = equipArr.length ? equipArr.join(' / ') : '无'
+      return `Rank：${set.rTo}<br>已装备：${equipStr}`
+    },
+    applyPlanningSets () {
+      console.log(this.profile)
+      if (this.profile) {
+        for (const charaid of Object.keys(this.planset)) {
+          const charaset = {}
+          const charainfo = this.profile.princess[charaid] ? {...this.profile.princess[charaid], ...{
+            rank: String(this.planset[charaid].rTo),
+            equipment: this.planset[charaid].eTo
+              .map(x => String(this.$store.getters.getUnitPromotion(charaid, this.planset[charaid].rTo)[`equip_slot_${x + 1}`]))
+              .filter(x => x !== '999999')
+          }} : {
+            name: this.$store.getters.getUnitData(charaid).unit_name,
+            rarity: this.$store.getters.getUnitData(charaid).rarity,
+            pieces: [0, 0],
+            ue: false,
+            rank: String(this.planset[charaid].rTo),
+            equipment: this.planset[charaid].eTo
+              .map(x => String(this.$store.getters.getUnitPromotion(charaid, this.planset[charaid].rTo)[`equip_slot_${x + 1}`]))
+              .filter(x => x !== '999999')
+          }
+          this.$set(charaset, charaid, charainfo)
+          this.$setLSItem({
+            profile: this.$store.state.activeProfile,
+            key: 'princess',
+            value: charaset
+          })
+          this.$store.commit('updateActiveProfile', { id: charaid, value: charainfo })
+        }
+      }
+      console.log(this.profile)
+      this.apply2profile = false
     }
   },
   beforeRouteLeave (to, from, next) {

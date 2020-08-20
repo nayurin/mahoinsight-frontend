@@ -88,7 +88,7 @@ export default {
         {
           current: true,
           version: '0.9.3',
-          date: '2020-08-19T03:18:31.785Z',
+          date: '2020-08-20T09:53:23.482Z',
           logs: [
             {
               content: '【绯红铠甲】的路由导航异常',
@@ -101,6 +101,10 @@ export default {
             {
               content: '【时间线】国服活动筛选异常',
               type: 'bugfix'
+            },
+            {
+              content: '【规划】“应用到用户档案”功能',
+              type: 'feature'
             }
           ]
         },
