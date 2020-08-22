@@ -125,7 +125,7 @@
               small
               rounded
               class="mx-2"
-              @click="quest = 0"
+              @click="hidelist = false"
             >
               <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
             </v-btn>
@@ -248,7 +248,8 @@
         axis: {
           x: 0,
           y: 0
-        }
+        },
+        hidelist: true
       }
     },
     computed: {
@@ -290,9 +291,11 @@
         return this.$store.state.mobile ? "0.45" : "0.6"
       },
       showQuestTabs () {
-        if (this.$store.state.mobile && !this.area) return false
-        if (this.$store.state.mobile && this.area && this.quest) return false
-        return true
+        if (!this.$store.state.mobile) {
+          return true
+        } else {
+          return !this.hidelist
+        }
       },
       showQuestDetails () {
         return this.quest ? true : false
@@ -324,6 +327,7 @@
       },
       y (val) {
         this.quest = this.area * 1000 + val + 1
+        this.hidelist = true
       },
       diff (val) {
         switch (val) {
