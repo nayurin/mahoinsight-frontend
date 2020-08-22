@@ -414,6 +414,15 @@
                   hide-details
                 />
               </v-col>
+              <v-col class="col-auto">
+                <v-switch
+                  v-model="normalonly"
+                  label="仅计算普通难度关卡"
+                  color="indigo"
+                  class="mx-3"
+                  hide-details
+                />
+              </v-col>
             </v-row>
             <v-row
               no-gutters
@@ -669,6 +678,7 @@ export default {
       planset: {},
       ngFlag: false,
       apply2profile: false,
+      normalonly: false,
       rules: {
         required: value => !!value || '数量不能为空',
         range: value => value > 0 || '数量不能为负',
@@ -881,7 +891,8 @@ export default {
               times: amount
             })
           } else {
-            if (quest.area_id < 13000 && quest.area_id % 1000 <= this.$store.state.furthestArea) {
+            const areaLimitation = this.normalonly ? 12000 : 13000
+            if (quest.area_id < areaLimitation && quest.area_id % 1000 <= this.$store.state.furthestArea) {
               sources.push({
                 id: quest.quest_id,
                 drop_count: source.drop_count,
@@ -1146,6 +1157,7 @@ export default {
       this.planset = {}
       this.ngFlag = false
       this.apply2profile = false
+      this.normalonly = false
     },
     importStoragedChara () {
       this.requirement = {}

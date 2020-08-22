@@ -88,7 +88,7 @@ export default {
         {
           current: true,
           version: '0.9.3',
-          date: '2020-08-22T12:00:23.426Z',
+          date: '2020-08-22T12:29:23.426Z',
           logs: [
             {
               content: '【绯红铠甲】的路由导航异常',
@@ -109,6 +109,10 @@ export default {
             {
               content: '【关卡】移动端返回地区关卡列表按钮失效',
               type: 'bugfix'
+            },
+            {
+              content: '【规划】增加开关“仅计算普通难度关卡”',
+              type: 'improvement'
             }
           ]
         },
