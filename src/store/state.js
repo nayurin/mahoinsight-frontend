@@ -4,9 +4,9 @@ const state = {
   backendBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight.info/api' : 'http://127.0.0.1:23333/api',
   CDNBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com' : '',
   maxRank: 10,
-  maxLevel: 102,
-  maxUELevel: 102,
-  furthestArea: 13,
+  maxLevel: 105,
+  maxUELevel: 105,
+  furthestArea: 14,
   curRank: 0,
   curLevel: 0,
   curAtk: {},
@@ -31,8 +31,8 @@ const state = {
   gitcommit: 'unknown',
   mobile: false,
   charaFragByTokens: {
-    地下城商店: [31060, 31034, 31006, 31045, 31051, 31010, 31029],
-    竞技场商店: [31001, 31004, 31046, 31053, 31011],
+    地下城商店: [31060, 31034, 31006, 31045, 31051, 31010, 31029, 31026],
+    竞技场商店: [31001, 31004, 31046, 31053, 31011, 31023],
     公主竞技场商店: [31016, 31007, 31017, 31012, 31009],
     行会商店: [31025, 31022, 31042, 31043, 31018]
   },
