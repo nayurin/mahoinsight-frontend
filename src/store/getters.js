@@ -252,6 +252,30 @@ const getters = {
     return state.database['master'].unique_equipment_enhance_rate[equipmentId]
   },
 
+  // get raw data of unique_equipment_rankup by equipmentid
+  // returns: object[]
+  getUniqueEquipmentRankup: (state) => (equipmentId) => {
+    return Object.values(state.database['master'].unique_equipment_rankup).filter(x => x.equip_id === Number(equipmentId))
+  },
+
+  // get filtered data of unique_equipment_rankup by equipmentid and rank
+  // returns: object[]
+  getUniqueEquipmentRankupEX: (state) => (equipmentId, equipmentLevel) => {
+    return Object.values(state.database['master'].unique_equipment_rankup).filter(x => x.equip_id === Number(equipmentId) && x.unit_level < Number(equipmentLevel))
+  },
+
+  // get raw data of unique_equipment_enhance_data by equipmentlevel
+  // returns: object
+  getUniqueEquipmentEnhanceData: (state) => (equipmentLevel) => {
+    return state.database['master'].unique_equipment_enhance_data[equipmentLevel]
+  },
+
+  // get filtered data of unique_equipment_enhance_data from level 1 to the specified level
+  // returns: object[]
+  getUniqueEquipmentEnhanceDataEX: (state) => (equipmentLevel) => {
+    return Object.values(state.database['master'].unique_equipment_enhance_data).filter(x => x.enhance_level <= Number(equipmentLevel))
+  },
+
   // get raw data of unit_attack_pattern by unit_id
   // returns: object[]
   getUnitAttackPattern: (state) => (unitId) => {

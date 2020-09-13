@@ -5,7 +5,7 @@ const state = {
   CDNBaseURL: process.env.NODE_ENV === 'production' ? 'https://mahomaho-insight-cos-1302341499.cos.ap-shanghai.myqcloud.com' : '',
   maxRank: 10,
   maxLevel: 105,
-  maxUELevel: 105,
+  maxUELevel: 130,
   furthestArea: 14,
   curRank: 0,
   curLevel: 0,

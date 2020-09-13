@@ -87,6 +87,17 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.3.1',
+          date: '2020-09-13T06:55:44.307Z',
+          logs: [
+            {
+              content: '【角色】专用装备根据等级显示材料消耗',
+              type: 'improvement'
+            }
+          ]
+        },
+        {
+          current: true,
           version: '0.9.3',
           date: '2020-08-22T12:29:23.426Z',
           logs: [

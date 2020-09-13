@@ -54,6 +54,42 @@
         />
       </v-col>
     </v-row>
+    <v-row
+      no-gutters
+      class="pa-3"
+    >
+      <v-col
+        class="col-auto mx-1 d-flex align-center"
+      >
+        <span class="font-weight-light mr-2 text-center">共计消耗</span>
+        <v-img
+          :src="ueCost(level).mana.src"
+          max-width="28"
+          max-height="28"
+        />
+        <v-btn
+          text
+          small
+          v-text="ueCost(level).mana.amount"
+        />
+      </v-col>
+      <v-col
+        v-for="item in ['memorypiece', 'heartpiece', 'heart']"
+        :key="item"
+        class="col-auto mx-1 d-flex align-center"
+      >
+        <v-img
+          :src=ueCost(level)[item].src
+          max-width="40"
+          max-height="40"
+        />
+        <v-btn
+          text
+          small
+          v-text="ueCost(level)[item].amount"
+        />
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -71,7 +107,7 @@ export default {
       level: 30,
       rules: [
         value => !!value || '不能为空',
-        value => !isNaN(Number(value)) && parseInt(Number(value)) >= 1 && parseInt(Number(value)) <= this.maxLevel && Number(value) === parseInt(Number(value)) || `等级只能为[1,100]的正整数`,
+        value => !isNaN(Number(value)) && parseInt(Number(value)) >= 1 && parseInt(Number(value)) <= this.maxLevel && Number(value) === parseInt(Number(value)) || `等级只能为 [ 1, ${this.maxLevel} ] 的正整数`,
       ],
       statsMap: {
         hp: '生命值',
@@ -139,6 +175,47 @@ export default {
         }
       }
       this.stats = data
+    },
+    ueCost (level) {
+      level = Number(level)
+      const baseid = (this.id - this.id % 100) / 100
+      if (!level || level > this.maxLevel || level < 1) return {
+        mana: { amount: 0, src: `${this.$store.state.CDNBaseURL}/image/bg/mana.png` },
+        heart: { amount: 0, src: `${this.$store.state.CDNBaseURL}/image/bg/mana.png` },
+        heartpiece: { amount: 0, src: `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_140001.png` },
+        memorypiece: { amount: 0, src: `${this.$store.state.CDNBaseURL}/image/items/icon_item_${30000 + baseid}.png` }
+      }
+      const ueCraft = {
+        mana: 1000000,
+        memorypiece: 50,
+        heart: 3
+      }
+      const limitBreakCost = this.$store.getters.getUniqueEquipmentRankupEX(this.ueId, level).reduce((t, v) => {
+        t[`${v.item_id_1}`] = t[`${v.item_id_1}`] ? t[`${v.item_id_1}`] + v.consume_num_1 : v.consume_num_1
+        t[`${v.item_id_2}`] = t[`${v.item_id_2}`] ? t[`${v.item_id_2}`] + v.consume_num_2 : v.consume_num_2
+        t['crafted_cost'] = t['crafted_cost'] ? t['crafted_cost'] + v.crafted_cost : v.crafted_cost
+        return t
+      }, {})
+      const enhanceManaCost = this.$store.getters.getUniqueEquipmentEnhanceDataEX(level).reduce((t, v) => (t += v.needed_mana * v.needed_point, t), 0)
+
+      return {
+        mana: {
+          amount: ueCraft.mana + (limitBreakCost.crafted_cost || 0) + (enhanceManaCost || 0),
+          src: `${this.$store.state.CDNBaseURL}/image/bg/mana.png`
+        },
+        heart: {
+          amount: ueCraft.heart,
+          src: `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_140000.png`
+        },
+        heartpiece: {
+          amount: limitBreakCost['140001'] || 0, 
+          src: `${this.$store.state.CDNBaseURL}/image/equipments/icon_equipment_140001.png`
+        },
+        memorypiece: {
+          amount: ueCraft.memorypiece + (limitBreakCost[`${30000 + baseid}`] || 0),
+          src: `${this.$store.state.CDNBaseURL}/image/items/icon_item_${30000 + baseid}.png`
+        }
+      }
     }
   }
 }
