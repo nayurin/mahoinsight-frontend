@@ -97,7 +97,6 @@ export default {
           ]
         },
         {
-          current: true,
           version: '0.9.3',
           date: '2020-08-22T12:29:23.426Z',
           logs: [
