@@ -741,7 +741,6 @@ export default {
     },
     dim5Group: {
       handler (cur, prev) {
-        console.log(this.profile?.princess)
         if (this.syncModifyProfile || this.syncModifySelected) {
           let charaList = []
           if (this.syncModifySelected) {
@@ -1188,7 +1187,6 @@ export default {
       return `Rank：${set.rTo}<br>已装备：${equipStr}`
     },
     applyPlanningSets () {
-      console.log(this.profile)
       if (this.profile) {
         for (const charaid of Object.keys(this.planset)) {
           const charaset = {}
@@ -1216,7 +1214,6 @@ export default {
           this.$store.commit('updateActiveProfile', { id: charaid, value: charainfo })
         }
       }
-      console.log(this.profile)
       this.apply2profile = false
     }
   },

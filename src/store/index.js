@@ -58,8 +58,6 @@ export default new Vuex.Store({
     // update vuex state of active user profile
     updateActiveProfile (state, { id, value }) {
       if (!state.profile[state.activeProfile]) return
-      console.log(state.profile[state.activeProfile].princess[id])
-      console.log(value)
       Vue.set(state.profile[state.activeProfile].princess, id, {...state.profile[state.activeProfile].princess[id], ...value})
     }
   },
