@@ -11,10 +11,6 @@ const state = {
   curLevel: 0,
   curAtk: {},
   equipSelected: [],
-  // equipSelectedFrom: [],
-  // equipSelectedTo: [],
-  // rankFrom: 0,
-  // rankTo: 0,
   rankColor: {
     1: 'blue',
     2: 'brown',
