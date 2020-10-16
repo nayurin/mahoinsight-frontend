@@ -15,11 +15,8 @@
           :zoom-ratio="zoom"
         >
           <template v-slot:add>
-            <v-chip
-              label
-              small
-              outlined
-              class="px-2"
+            <v-card-text
+              class="pa-0 ma-0 text-center font-weight-bold"
               v-text="profile(id)"
             />
           </template>
