@@ -1,7 +1,7 @@
 export default {
   CastFieldAura (action, skillLevel) {
     let detail
-    const percentMark = Number(action.action_value_1) === 1 ? '' : '%'
+    const percentMark = Number(action.action_detail_2) === 1 ? '' : '%'
     const effect = Number(action.action_detail_1) % 10 === 0 ? '【上升】' : '【下降】'
     const type = Math.floor(Number(action.action_detail_1) / 10)
     const typeMap = {
