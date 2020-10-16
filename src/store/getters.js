@@ -379,7 +379,7 @@ const getters = {
 
   // returns: string[]
   princessIdList: (state) => {
-    return Object.keys(state.database['master'].unit_data).filter(x => x.substring(0, 2) === '10')
+    return Object.keys(state.database['master'].unit_data).filter(x => x[0] === '1' && x[1] !== '9')
   },
 
   // returns: string[]

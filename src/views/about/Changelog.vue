@@ -87,6 +87,20 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.3.2',
+          date: '2020-10-16T15:57:12.856Z',
+          logs: [
+            {
+              content: '【角色】增加对联动角色【环奈】的支持',
+              type: 'improvement'
+            },
+            {
+              content: '【角色】调整角色列表页数据的显示样式',
+              type: 'improvement'
+            }
+          ]
+        },
+        {
           version: '0.9.3.1',
           date: '2020-09-13T06:55:44.307Z',
           logs: [
