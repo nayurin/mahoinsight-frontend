@@ -88,7 +88,7 @@ export default {
         {
           current: true,
           version: '0.9.3.2',
-          date: '2020-10-16T15:57:12.856Z',
+          date: '2020-10-16T16:53:01.940Z',
           logs: [
             {
               content: '【角色】增加对联动角色【环奈】的支持',
@@ -97,6 +97,10 @@ export default {
             {
               content: '【角色】调整角色列表页数据的显示样式',
               type: 'improvement'
+            },
+            {
+              content: '【角色】修复深月减防阵防御值下降百分号显示错误',
+              type: 'bugfix'
             }
           ]
         },
