@@ -87,6 +87,16 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.3.3',
+          date: '2020-11-08T01:12:20.716Z',
+          logs: [
+            {
+              content: '内容情报的更新逻辑',
+              type: 'refactor'
+            }
+          ]
+        },
+        {
           version: '0.9.3.2',
           date: '2020-10-16T16:53:01.940Z',
           logs: [

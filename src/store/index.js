@@ -87,6 +87,10 @@ export default new Vuex.Store({
           source: '/cached/gameevents.json'
         },
         {
+          name: 'Ingame Content Configures',
+          source: '/cached/config.json'
+        },
+        {
           name: 'FullDatabase CN',
           source: '/cached/master.json',
           database: {
@@ -113,8 +117,17 @@ export default new Vuex.Store({
               context.commit('updateDatabase', { key: x.database.name, value: resp })
             }
           } else {
-            if (x.name === 'Ingame Events') {
-              context.commit('updateState', { key: 'events', value: resp })
+            switch (x.name) {
+              case 'Ingame Events':
+                context.commit('updateState', { key: 'events', value: resp })
+                break
+              case 'Ingame Content Configures':
+                for (const [key, val] of Object.entries(resp)) {
+                  context.commit('updateState', { key: key, value: val })
+                }
+                break
+              default:
+                break
             }
           }
         })
