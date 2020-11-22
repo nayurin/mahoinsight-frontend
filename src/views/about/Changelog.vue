@@ -87,6 +87,16 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.3.4',
+          date: '2020-11-22T06:24:27.894Z',
+          logs: [
+            {
+              content: '团队战暂定日期与实际活动日期不一致',
+              type: 'bugfix'
+            }
+          ]
+        },
+        {
           version: '0.9.3.3',
           date: '2020-11-08T01:12:20.716Z',
           logs: [
