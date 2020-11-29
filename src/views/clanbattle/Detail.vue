@@ -142,6 +142,9 @@ export default {
           info = `${from} 周目到 ${to} 周目`
         }
       }
+      if (this.id === 1011) {
+        info += '（注：水瓶座的第一/第二阶段常因数据相同而被视为第一阶段，但旧版数据库中确为两条数据。简体中文服的具体情报待上线时会更新。）'
+      }
       return from && to ? info : ''
     },
     sorted () {

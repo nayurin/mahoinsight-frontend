@@ -87,6 +87,20 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.3.5',
+          date: '2020-11-29T02:58:33.165Z',
+          logs: [
+            {
+              content: '专用装备的属性计算错误',
+              type: 'bugfix'
+            },
+            {
+              content: '水瓶座团队战的圈数文案优化',
+              type: 'improvement'
+            }
+          ]
+        },
+        {
           version: '0.9.3.4',
           date: '2020-11-22T06:24:27.894Z',
           logs: [
