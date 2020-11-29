@@ -171,7 +171,7 @@ export default {
         } else {
           const baseval = this.$store.getters.getUniqueEquipmentData(this.ueId)[type]
           const enhval = this.$store.getters.getUniqueEquipmentEnhanceRate(this.ueId)[type]
-          data[this.statsMap[type]] = [baseval, Math.ceil(baseval + enhval * level)]
+          data[this.statsMap[type]] = [baseval, Math.ceil(baseval + enhval * (level - 1))]
         }
       }
       this.stats = data
