@@ -125,7 +125,7 @@ export default {
           }
         }
       }
-      this.events.outdated = this.events.outdated.slice(-this.maxOutdatedDisplays)
+      this.events.outdated = this.events.outdated.filter(x => x.title !== '服务器维护').slice(-this.maxOutdatedDisplays)
     },
     formatTime (time) {
       const days = Math.floor(time / (3600 * 1000 * 24))
