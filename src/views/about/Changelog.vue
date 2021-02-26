@@ -87,6 +87,30 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.3.7',
+          date: '2021-02-26T06:12:20.282Z',
+          logs: [
+            {
+              content: '【道具】禁用了移动端在关卡奖励装备列表中的点击跳转功能，避免误触导致的误操作',
+              type: 'improvement'
+            },
+          ]
+        },
+        {
+          version: '0.9.3.6',
+          date: '2020-12-30T07:35:11.202Z',
+          logs: [
+            {
+              content: '【角色】增加对联动角色【环奈（振袖）】的支持',
+              type: 'improvement'
+            },
+            {
+              content: '更新依赖库版本至最新',
+              type: 'other'
+            }
+          ]
+        },
+        {
           version: '0.9.3.5',
           date: '2020-11-29T02:58:33.165Z',
           logs: [

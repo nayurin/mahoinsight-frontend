@@ -18,9 +18,10 @@
         v-for="(value, i) of sortRewards()"
         :id="value.itemid"
         :key="i"
+        :no-route="$store.state.mobile"
         zoom-ratio="0.5"
       >
-        <template v-slot:under>
+        <template #under>
           <v-card-text
             class="pa-1"
             :class="value.itemid === target ? 'font-weight-black primary--text' : ''"
