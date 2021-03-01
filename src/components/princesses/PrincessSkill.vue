@@ -80,7 +80,9 @@ export default {
         连结爆发: "amber darken-3 white--text",
         技能1: "cyan accent-3",
         '技能1+': "cyan darken-3 white--text",
+        SP技能1: "cyan darken-5 white--text",
         技能2: "teal accent-3",
+        SP技能2: "teal darken-5 white--text",
         EX技能: "lime lighten-2",
         'EX技能+': "lime darken-3 white--text"
       }
@@ -93,7 +95,9 @@ export default {
         '连结爆发+': this.$store.getters.getUnitSkillData(this.id).union_burst_evolution,
         技能1: this.$store.getters.getUnitSkillData(this.id).main_skill_1,
         '技能1+': this.$store.getters.getUnitSkillData(this.id).main_skill_evolution_1,
+        SP技能1: this.$store.getters.getUnitSkillData(this.id).sp_skill_1,
         技能2: this.$store.getters.getUnitSkillData(this.id).main_skill_2,
+        SP技能2: this.$store.getters.getUnitSkillData(this.id).sp_skill_2,
         EX技能: this.$store.getters.getUnitSkillData(this.id).ex_skill_1,
         'EX技能+': this.$store.getters.getUnitSkillData(this.id).ex_skill_evolution_1
       }

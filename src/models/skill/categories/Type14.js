@@ -8,7 +8,7 @@ export default {
         detail = `攻击模式变更为 ${pattern}，持续 ${duration} 秒`
         break
       case 2:
-        duration = Number.floor(action.action_value_1)
+        duration = Math.floor(action.action_value_1)
         detail = `攻击模式变更为 ${pattern}，每秒消耗 TP ${duration} 至 TP 为空`
         break
       case 3:

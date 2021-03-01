@@ -88,12 +88,16 @@ export default {
         {
           current: true,
           version: '0.9.3.7',
-          date: '2021-02-26T06:12:20.282Z',
+          date: '2021-03-01T07:45:37.371Z',
           logs: [
             {
               content: '【道具】禁用了移动端在关卡奖励装备列表中的点击跳转功能，避免误触导致的误操作',
               type: 'improvement'
             },
+            {
+              content: '【角色】适配了受角色【矛依未】影响的新机制',
+              type: 'improvement'
+            }
           ]
         },
         {

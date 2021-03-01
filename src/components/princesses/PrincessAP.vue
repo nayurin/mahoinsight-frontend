@@ -33,7 +33,7 @@
                   :figure="APSkillSuffix[value]"
                   zoom-ratio="0.45"
                 >
-                  <template v-slot:afterImage>
+                  <template #afterImage>
                     <v-icon>mdi-chevron-double-right</v-icon>
                   </template>
                 </SkillFigure>
@@ -61,7 +61,7 @@
                   :figure="APSkillSuffix[value]"
                   zoom-ratio="0.45"
                 >
-                  <template v-slot:beforeImage>
+                  <template #beforeImage>
                     <v-icon>mdi-chevron-double-right</v-icon>
                   </template>
                 </SkillFigure>
@@ -111,7 +111,9 @@ export default {
       return {
         1: [null, 'phy', 'mag'][this.$store.getters.getUnitData(this.id).atk_type],
         1001: [null, 'ap_phy_1', 'ap_magic_1'][this.$store.getters.getUnitData(this.id).atk_type],
-        1002: [null, 'ap_phy_2', 'ap_magic_2'][this.$store.getters.getUnitData(this.id).atk_type]
+        1002: [null, 'ap_phy_2', 'ap_magic_2'][this.$store.getters.getUnitData(this.id).atk_type],
+        2001: [null, 'ap_phy_1', 'ap_magic_1'][this.$store.getters.getUnitData(this.id).atk_type],
+        2002: [null, 'ap_phy_2', 'ap_magic_2'][this.$store.getters.getUnitData(this.id).atk_type]
       }
     }
   }
