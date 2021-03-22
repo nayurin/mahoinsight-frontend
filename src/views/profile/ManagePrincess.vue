@@ -6,19 +6,32 @@
     <v-row
       v-if="this.$store.state.activeProfile"
     >
-      <v-col
-        v-for="(item, i) in storagedPrincess"
-        :key="i"
-        class="col-auto"
-      >
-        <PrincessPlate
-          :id="Number(item)"
-          zoom-ratio="0.5"
-          stars
-          pieces
-          equips
-        />
-      </v-col>
+      <v-row>
+        <v-col cols="3">
+          <v-select
+            v-model="sortBy"
+            label="排序方式"
+            :items="sortOptions"
+            item-text="state"
+            item-value="abbr"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          v-for="(item, i) in sortedPrincess"
+          :key="i"
+          class="col-auto"
+        >
+          <PrincessPlate
+            :id="Number(item)"
+            zoom-ratio="0.5"
+            stars
+            pieces
+            equips
+          />
+        </v-col>
+      </v-row>
     </v-row>
     <v-row
       v-else
@@ -79,12 +92,27 @@ export default {
   data () {
     return {
       storage: window.localStorage,
-      profile: {}
+      profile: {},
+      sortBy: 'default',
+      sortOptions: [
+        { state: '默认', abbr: 'default' },
+        { state: 'Rank降序', abbr: 'rankdsc' }
+      ]
     }
   },
   computed: {
     storagedPrincess () {
       return this.profile[this.$store.state.activeProfile] && this.profile[this.$store.state.activeProfile].princess && Object.prototype.toString.call(this.profile[this.$store.state.activeProfile].princess) === '[object Object]' ? Object.keys(this.profile[this.$store.state.activeProfile].princess).map(x => Number(x)) : []
+    },
+    sortedPrincess () {
+      let prcmap = this.profile[this.$store.state.activeProfile] && this.profile[this.$store.state.activeProfile].princess && Object.prototype.toString.call(this.profile[this.$store.state.activeProfile].princess) === '[object Object]' ? this.profile[this.$store.state.activeProfile].princess : {}
+      if (this.sortBy == 'rankdsc') {
+        let tmp = Object.entries(prcmap).map(kv => [Number(kv[1].rank), Number(kv[0])])
+        tmp.sort((b, a) => (a[0] - b[0] || (a[0] == b[0] && a[1] - b[1])))
+        return tmp.map(x => x[1])
+      }
+      // default
+      return Object.keys(prcmap).map(x => Number(x))
     },
     unStoragedPrincess () {
       return this.$store.getters.princessIdList.map(x => Number(x)).filter(x => !this.storagedPrincess.includes(x))
