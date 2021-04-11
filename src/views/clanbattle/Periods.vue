@@ -5,8 +5,8 @@
     </v-card-title>
     <v-row class="text-center">
       <v-col
-        v-for="(title, id) in schedule"
-        :key="id"
+        v-for="(id, i) in Object.keys(schedule).sort((x, y) => y - x)"
+        :key="i"
         class="col-12 col-lg-4"
       >
         <v-card>
