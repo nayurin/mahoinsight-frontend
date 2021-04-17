@@ -86,6 +86,7 @@ export default {
       },
       changelogs: [
         {
+          current: true,
           version: '0.9.4',
           date: '2021-04-17T15:25:06.252Z',
           logs: [
