@@ -25,7 +25,7 @@
           light
           dense
         >
-          <template v-slot:default>
+          <template #default>
             <tbody>
               <tr
                 v-for="(bonus, seq) in value"

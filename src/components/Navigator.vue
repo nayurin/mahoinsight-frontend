@@ -5,7 +5,7 @@
       :prepend-icon="parent.meta.icon"
       value="true"
     >
-      <template v-slot:activator>
+      <template #activator>
         <v-list-item
           class="pa-0"
           dense
@@ -33,7 +33,7 @@
       v-else-if="route.children"
       :value="extend.includes(route.name) ? 'true' : ''"
     >
-      <template v-slot:activator>
+      <template #activator>
         <v-list-item
           class="pa-0"
           dense

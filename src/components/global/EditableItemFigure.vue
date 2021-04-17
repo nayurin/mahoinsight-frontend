@@ -3,7 +3,7 @@
     v-model="editing"
     :width="$store.state.mobile ? '350' : '380'"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-card
         outlined
         v-bind="attrs"
@@ -14,7 +14,7 @@
           no-route
           zoom-ratio="0.5"
         >
-          <template v-slot:inner>
+          <template #inner>
             <slot name="inner" />
           </template>
         </ItemFigure>

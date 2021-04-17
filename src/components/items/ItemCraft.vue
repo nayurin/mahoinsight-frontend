@@ -17,7 +17,7 @@
           zoom-ratio="0.625"
           class="mr-2 mb-4"
         >
-          <template v-slot:under>
+          <template #under>
             <v-card-text
               class="pa-1"
               align="center"
@@ -47,9 +47,9 @@
             zoom-ratio="0.625"
             class="mr-2 mb-4"
           >
-            <template v-slot:under>
+            <template #under>
               <v-card-text
-                class="pa-2 caption text-center"
+                class="pa-2 text-caption text-center"
               >
                 <span>{{ $store.getters.getEquipmentData(id).equipment_name }}</span>
                 <br>

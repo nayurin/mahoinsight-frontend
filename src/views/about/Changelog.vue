@@ -86,7 +86,16 @@ export default {
       },
       changelogs: [
         {
-          current: true,
+          version: '0.9.4',
+          date: '2021-04-17T15:25:06.252Z',
+          logs: [
+            {
+              content: '#庆祝公主连结简体中文服上线一周年# 适配一周年更新数据',
+              type: 'other'
+            }
+          ]
+        },
+        {
           version: '0.9.3.7',
           date: '2021-03-01T07:45:37.371Z',
           logs: [

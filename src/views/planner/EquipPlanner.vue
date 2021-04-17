@@ -68,7 +68,7 @@
                   :id="Number(itemid)"
                   zoom-ratio="0.5"
                 >
-                  <template v-slot:inner>
+                  <template #inner>
                     <v-badge
                       inline
                       bordered
@@ -95,9 +95,9 @@
                 color="purple darken-2"
                 class="mx-5"
               >
-                <template v-slot:append>
+                <template #append>
                   <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                       <v-icon
                         small
                         class="mt-1"
@@ -121,9 +121,9 @@
                 color="red"
                 class="mx-5"
               >
-                <template v-slot:append>
+                <template #append>
                   <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                       <v-icon
                         small
                         class="mt-1"
@@ -147,9 +147,9 @@
                 color="indigo"
                 class="mx-5"
               >
-                <template v-slot:append>
+                <template #append>
                   <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                       <v-icon
                         small
                         class="mt-1"
@@ -247,7 +247,7 @@
                   @update="onUpdateItem(itemid, amount)"
                   @remove="onRemoveItem(itemid)"
                 >
-                  <template v-slot:content>
+                  <template #content>
                     <v-row
                       no-gutters
                       class="justify-center"
@@ -263,7 +263,7 @@
                       </v-col>
                     </v-row>
                   </template>
-                  <template v-slot:inner>
+                  <template #inner>
                     <v-badge
                       inline
                       bordered
@@ -303,7 +303,7 @@
                   no-route
                   zoom-ratio="0.5"
                 >
-                  <template v-slot:inner>
+                  <template #inner>
                     <v-badge
                       inline
                       bordered
@@ -347,7 +347,7 @@
                 @update="onUpdateItem(item, itemAmount)"
                 @remove="onRemoveItem(item)"
               >
-                <template v-slot:content>
+                <template #content>
                   <v-row
                     no-gutters
                     class="justify-center"
@@ -438,7 +438,7 @@
                   no-route
                   zoom-ratio="0.5"
                 >
-                  <template v-slot:inner>
+                  <template #inner>
                     <v-badge
                       inline
                       bordered
@@ -475,7 +475,7 @@
             :max-width="$store.state.mobile ? '400' : '600'"
             :scrollable="$store.state.mobile"
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn
                 v-show="completed"
                 color="secondary"
@@ -531,7 +531,7 @@
       v-model="summary"
       :max-width="$store.state.mobile ? '400' : '600'"
     >
-      <template v-slot:activator="{ on, attrs }">
+      <template #activator="{ on, attrs }">
         <v-row class="justify-center py-3">
           <v-btn
             v-if="completed"
@@ -563,7 +563,7 @@
               :id="Number(item)"
               zoom-ratio="0.5"
             >
-              <template v-slot:inner>
+              <template #inner>
                 <v-badge
                   inline
                   bordered
@@ -622,7 +622,7 @@
                 :id="Number(item)"
                 zoom-ratio="0.5"
               >
-                <template v-slot:inner>
+                <template #inner>
                   <v-badge
                     inline
                     bordered
@@ -650,6 +650,10 @@ export default {
     ItemFigure,
     PrincessPlate,
     EditableItemFigure
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('updateState', { key: 'ngFlag', value: false })
+    next()
   },
   data () {
     return {
@@ -1216,10 +1220,6 @@ export default {
       }
       this.apply2profile = false
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    this.$store.commit('updateState', { key: 'ngFlag', value: false })
-    next()
   }
 }
 </script>

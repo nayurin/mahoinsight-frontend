@@ -19,7 +19,7 @@
             :id="promoted.unitId"
             zoom-ratio="0.6"
           >
-            <template v-slot:add>
+            <template #add>
               <v-row
                 class="d-flex justify-center align-center"
                 no-gutters

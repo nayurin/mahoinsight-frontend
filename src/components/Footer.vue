@@ -10,7 +10,7 @@
     <v-col
       class="text-center col-12"
     >
-      <span>MahoMaho INSIGHT!! @ {{ this.$store.state.gitcommit.toUpperCase() }} · </span>
+      <span>MahoMaho INSIGHT!! @ {{ $store.state.gitcommit.toUpperCase() }} · </span>
       <span>
         <a
           id="footer-icp"

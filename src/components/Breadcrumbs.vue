@@ -3,12 +3,12 @@
     class="pa-1 v-breadcrumbs--large"
     :items="items"
   >
-    <template v-slot:divider>
+    <template #divider>
       <v-icon color="secondary">
         mdi-chevron-right
       </v-icon>
     </template>
-    <template v-slot:item="{ item }">
+    <template #item="{ item }">
       <v-breadcrumbs-item
         :disabled="item.disabled"
         @click="onClick(item.to)"

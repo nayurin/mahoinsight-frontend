@@ -15,12 +15,12 @@
         dark
       >
         <v-card-title
-          class="title"
+          class="text-h6"
           v-text="`【${eventstype[event.category]}】${event.title}`"
         />
         <v-card-subtitle
           v-if="event.category === 'sidestory'"
-          class="subtitle-1"
+          class="text-subtitle-1"
           v-text="`活动碎片奖励： ${event.rewards.join('，')}`"
         />
         <v-card-text

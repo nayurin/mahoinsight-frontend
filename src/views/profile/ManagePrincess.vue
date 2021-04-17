@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-card-title
-      v-text="!this.$store.state.activeProfile ? '角色管理 [ 无激活档案 ]' : `角色管理 [ ${this.$store.state.activeProfile} ]`"
+      v-text="!$store.state.activeProfile ? '角色管理 [ 无激活档案 ]' : `角色管理 [ ${$store.state.activeProfile} ]`"
     />
     <v-row
-      v-if="this.$store.state.activeProfile"
+      v-if="$store.state.activeProfile"
     >
       <v-col
         v-for="(item, i) in storagedPrincess"
@@ -34,7 +34,7 @@
       </v-btn>
     </v-row>
     <v-row
-      v-if="this.$store.state.activeProfile"
+      v-if="$store.state.activeProfile"
       no-gutters
     >
       <v-row>
@@ -75,6 +75,11 @@ export default {
   name: 'ProfilePrincess',
   components: {
     PrincessPlate
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('updateState', { key: 'equipSelected', value: [] })
+    this.$store.commit('updateState', { key: 'curRank', value: 0 })
+    next()
   },
   data () {
     return {
@@ -126,11 +131,6 @@ export default {
         })
       }
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    this.$store.commit('updateState', { key: 'equipSelected', value: [] })
-    this.$store.commit('updateState', { key: 'curRank', value: 0 })
-    next()
   }
 }
 </script>

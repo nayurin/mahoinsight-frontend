@@ -14,9 +14,9 @@
           :id="id"
           zoom-ratio="0.75"
         >
-          <template v-slot:under>
+          <template #under>
             <v-card-text
-              class="pa-2 caption text-center"
+              class="pa-2 text-caption text-center"
               v-text="$store.getters.getEquipmentData(id).equipment_name"
             />
           </template>

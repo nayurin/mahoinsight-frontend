@@ -19,7 +19,7 @@
           @blur="onSearchboxBlurred()"
           @click:clear="onSearchboxClearred()"
         />
-        <template v-slot:extension>
+        <template #extension>
           <v-overlay
             absolute
             :value="overlay"
@@ -31,11 +31,15 @@
           >
             <v-tab
               @click="onClickOfDiff('normal')"
-              v-text="`普通难度`"
+              v-text="`普通`"
             />
             <v-tab
               @click="onClickOfDiff('hard')"
-              v-text="`困难难度`"
+              v-text="`困难`"
+            />
+            <v-tab
+              @click="onClickOfDiff('vh')"
+              v-text="`极难`"
             />
             <v-tab
               @click="onClickOfDiff('other')"
@@ -303,22 +307,34 @@
     },
     watch: {
       area (val) {
-        this.x = val % 100 - 1
+        if (this.diff === 'vh') {
+          this.x = val % 100 - 18
+        } else {
+          this.x = val % 100 - 1
+        }
       },
       quest (val) {
-        this.x = (val - val % 100) / 1000 % 100 - 1
-        this.y = val % 100 - 1
+        if (this.diff === 'vh') {
+          this.x = (val - val % 100) / 1000 % 100 - 18
+          this.y = val % 100 - 1
+        } else {
+          this.x = (val - val % 100) / 1000 % 100 - 1
+          this.y = val % 100 - 1
+        }
       },
       x (val) {
         switch (this.diff) {
           case 'normal':
-            this.area = 11000 + val + 1
+            this.area = 11001 + val
             break
           case 'hard':
-            this.area = 12000 + val + 1
+            this.area = 12001 + val
+            break
+          case 'vh':
+            this.area = 13018 + val
             break
           case 'other':
-            this.area = 18000 + val + 1
+            this.area = 18001 + val
             break
           default:
             break
@@ -337,8 +353,11 @@
           case 'hard':
             this.diff_ = 1
             break
-          case 'other':
+          case 'vh':
             this.diff_ = 2
+            break
+          case 'other':
+            this.diff_ = 3
             break
           default:
             break
@@ -354,9 +373,8 @@
       onClickOfDiff (diff) {
         if (this.diff === diff) return
         this.diff = diff
-        const area = this.listAll[diff][0].area_id
-        this.area = area
-        this.quest = Number(area) * 1000 + 1
+        this.area = this.listAll[diff][0].area_id
+        this.quest = Number(this.area) * 1000 + 1
       },
       onSearchboxFocused () {
         this.overlay = true
@@ -382,9 +400,9 @@
       search () {
         const regexpQuest = /([1-9]\d{0,})-([1-9]\d{0,})/
         const regexpDiff = /([a-z]{1,})/
-        let area = "",
-            quest = "",
-            id = "",
+        let area = '',
+            quest = '',
+            id = '',
             diff = this.diff
         if (this.searchbox && this.searchbox.match(regexpQuest) && this.searchbox.match(regexpQuest)[1].length <= 2 && this.searchbox.match(regexpQuest)[2].length <= 2) {
           area = this.searchbox.match(regexpQuest)[1]
@@ -395,11 +413,14 @@
         }
         if (area && quest){
           switch (diff) {
-            case "normal":
+            case 'normal':
               id = String(Number(area) * 1000 + Number(quest) + 11000000)
               break
-            case "hard":
+            case 'hard':
               id = String(Number(area) * 1000 + Number(quest) + 12000000)
+              break
+            case 'vh':
+              id = String(Number(area) * 1000 + Number(quest) + 13000000)
               break
             default:
               id = String(Number(area) * 1000 + Number(quest) + 18000000)
@@ -426,6 +447,9 @@
               break
             case '12':
               this.diff = 'hard'
+              break
+            case '13':
+              this.diff = 'vh'
               break
             default:
               this.diff = 'other'

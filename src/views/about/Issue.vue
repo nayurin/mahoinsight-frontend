@@ -6,7 +6,7 @@
     <v-row>
       <v-col cols="auto">
         <v-card>
-          <v-card-subtitle class="font-weight-bold subtitle-1">
+          <v-card-subtitle class="font-weight-bold text-subtitle-1">
             关于本Issue助手页，您可能需要了解的事情：
           </v-card-subtitle>
           <v-card-text class="px-3 py-0">

@@ -11,7 +11,7 @@
       >
         <v-card>
           <v-card-text
-            class="title"
+            class="text-h6"
             v-text="`${schedule[id][0]} ${event(id)[1]}`"
           />
           <v-card-text
@@ -76,10 +76,14 @@ export default {
         1010: ['2021', '「团队战」摩羯座 ♑'],
         1011: ['2021', '「团队战」水瓶座 ♒'],
         1012: ['2021', '「团队战」双鱼座 ♓'],
-        1013: ['2021', '「团队战」白羊座 ♈']
+        1013: ['2021', '「团队战」白羊座 ♈'],
+        1014: ['2021', '「团队战」金牛座 ♉']
       },
       phase: ["success", "primary", "warning", "error"]
     }
+  },
+  created () {
+    console.log(this.$store.getters.getClanBattleMapData(1014))
   },
   methods: {
     event (id) {

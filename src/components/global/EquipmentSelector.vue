@@ -12,7 +12,7 @@
           :key="i"
           top
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-btn
               :disabled="icon.disabled"
               small

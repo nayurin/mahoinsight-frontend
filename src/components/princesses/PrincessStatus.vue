@@ -38,7 +38,7 @@
             multiple
             small-chips
           >
-            <template v-slot:selection="{ attrs, item, parent, selected }">
+            <template #selection="{ attrs, item, parent, selected }">
               <v-chip
                 v-if="item === Object(item)"
                 v-bind="attrs"
@@ -58,7 +58,7 @@
                 </v-icon>
               </v-chip>
             </template>
-            <template v-slot:item="{ index, item }">
+            <template #item="{ item }">
               <v-chip
                 :color="`${item.color} lighten-3`"
                 dark
@@ -100,7 +100,7 @@
             v-text="value"
           />
           <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn
                 v-show="equipStats[key]"
                 text
@@ -117,7 +117,7 @@
             />
           </v-tooltip>
           <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn
                 v-show="storyBonusStats[key]"
                 text

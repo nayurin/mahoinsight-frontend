@@ -57,7 +57,7 @@
           v-text="i === 0 ? '合并了赛季奖励的完整奖励' : '赛季奖励'"
         />
         <v-simple-table>
-          <template v-slot:default>
+          <template #default>
             <thead>
               <tr>
                 <th>

@@ -14,7 +14,7 @@
           :id="id"
           :zoom-ratio="zoom"
         >
-          <template v-slot:add>
+          <template #add>
             <v-card-text
               class="pa-0 ma-0 text-center font-weight-bold"
               v-text="profile(id)"

@@ -36,12 +36,12 @@
             v-text="key"
           />
           <v-card-text
-            class="title pa-1"
+            class="text-h6 pa-1"
             v-text="skillData(value).name"
           />
           <v-divider />
           <v-card-text
-            class="body-2 pa-1"
+            class="text-body-2 pa-1"
             v-text="skillData(value).description"
           />
         </v-col>

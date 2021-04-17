@@ -11,7 +11,7 @@
           :prepend-icon="isActive(key) ? 'mdi-check-bold' : ''"
           @click="exported = false"
         >
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item
               class="pa-0"
               dense
@@ -45,7 +45,7 @@
                         dense
                         disabled
                         outlined
-                        class="caption"
+                        class="text-caption"
                         :value="compress(item)"
                       />
                     </v-sheet>
@@ -119,7 +119,7 @@
           v-model="importdata"
           auto-grow
           clearable
-          class="caption"
+          class="text-caption"
           label="可以导入其他来源的档案数据"
           hint="数据的格式是以逗号分隔的一串数字"
         />

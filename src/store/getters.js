@@ -527,7 +527,8 @@ const getters = {
     return {
       normal: Object.values(state.database['master'].quest_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
       hard: Object.values(state.database['master'].quest_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.quest_name = `${y.quest_name}(H)`; return y }),
-      other: Object.values(state.database['master'].quest_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2)))
+      vh: Object.values(state.database['master'].quest_data).filter(x => String(x.area_id).substring(0, 2) === '13').map(x => { const y = JSON.parse(JSON.stringify(x)); y.quest_name = `${y.quest_name}(VH)`; return y }),
+      other: Object.values(state.database['master'].quest_data).filter(x => !['11', '12', '13'].includes(String(x.area_id).substring(0, 2)))
     }
   },
 
@@ -537,7 +538,8 @@ const getters = {
     return {
       normal: Object.values(state.database['master'].quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '11'),
       hard: Object.values(state.database['master'].quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '12').map(x => { const y = JSON.parse(JSON.stringify(x)); y.area_name = `${y.area_name}(H)`; return y }),
-      other: Object.values(state.database['master'].quest_area_data).filter(x => !['11', '12'].includes(String(x.area_id).substring(0, 2))) 
+      vh: Object.values(state.database['master'].quest_area_data).filter(x => String(x.area_id).substring(0, 2) === '13').map(x => { const y = JSON.parse(JSON.stringify(x)); y.area_name = `${y.area_name}(VH)`; return y }),
+      other: Object.values(state.database['master'].quest_area_data).filter(x => !['11', '12', '13'].includes(String(x.area_id).substring(0, 2))) 
     }
   },
 

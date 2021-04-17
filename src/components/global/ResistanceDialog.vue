@@ -3,7 +3,7 @@
     v-model="dialogEnemyResistance"
     width="400"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-btn
         color="purple darken-3 ma-4"
         class="white--text mr-8"

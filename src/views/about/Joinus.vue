@@ -70,7 +70,7 @@
     </v-row>
     <v-footer
       absolute
-      class="caption"
+      class="text-caption"
     >
       本网站是由 公主连结! Re:Dive 爱好者与社区开发者自制，网站所涉及的公司名称、商标、产品等均为其各自所有者的资产，仅供识别。
       <br>

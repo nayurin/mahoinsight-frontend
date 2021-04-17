@@ -5,7 +5,7 @@
       :width="$store.state.mobile ? '300' : '600'"
       :scrollable="$store.state.mobile ? true : false"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-card
           class="ml-1 mr-1"
           v-on="on"
@@ -16,7 +16,7 @@
             :alt="name"
             :style="style"
           >
-            <template v-slot:placeholder>
+            <template #placeholder>
               <v-row
                 class="fill-height ma-0 align-center justify-center"
               >

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card-title>
-      {{ this.$route.params.clanBattlePhase }}
+      {{ $route.params.clanBattlePhase }}
       <v-btn
         color="success"
         small

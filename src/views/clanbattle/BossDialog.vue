@@ -3,7 +3,7 @@
     v-model="show"
     :width="$store.state.mobile ? '600' : '800'"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-sheet
         v-bind="attrs"
         v-on="on"
@@ -12,7 +12,7 @@
           top
           offset-overflow
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-img
               class="mx-4"
               :src="src(bossdetail.parameter.unit_id)"

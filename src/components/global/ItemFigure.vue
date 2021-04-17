@@ -1,6 +1,6 @@
 <template>
   <v-tooltip top>
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-card
         :to="noRoute ? '' : route"
         :max-width="origWidth * parseFloat(zoomRatio)"
@@ -12,7 +12,7 @@
           :alt="alt"
           :style="style"
         >
-          <template v-slot:placeholder>
+          <template #placeholder>
             <v-row
               class="fill-height ma-0 align-center justify-center"
             >

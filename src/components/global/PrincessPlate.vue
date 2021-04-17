@@ -3,13 +3,13 @@
     v-model="editing"
     :width="$store.state.mobile ? '350' : '380'"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-card
         v-bind="attrs"
         v-on="on"
       >
         <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-img
               :src="src"
               :alt="name"
@@ -17,7 +17,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              <template v-slot:placeholder>
+              <template #placeholder>
                 <v-row
                   class="fill-height ma-0 align-center justify-center"
                 >
@@ -42,7 +42,7 @@
         >
           <PrincessFigure
             :id="id"
-            :zoom-ratio="this.$store.state.mobile ? '0.33' : '0.5'"
+            :zoom-ratio="$store.state.mobile ? '0.33' : '0.5'"
           />
         </v-col>
         <v-col>
@@ -94,10 +94,10 @@
           >
             <template
               v-if="!$store.state.mobile"
-              v-slot:append
+              #append
             >
               <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <v-icon
                     small
                     v-bind="attrs"
@@ -126,7 +126,7 @@
         <v-col class="col-4 pa-5">
           <ItemFigure
             :id="memorypieceid"
-            :zoom-ratio="this.$store.state.mobile ? '0.33' : '0.5'"
+            :zoom-ratio="$store.state.mobile ? '0.33' : '0.5'"
           />
           <v-text-field
             v-model="memorypiece"
@@ -136,7 +136,7 @@
         <v-col class="col-4 pa-5">
           <ItemFigure
             :id="Number(999999)"
-            :zoom-ratio="this.$store.state.mobile ? '0.33' : '0.5'"
+            :zoom-ratio="$store.state.mobile ? '0.33' : '0.5'"
           />
           <v-text-field
             v-model="purememorypiece"
@@ -161,10 +161,10 @@
           >
             <template
               v-if="!$store.state.mobile"
-              v-slot:append
+              #append
             >
               <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <v-icon
                     small
                     v-bind="attrs"
@@ -196,10 +196,10 @@
           >
             <template
               v-if="!$store.state.mobile"
-              v-slot:append
+              #append
             >
               <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <v-icon
                     small
                     v-bind="attrs"

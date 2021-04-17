@@ -13,7 +13,7 @@
         :src="src"
         :style="style"
       >
-        <template v-slot:placeholder>
+        <template #placeholder>
           <v-row
             class="fill-height ma-0 align-center justify-center"
           >

@@ -16,13 +16,13 @@
           :key="i"
         >
           <v-col
-            v-for="event in events[status]"
-            :key="event.title"
+            v-for="(event, i) of events[status]"
+            :key="`${events[status]}-${event.title}-${i}`"
             class="align-self-stretch col-12 col-lg-6"
           >
             <v-card>
               <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <v-chip
                     label
                     large
