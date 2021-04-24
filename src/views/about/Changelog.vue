@@ -96,7 +96,7 @@ export default {
             },
             {
               content: '【角色】增加专属装备的图标',
-              type: improvement
+              type: 'improvement'
             }
           ]
         },
