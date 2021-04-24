@@ -83,7 +83,7 @@ export default {
     comment () {
       if (this.id === 999999) {
         return '暂未开放'
-      } else if (String(this.id.length) === 5) {
+      } else if (String(this.id).length === 5) {
         if (this.id === 91001 || this.id === 91002) {
           return '宝石'
         } else {
@@ -94,7 +94,9 @@ export default {
         if (stats === {}) return
         let comment = `${this.$store.getters.getCraftedEquipmentNameByItemId(this.id)}<br>`
         for (const key of Object.keys(stats)) {
-          comment += `<br>${key}：${stats[key]} (${stats[key] * 2})`
+          comment += String(this.id).length === 6 && String(this.id).substring(0, 2) === '13'
+            ? `<br>${key}：${stats[key]}`
+            : `<br>${key}：${stats[key]} (${stats[key] * 2})`
         }
         return comment
       }

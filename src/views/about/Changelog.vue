@@ -88,11 +88,15 @@ export default {
         {
           current: true,
           version: '0.9.4',
-          date: '2021-04-17T15:25:06.252Z',
+          date: '2021-04-24T06:16:11.645Z',
           logs: [
             {
               content: '#庆祝公主连结简体中文服上线一周年# 适配一周年更新数据',
               type: 'other'
+            },
+            {
+              content: '【角色】增加专属装备的图标',
+              type: improvement
             }
           ]
         },

@@ -1,15 +1,25 @@
 <template>
   <v-card>
     <v-row>
-      <v-col class="px-3 py-0">
-        <v-card-title id="princess-ue">
-          {{ ueName }}
-        </v-card-title>
-        <v-card-subtitle>专用装备</v-card-subtitle>
-        <v-card-text
-          class="pb-1"
-          v-text="ueDesc"
-        />
+      <v-col class="px-3 py-0 col-auto d-flex flex-nowrap">
+        <div class="pa-4 d-flex align-center">
+          <ItemFigure
+            :id="ueId"
+            zoom-ratio="0.5"
+            no-route
+          />
+        </div>
+        <div>
+          <v-card-title id="princess-ue">
+            {{ ueName }}
+          </v-card-title>
+          <v-card-subtitle>专用装备</v-card-subtitle>
+          <v-card-text
+            class="pb-1"
+            v-text="ueDesc"
+          />
+        </div>
+        
       </v-col>
     </v-row>
 
@@ -94,8 +104,13 @@
 </template>
 
 <script>
+import ItemFigure from '@/components/global/ItemFigure'
+
 export default {
   name: 'PrincessUniqueEquipment',
+  components: {
+    ItemFigure
+  },
   props: {
     id: {
       type: Number,
