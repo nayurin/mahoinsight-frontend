@@ -11,6 +11,7 @@ Vue.config.productionTip = false
 Vue.prototype.$workbox = workbox
 Vue.prototype.$setLSItem = storage.setItem
 Vue.prototype.$removeLSItem = storage.removeItem
+Vue.prototype.$eventBus = new Vue()
 
 new Vue({
   router,
