@@ -87,7 +87,7 @@ export default {
         if (this.id === 91001 || this.id === 91002) {
           return '宝石'
         } else {
-          return this.$store.getters.getItemNameById(this.id)
+          return this.$store.getters.getItemData(this.id).item_name
         }
       } else {
         const stats = this.$store.getters.getEquipmentStatsById(this.id, true)

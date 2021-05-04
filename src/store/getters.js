@@ -91,6 +91,12 @@ const getters = {
     return Object.values(state.database['master'].clan_battle_map_data).filter(x => x.clan_battle_id === Number(clanBattleId))
   },
 
+  // get raw data of clan_battle_s_map_data by clanbattleid
+  // returns: object[]
+  getClanBattle2MapData: (state) => (clanBattleId) => {
+    return Object.values(state.database['master'].clan_battle_2_map_data).filter(x => x.clan_battle_id === Number(clanBattleId))
+  },
+
   // get raw data of clan_battle_period by clanbattleid
   // returns: object
   getClanBattlePeriod: (state) => (clanBattleId) => {

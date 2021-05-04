@@ -87,6 +87,20 @@ export default {
       changelogs: [
         {
           current: true,
+          version: '0.9.5',
+          date: '2021-05-04T15:53:47.716Z',
+          logs: [
+            {
+              content: '【团队战】适配简体中文服一周年版本团队战内容',
+              type: 'refactor'
+            },
+            {
+              content: '【团队战】团队战活动计划页面',
+              type: 'improvement'
+            }
+          ]
+        },
+        {
           version: '0.9.4',
           date: '2021-04-24T06:16:11.645Z',
           logs: [

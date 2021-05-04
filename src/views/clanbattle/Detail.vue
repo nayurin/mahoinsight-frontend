@@ -39,56 +39,48 @@
       >
         <v-row no-gutters>
           <v-col
-            v-for="(bossgroup, i) in bossfilter(seq)"
+            v-for="(boss, i) in bossParameter(seq)"
             :key="i"
           >
-            <v-row>
-              <v-col
-                v-for="(boss, j) of bossParameter(bossgroup)"
-                :key="j"
-                class="col-12"
+            <v-card>
+              <v-card-title>
+                {{ boss.parameter.name }}
+              </v-card-title>
+              <v-card-subtitle>
+                点数倍率： {{ bossgroup[0][`score_coefficient_${seq}`] }}
+              </v-card-subtitle>
+              
+              <BossDialog
+                :bossdetail="boss"
+              />
+              
+              <v-card-text
+                v-html="boss.parameter.comment.replace(/\\n/g, '<br>')"
+              />
+              <v-row
+                no-gutters
+                class="d-flex flex-row"
               >
-                <v-card>
-                  <v-card-title>
-                    {{ boss.parameter.name }}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    点数倍率： {{ bossgroup.score_coefficient }}
-                  </v-card-subtitle>
-                  
-                  <BossDialog
-                    :bossdetail="boss"
+                <v-col
+                  v-for="(value, key) in stats(boss.parameter)"
+                  :key="key"
+                  class="col-12 mx-4 my-2"
+                >
+                  <v-chip
+                    small
+                    label
+                    color="primary"
+                    v-text="key"
                   />
-                  
-                  <v-card-text
-                    v-html="boss.parameter.comment.replace(/\\n/g, '<br>')"
+                  <v-chip
+                    small
+                    label
+                    outlined
+                    v-text="value"
                   />
-                  <v-row
-                    no-gutters
-                    class="d-flex flex-row"
-                  >
-                    <v-col
-                      v-for="(value, key) in stats(boss.parameter)"
-                      :key="key"
-                      class="col-12 mx-4 my-2"
-                    >
-                      <v-chip
-                        small
-                        label
-                        color="primary"
-                        v-text="key"
-                      />
-                      <v-chip
-                        small
-                        label
-                        outlined
-                        v-text="value"
-                      />
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-col>
-            </v-row>
+                </v-col>
+              </v-row>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>
@@ -122,7 +114,18 @@ export default {
         '2021摩羯座': 1010,
         '2021水瓶座': 1011,
         '2021双鱼座': 1012,
-        '2021白羊座': 1013
+        '2021白羊座': 1013,
+        '2021金牛座': 1014,
+        '2021双子座': 1015,
+        '2021巨蟹座': 1016,
+        '2021狮子座': 1017,
+        '2021处女座': 1018,
+        '2021天秤座': 1019,
+        '2021天蝎座': 1020,
+        '2021射手座': 1021,
+        '2022摩羯座': 1022,
+        '2022水瓶座': 1023,
+        '2022双鱼座': 1024
       },
       show: [],
       btnicon: ['mdi-numeric-1', 'mdi-numeric-2','mdi-numeric-3','mdi-numeric-4','mdi-numeric-5']
@@ -130,9 +133,23 @@ export default {
   },
   computed: {
     lapinfo () {
-      const from = this.$store.getters.getClanBattleMapData(this.id)[this.phase].lap_num_from
-      const to = this.$store.getters.getClanBattleMapData(this.id)[this.phase].lap_num_to
+      let from = ''
+      let to = ''
       let info = ''
+      const phase = this.$store.getters.getClanBattle2MapData(this.id).filter(x => x.phase === this.phase)
+      if (this.id > 1010) {
+        if (phase.length > 1) {
+          from = phase.reduce((t, v) => t !== 0 && t < v.lap_num_from ? t : v.lap_num_from, 0)
+          to = phase.reduce((t, v) => t !== -1 && (t < v.lap_num_to || v.lap_num_to === -1) ? v.lap_num_to : t, 0)
+        } else if (phase.length === 1) {
+          from = phase[0].lap_num_from
+          to = phase[0].lap_num_to
+        }
+      } else {
+        from = this.$store.getters.getClanBattle2MapData(this.id)[this.phase - 1].lap_num_from
+        to = this.$store.getters.getClanBattle2MapData(this.id)[this.phase - 1].lap_num_to
+      }
+      
       if (from === to) {
         info = `${from} 周目`
       } else {
@@ -142,9 +159,6 @@ export default {
           info = `${from} 周目到 ${to} 周目`
         }
       }
-      // if (this.id === 1011) {
-      //   info += '（注：水瓶座的第一/第二阶段常因数据相同而被视为同一阶段，但旧版数据库中确为两条数据。简体中文服的具体情报待上线时会更新。）'
-      // }
       return from && to ? info : ''
     },
     sorted () {
@@ -160,15 +174,12 @@ export default {
     init () {
       const re = /^(.*)第(\d{1})阶段$/
       this.id = this.schedule[this.$route.params.clanBattlePhase.match(re)[1]]
-      this.phase = Number(this.$route.params.clanBattlePhase.match(re)[2]) - 1
-      const bossgroupid = this.$store.getters.getClanBattleMapData(this.id)[this.phase].clan_battle_boss_group_id
-      for (let order_num = 1; order_num <= 5; order_num++) {
-        this.bossgroup.push(this.$store.getters.getClanBattleBossGroup(bossgroupid, order_num))
-      }
+      this.phase = Number(this.$route.params.clanBattlePhase.match(re)[2])
+      this.bossgroup = this.$store.getters.getClanBattle2MapData(this.id).filter(x => x.phase === this.phase)
       this.show = this.$store.state.mobile ? [] : [0, 1, 2, 3 ,4]
     },
-    bossParameter (boss) {
-      const waveDetail = this.$store.getters.getWaveGroupData(boss.wave_group_id)
+    bossParameter (seq) {
+      const waveDetail = this.$store.getters.getWaveGroupData(this.bossgroup[0][`wave_group_id_${seq}`])
       switch (waveDetail.length) {
         case 1:
           return [waveDetail[0].enemy_id_1, waveDetail[0].enemy_id_2, waveDetail[0].enemy_id_3, waveDetail[0].enemy_id_4, waveDetail[0].enemy_id_5]
@@ -177,9 +188,6 @@ export default {
         default:
           return []
       }
-    },
-    bossfilter (seq) {
-      return this.bossgroup.filter(x => x?.order_num === seq)
     },
     stats (obj) {
       const stats = obj ? {
