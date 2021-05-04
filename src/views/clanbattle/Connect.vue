@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-container>
     <router-view v-if="loaded" />
   </v-container>
@@ -42,4 +42,10 @@ export default {
     }
   }
 }
-</script>
+</script> -->
+
+<template>
+  <v-container>
+    <router-view />
+  </v-container>
+</template>
