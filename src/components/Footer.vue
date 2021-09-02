@@ -10,21 +10,22 @@
     <v-col
       class="text-center col-12"
     >
-      <span>MahoMaho INSIGHT!! @ {{ $store.state.gitcommit.toUpperCase() }} · </span>
+      <span>MahoMaho INSIGHT!! @ {{ this.$store.state.gitcommit.toUpperCase() }} · </span>
       <span>
         <a
           id="footer-icp"
           target="_blank"
-          href="http://www.beian.miit.gov.cn/"
+          href="http://beian.miit.gov.cn/"
         >
-          浙ICP备20021016号 · 
+          浙ICP备20021016号-1
         </a>
       </span>
+      <span>·</span>
       <span>
         <a
           id="footer-wangan"
           target="_blank"
-          href="http://www.beian.gov.cn/"
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011802002039"
         >
           <img
             src="/nism-icon.png"
