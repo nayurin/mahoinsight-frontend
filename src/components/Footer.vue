@@ -15,12 +15,11 @@
         <a
           id="footer-icp"
           target="_blank"
-          href="http://beian.miit.gov.cn/"
+          href="https://beian.miit.gov.cn/"
         >
           浙ICP备20021016号-1
         </a>
       </span>
-      <span>·</span>
       <span>
         <a
           id="footer-wangan"
